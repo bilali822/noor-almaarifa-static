@@ -37,15 +37,6 @@
       "size_mb": 5.84
     },
     {
-      "key": "tabari",
-      "name": "تفسير الطبري",
-      "short_name": "الطبري",
-      "icon": "📙",
-      "color": "#F44336",
-      "file": "/static/data/tafsirs/tabari.json",
-      "size_mb": 33.02
-    },
-    {
       "key": "qurtubi",
       "name": "تفسير القرطبي",
       "short_name": "القرطبي",
