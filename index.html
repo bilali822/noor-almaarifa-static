@@ -3,205 +3,665 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>القرآن الكريم - نور المعرفة</title>
-     <!-- خط محلي (بدون إنترنت) -->
-<style>
-@font-face {
-    font-family: 'Tajawal';
-    font-style: normal;
-    font-weight: 400;
-    font-display: swap;
-    src: url('./fonts/Tajawal-Regular.woff2') format('woff2');
+    <title>نور المعرفة - القرآن الكريم</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{--primary:#6C63FF;--primary-dark:#5A4FCF;--primary-light:#8B7FF6;--bg:#F8F9FE;--bg-card:rgba(255,255,255,0.7);--text-primary:#2D2D3F;--text-secondary:#6B6B8A;--shadow:0 8px 32px rgba(0,0,0,0.08);--shadow-hover:0 16px 48px rgba(108,99,255,0.2);--glass-border:rgba(255,255,255,0.3);--transition:0.4s cubic-bezier(0.34,1.56,0.64,1)}
+        body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text-primary);direction:rtl;min-height:100vh;padding:40px 20px 80px;overflow-x:hidden;transition:all var(--transition)}
+        #particles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;pointer-events:none}
+        #particles .dot{position:absolute;width:6px;height:6px;background:var(--primary-light);border-radius:50%;opacity:0.3;animation:floatParticle 20s infinite alternate}
+        @keyframes floatParticle{0%{transform:translate(0,0);opacity:0.3}100%{transform:translate(100px,-100px);opacity:0.7}}
+        .container{max-width:1200px;margin:0 auto;position:relative;z-index:1}
+        .bg-gradient{position:fixed;top:-50%;left:-50%;width:200%;height:200%;z-index:-2;background:radial-gradient(ellipse at 30% 50%,rgba(108,99,255,0.05) 0%,transparent 60%),radial-gradient(ellipse at 70% 80%,rgba(255,107,107,0.04) 0%,transparent 50%),radial-gradient(ellipse at 50% 20%,rgba(0,201,167,0.03) 0%,transparent 50%);animation:gradientShift 15s ease-in-out infinite alternate}
+        @keyframes gradientShift{0%{transform:scale(1) rotate(0deg)}100%{transform:scale(1.1) rotate(3deg)}}
+        .header{background:var(--bg-card);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--glass-border);padding:16px 28px;border-radius:24px;display:flex;justify-content:space-between;align-items:center;margin-bottom:40px;box-shadow:var(--shadow);transition:all var(--transition)}
+        .header:hover{box-shadow:var(--shadow-hover)}
+        .header-right{display:flex;align-items:center;gap:14px}
+        .header-right .btn-login{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:white;padding:12px 32px;border:none;border-radius:16px;font-weight:700;font-size:15px;cursor:pointer;font-family:'Tajawal',sans-serif;transition:all var(--transition);position:relative;overflow:hidden;text-decoration:none;display:inline-block}
+        .header-right .btn-login::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(255,255,255,0.2) 0%,transparent 60%);transform:scale(0);transition:transform 0.6s}
+        .header-right .btn-login:hover::before{transform:scale(1)}
+        .header-right .btn-login:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 8px 30px rgba(108,99,255,0.4)}
+        .header-right .btn-login:active{transform:scale(0.95)}
+        .auth-profile{position:relative;display:none;align-items:center}
+        .auth-profile.visible{display:flex}
+        .avatar-btn{width:48px;height:48px;border:0;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;font:900 19px 'Tajawal',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 22px rgba(108,99,255,.32);transition:all .25s ease;text-transform:uppercase}
+        .avatar-btn:hover{transform:translateY(-2px) scale(1.06);box-shadow:0 10px 28px rgba(108,99,255,.42)}
+        .avatar-btn:active{transform:scale(.94)}
+        .profile-menu{position:absolute;top:calc(100% + 12px);right:0;width:220px;background:var(--bg-card);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--glass-border);border-radius:18px;padding:8px;box-shadow:0 18px 50px rgba(0,0,0,.16);opacity:0;visibility:hidden;transform:translateY(-8px) scale(.97);transform-origin:top right;transition:all .2s ease;z-index:2000}
+        .profile-menu.active{opacity:1;visibility:visible;transform:translateY(0) scale(1)}
+        .profile-email{padding:10px 12px 12px;border-bottom:1px solid rgba(108,99,255,.12);margin-bottom:6px;color:var(--text-secondary);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;direction:ltr;text-align:right}
+        .profile-menu button{width:100%;border:0;background:transparent;color:var(--text-primary);font:700 14px 'Tajawal',sans-serif;text-align:right;padding:11px 12px;border-radius:12px;cursor:pointer;transition:all .2s ease}
+        .profile-menu button:hover{background:rgba(108,99,255,.10);color:var(--primary);transform:translateX(-2px)}
+        .profile-menu .logout-item{color:#d64545}
+        .profile-menu .logout-item:hover{background:rgba(214,69,69,.08);color:#c53b3b}
+        .header-right .btn-theme{background:var(--bg-card);backdrop-filter:blur(10px);border:1px solid var(--glass-border);width:48px;height:48px;border-radius:16px;cursor:pointer;font-size:22px;transition:all var(--transition);display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow)}
+        .header-right .btn-theme:hover{transform:scale(1.1) rotate(15deg);background:var(--primary);color:white;border-color:var(--primary)}
+        .header-left{display:flex;align-items:center;gap:14px}
+        .header-left .logo{font-size:24px;font-weight:900;color:var(--primary);display:flex;align-items:center;gap:12px;text-shadow:0 0 30px rgba(108,99,255,0.2)}
+        .header-left .logo-icon{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:white;width:44px;height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 4px 16px rgba(108,99,255,0.3);animation:logoPulse 3s infinite}
+        @keyframes logoPulse{0%,100%{box-shadow:0 4px 16px rgba(108,99,255,0.3)}50%{box-shadow:0 4px 32px rgba(108,99,255,0.5)}}
+        .welcome-section{background:var(--bg-card);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--glass-border);border-radius:32px;padding:60px 40px;text-align:center;margin-bottom:40px;box-shadow:var(--shadow);transition:all var(--transition);position:relative;overflow:hidden}
+        .welcome-section::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 50% 50%,rgba(108,99,255,0.05) 0%,transparent 50%);animation:shine 8s infinite linear}
+        @keyframes shine{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+        .welcome-section h1{font-size:42px;font-weight:900;background:linear-gradient(135deg,var(--primary),#FF6B6B,var(--primary));background-size:200% 200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:gradientText 4s infinite ease;margin-bottom:10px;position:relative;z-index:1}
+        @keyframes gradientText{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+        .welcome-section p{font-size:20px;color:var(--text-secondary);margin-bottom:20px;position:relative;z-index:1}
+        .welcome-section .badge{display:inline-block;background:linear-gradient(135deg,rgba(108,99,255,0.1),rgba(108,99,255,0.05));backdrop-filter:blur(10px);border:1px solid rgba(108,99,255,0.2);padding:8px 28px;border-radius:30px;font-size:15px;font-weight:600;color:var(--primary);position:relative;z-index:1;box-shadow:0 0 20px rgba(108,99,255,0.1)}
+        .cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-bottom:40px}
+        .card{background:var(--bg-card);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--glass-border);border-radius:28px;padding:36px 24px;text-align:center;cursor:pointer;transition:all var(--transition);position:relative;overflow:hidden;box-shadow:var(--shadow);transform:perspective(1000px) rotateX(0) rotateY(0) scale(1)}
+        .card::before{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,transparent 40%,rgba(255,255,255,0.1) 100%);pointer-events:none}
+        .card::after{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at var(--x,50%) var(--y,50%),rgba(108,99,255,0.1) 0%,transparent 60%);opacity:0;transition:opacity 0.5s;pointer-events:none}
+        .card:hover::after{opacity:1}
+        .card:hover{transform:perspective(1000px) rotateX(2deg) rotateY(2deg) scale(1.02);box-shadow:var(--shadow-hover);border-color:var(--primary)}
+        .card:active{transform:scale(0.96)}
+        .card .card-icon-wrapper{width:72px;height:72px;border-radius:22px;display:flex;align-items:center;justify-content:center;font-size:32px;color:white;margin:0 auto 18px;position:relative;transition:all var(--transition)}
+        .card:hover .card-icon-wrapper{transform:scale(1.1) rotate(5deg)}
+        .card .card-icon-wrapper.purple{background:linear-gradient(135deg,#6C63FF,#3F3D9E);box-shadow:0 8px 32px rgba(108,99,255,0.3)}
+        .card .card-icon-wrapper.green{background:linear-gradient(135deg,#2ECC71,#27AE60);box-shadow:0 8px 32px rgba(46,204,113,0.3)}
+        .card .card-icon-wrapper.teal{background:linear-gradient(135deg,#1ABC9C,#16A085);box-shadow:0 8px 32px rgba(26,188,156,0.3)}
+        .card .card-icon-wrapper.blue{background:linear-gradient(135deg,#3498DB,#2980B9);box-shadow:0 8px 32px rgba(52,152,219,0.3)}
+        .card .card-icon-wrapper.red{background:linear-gradient(135deg,#E74C3C,#C0392B);box-shadow:0 8px 32px rgba(231,76,60,0.3)}
+        .card .card-icon-wrapper.orange{background:linear-gradient(135deg,#F39C12,#E67E22);box-shadow:0 8px 32px rgba(243,156,18,0.3)}
+        .card .card-icon-wrapper.pink{background:linear-gradient(135deg,#E91E63,#C2185B);box-shadow:0 8px 32px rgba(233,30,99,0.3)}
+        .card h3{font-size:20px;font-weight:700;margin-bottom:6px;color:var(--text-primary);transition:all var(--transition)}
+        .card:hover h3{color:var(--primary)}
+        .card p{font-size:15px;color:var(--text-secondary);margin-bottom:16px}
+        .card .tag{display:inline-block;padding:6px 22px;border-radius:24px;font-size:13px;font-weight:600;transition:all var(--transition)}
+        .card .tag.purple-light{background:rgba(108,99,255,0.1);color:#6C63FF;border:1px solid rgba(108,99,255,0.2)}
+        .card .tag.green-light{background:rgba(46,204,113,0.1);color:#2ECC71;border:1px solid rgba(46,204,113,0.2)}
+        .card .tag.teal-light{background:rgba(26,188,156,0.1);color:#1ABC9C;border:1px solid rgba(26,188,156,0.2)}
+        .card .tag.blue-light{background:rgba(52,152,219,0.1);color:#3498DB;border:1px solid rgba(52,152,219,0.2)}
+        .card .tag.red-light{background:rgba(231,76,60,0.1);color:#E74C3C;border:1px solid rgba(231,76,60,0.2)}
+        .card .tag.orange-light{background:rgba(243,156,18,0.1);color:#F39C12;border:1px solid rgba(243,156,18,0.2)}
+        .card .tag.pink-light{background:rgba(233,30,99,0.1);color:#E91E63;border:1px solid rgba(233,30,99,0.2)}
+        .card .ripple{position:absolute;border-radius:50%;background:rgba(108,99,255,0.3);transform:scale(0);animation:rippleEffect 0.6s ease-out;pointer-events:none}
+        @keyframes rippleEffect{to{transform:scale(4);opacity:0}}
+        .card-full{background:var(--bg-card);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:2px solid rgba(108,99,255,0.3);border-radius:28px;padding:48px 32px;text-align:center;cursor:pointer;transition:all var(--transition);box-shadow:var(--shadow);grid-column:1/-1;position:relative;overflow:hidden}
+        .card-full::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:conic-gradient(from 0deg,transparent,rgba(108,99,255,0.05),transparent,rgba(108,99,255,0.05),transparent);animation:rotateConic 10s linear infinite;pointer-events:none}
+        @keyframes rotateConic{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+        .card-full:hover{transform:translateY(-6px) scale(1.01);box-shadow:0 16px 48px rgba(108,99,255,0.3);border-color:var(--primary)}
+        .card-full .card-icon-wrapper{width:80px;height:80px;border-radius:26px;display:flex;align-items:center;justify-content:center;font-size:36px;color:white;margin:0 auto 18px;background:linear-gradient(135deg,#6C63FF,#FF6B6B);box-shadow:0 8px 32px rgba(108,99,255,0.4);position:relative;z-index:1}
+        .card-full h3{font-size:22px;font-weight:700;margin-bottom:6px;color:var(--text-primary);position:relative;z-index:1}
+        .card-full p{font-size:16px;color:var(--text-secondary);margin-bottom:16px;position:relative;z-index:1}
+        .card-full .tag{display:inline-block;padding:6px 24px;border-radius:24px;font-size:14px;font-weight:600;background:rgba(108,99,255,0.1);color:#6C63FF;border:1px solid rgba(108,99,255,0.2);position:relative;z-index:1}
+        .dev-btn-container{position:fixed;bottom:24px;left:24px;z-index:999}
+        .dev-btn{width:56px;height:56px;border-radius:50%;background:var(--bg-card);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--glass-border);box-shadow:var(--shadow-hover);cursor:pointer;transition:all var(--transition);display:flex;align-items:center;justify-content:center;font-size:24px;color:var(--primary);position:relative;animation:devPulse 2s infinite}
+        .dev-btn:hover{transform:scale(1.15) rotate(15deg);box-shadow:0 8px 40px rgba(108,99,255,0.4);border-color:var(--primary)}
+        .dev-btn:active{transform:scale(0.9)}
+        .dev-btn .tooltip{position:absolute;bottom:calc(100% + 12px);left:50%;transform:translateX(-50%) scale(0);background:var(--bg-card);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--glass-border);padding:6px 14px;border-radius:12px;font-size:12px;font-weight:600;color:var(--primary);white-space:nowrap;box-shadow:var(--shadow);transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);opacity:0;pointer-events:none}
+        .dev-btn:hover .tooltip{transform:translateX(-50%) scale(1);opacity:1}
+        @keyframes devPulse{0%,100%{box-shadow:0 0 0 0 rgba(108,99,255,0.3)}50%{box-shadow:0 0 0 12px rgba(108,99,255,0)}}
+        .dev-modal{position:fixed;bottom:90px;left:24px;width:320px;background:var(--bg-card);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);border:1px solid var(--glass-border);border-radius:24px;padding:24px;box-shadow:0 16px 64px rgba(0,0,0,0.15);transform:scale(0) translateY(20px);opacity:0;transition:all 0.5s cubic-bezier(0.34,1.56,0.64,1);transform-origin:bottom left;z-index:1000;pointer-events:none}
+        .dev-modal.active{transform:scale(1) translateY(0);opacity:1;pointer-events:all}
+        .dev-modal::before{content:'';position:absolute;bottom:-12px;left:22px;width:24px;height:24px;background:var(--bg-card);border-right:1px solid var(--glass-border);border-bottom:1px solid var(--glass-border);transform:rotate(45deg);backdrop-filter:blur(30px)}
+        .dev-modal .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+        .dev-modal .modal-header h3{font-size:18px;font-weight:700;color:var(--primary);display:flex;align-items:center;gap:8px}
+        .dev-modal .modal-header .close-btn{background:none;border:none;font-size:20px;cursor:pointer;color:var(--text-secondary);transition:all var(--transition)}
+        .dev-modal .modal-header .close-btn:hover{color:var(--primary);transform:rotate(90deg)}
+        .dev-modal .dev-info{display:flex;flex-direction:column;gap:12px}
+        .dev-modal .dev-info .info-item{display:flex;align-items:center;gap:12px;padding:10px 14px;background:rgba(108,99,255,0.05);border-radius:12px;border:1px solid rgba(108,99,255,0.08);transition:all var(--transition);cursor:pointer}
+        .dev-modal .dev-info .info-item:hover{background:rgba(108,99,255,0.1);transform:translateX(-4px)}
+        .dev-modal .dev-info .info-item .icon{font-size:20px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:rgba(108,99,255,0.1);border-radius:10px}
+        .dev-modal .dev-info .info-item .text{display:flex;flex-direction:column}
+        .dev-modal .dev-info .info-item .text .label{font-size:11px;color:var(--text-secondary)}
+        .dev-modal .dev-info .info-item .text .value{font-size:14px;font-weight:600;color:var(--text-primary)}
+        @media(max-width:900px){.cards-grid{grid-template-columns:repeat(2,1fr)}.welcome-section h1{font-size:34px}}
+        @media(max-width:600px){.header{flex-direction:column;gap:16px;padding:16px 20px}.cards-grid{grid-template-columns:1fr}.welcome-section h1{font-size:28px}.welcome-section p{font-size:17px}.welcome-section{padding:40px 20px}.card{padding:28px 16px}.card .card-icon-wrapper{width:60px;height:60px;font-size:26px}body{padding:20px 12px}.dev-modal{width:280px;left:12px;bottom:80px}.dev-btn-container{bottom:16px;left:16px}}
+        ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--primary);border-radius:10px}::-webkit-scrollbar-thumb:hover{background:var(--primary-dark)}
+        body.dark-mode{--bg:#0A0A1A;--bg-card:rgba(21,21,47,0.8);--text-primary:#EEEEFF;--text-secondary:#A8A8C8;--shadow:0 8px 32px rgba(0,0,0,0.4);--shadow-hover:0 16px 48px rgba(108,99,255,0.15);--glass-border:rgba(45,45,74,0.5)}
+        body.dark-mode .header-right .btn-theme{background:#1A1A2E}
+        body.dark-mode .dev-modal .dev-info .info-item{background:rgba(108,99,255,0.05);border-color:rgba(108,99,255,0.1)}
+    </style>
+<style id="auth-profile-css">
+.auth-profile{position:relative;display:none;align-items:center}
+.auth-profile.visible{display:flex}
+.avatar-btn{width:48px;height:48px;border:0;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:'Tajawal',sans-serif;font-size:20px;font-weight:900;color:#fff;background:linear-gradient(135deg,var(--primary),var(--primary-dark));box-shadow:0 6px 22px rgba(108,99,255,.35)}
+.avatar-btn:hover{transform:translateY(-2px) scale(1.05)}
+.profile-menu{position:absolute;top:58px;right:0;min-width:220px;padding:10px;background:var(--bg-card);border:1px solid var(--glass-border);border-radius:18px;box-shadow:0 18px 45px rgba(0,0,0,.18);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);display:none;z-index:9999}
+.profile-menu.active{display:block}
+.profile-email{padding:10px 12px;margin-bottom:6px;color:var(--text-secondary);font-size:13px;direction:ltr;text-align:left;word-break:break-all;border-bottom:1px solid var(--glass-border)}
+.profile-menu button{width:100%;border:0;background:transparent;color:var(--text-primary);padding:12px;border-radius:12px;cursor:pointer;text-align:right;font-family:'Tajawal',sans-serif;font-size:15px}
+.profile-menu button:hover{background:rgba(108,99,255,.10)}
+.profile-menu .logout-item{color:#d64545}
+</style>
+
+<style id="profile-menu-fix">
+.avatar-btn{
+    width:48px !important;height:48px !important;border:0 !important;
+    border-radius:50% !important;cursor:pointer !important;
+    display:flex !important;align-items:center !important;justify-content:center !important;
+    font-family:'Tajawal',sans-serif !important;font-size:20px !important;font-weight:900 !important;
+    color:#fff !important;background:linear-gradient(135deg,#6C63FF,#5A4FCF) !important;
+    box-shadow:0 6px 22px rgba(108,99,255,.35) !important;
+    transition:all .25s ease !important;
 }
-@font-face {
-    font-family: 'Tajawal';
-    font-style: normal;
-    font-weight: 700;
-    font-display: swap;
-    src: url('./fonts/Tajawal-Bold.woff2') format('woff2');
+.avatar-btn:hover{transform:translateY(-2px) scale(1.05) !important}
+.avatar-btn:active{transform:scale(.94) !important}
+
+.nm-profile-overlay{
+    display:none;
+    position:fixed;inset:0;
+    background:rgba(0,0,0,.6);
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+    z-index:2147483000;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
 }
-@font-face {
-    font-family: 'Tajawal';
-    font-style: normal;
-    font-weight: 800;
-    font-display: swap;
-    src: url('./fonts/Tajawal-ExtraBold.woff2') format('woff2');
+.nm-profile-overlay.active{display:flex !important}
+
+.nm-profile-modal{
+    width:min(420px,95vw);
+    background:#fff;
+    color:#2D2D3F;
+    border-radius:24px;
+    padding:24px;
+    box-shadow:0 30px 80px rgba(0,0,0,.4);
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    direction:rtl;
+    font-family:'Tajawal',sans-serif;
+    box-sizing:border-box;
+    border:1px solid rgba(108,99,255,.15);
 }
-@font-face {
-    font-family: 'Tajawal';
-    font-style: normal;
-    font-weight: 900;
-    font-display: swap;
-    src: url('./fonts/Tajawal-Black.woff2') format('woff2');
+
+.nm-profile-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding-bottom:14px;
+    border-bottom:1px solid rgba(108,99,255,.12);
+}
+
+.nm-profile-header h3{
+    margin:0;
+    font-size:19px;
+    font-weight:800;
+    color:#6C63FF;
+}
+
+.nm-profile-close{
+    width:38px;height:38px;
+    border:0;
+    border-radius:50%;
+    background:rgba(108,99,255,.1);
+    color:#6C63FF;
+    font-size:20px;
+    font-weight:700;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:all .2s;
+}
+.nm-profile-close:hover{
+    background:#FF4757;
+    color:#fff;
+    transform:rotate(90deg);
+}
+
+.nm-profile-user{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:16px;
+    background:linear-gradient(135deg,rgba(108,99,255,.08),rgba(108,99,255,.03));
+    border-radius:18px;
+    border:1px solid rgba(108,99,255,.1);
+}
+
+.nm-profile-user-avatar{
+    width:56px;height:56px;
+    border-radius:50%;
+    background:linear-gradient(135deg,#6C63FF,#5A4FCF);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    font-weight:900;
+    flex-shrink:0;
+    box-shadow:0 6px 20px rgba(108,99,255,.35);
+    text-transform:uppercase;
+}
+
+.nm-profile-user-info{flex:1;min-width:0}
+
+.nm-profile-user-info .nm-label{
+    display:block;
+    font-size:11px;
+    color:#6B6B8A;
+    margin-bottom:4px;
+    font-weight:600;
+}
+
+.nm-profile-user-info .nm-email{
+    display:block;
+    font-size:14px;
+    color:#2D2D3F;
+    font-weight:700;
+    word-break:break-all;
+    direction:ltr;
+    text-align:left;
+}
+
+.nm-profile-actions{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    margin-top:4px;
+}
+
+.nm-profile-btn{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    width:100%;
+    padding:14px 16px;
+    border:1px solid rgba(108,99,255,.15);
+    border-radius:14px;
+    background:#fafaff;
+    color:#2D2D3F;
+    font-family:'Tajawal',sans-serif;
+    font-size:15px;
+    font-weight:700;
+    text-align:right;
+    cursor:pointer;
+    transition:all .2s;
+    box-sizing:border-box;
+}
+
+.nm-profile-btn:hover{
+    background:rgba(108,99,255,.08);
+    border-color:#6C63FF;
+    transform:translateX(-3px);
+    color:#6C63FF;
+}
+
+.nm-profile-btn .nm-icon{
+    width:36px;height:36px;
+    border-radius:10px;
+    background:linear-gradient(135deg,#6C63FF,#5A4FCF);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:16px;
+    flex-shrink:0;
+}
+
+.nm-profile-btn .nm-text{
+    flex:1;
+    text-align:right;
+}
+
+.nm-profile-btn.nm-logout{
+    color:#d64545;
+    border-color:rgba(214,69,69,.15);
+    background:#fff8f8;
+}
+.nm-profile-btn.nm-logout:hover{
+    background:rgba(214,69,69,.08);
+    border-color:#d64545;
+    color:#c53b3b;
+}
+.nm-profile-btn.nm-logout .nm-icon{
+    background:linear-gradient(135deg,#e74c3c,#c0392b);
+}
+
+body.dark-mode .nm-profile-modal{
+    background:#15152F;
+    color:#EEEEFF;
+    border-color:rgba(255,255,255,.1);
+}
+body.dark-mode .nm-profile-header{border-bottom-color:rgba(255,255,255,.1)}
+body.dark-mode .nm-profile-user{
+    background:linear-gradient(135deg,rgba(108,99,255,.15),rgba(108,99,255,.05));
+    border-color:rgba(108,99,255,.2);
+}
+body.dark-mode .nm-profile-user-info .nm-email{color:#EEEEFF}
+body.dark-mode .nm-profile-btn{
+    background:rgba(30,30,60,.6);
+    color:#EEEEFF;
+    border-color:rgba(255,255,255,.1);
+}
+body.dark-mode .nm-profile-btn:hover{
+    background:rgba(108,99,255,.2);
+    color:#AFA8FF;
+}
+body.dark-mode .nm-profile-btn.nm-logout{
+    background:rgba(214,69,69,.15);
+    color:#ff8888;
+}
+body.dark-mode .nm-profile-close{
+    background:rgba(108,99,255,.15);
+    color:#AFA8FF;
+}
+
+@media(max-width:500px){
+    .nm-profile-modal{padding:18px;border-radius:20px}
+    .nm-profile-header h3{font-size:17px}
+    .nm-profile-user-avatar{width:48px;height:48px;font-size:20px}
+    .nm-profile-user-info .nm-email{font-size:12px}
+    .nm-profile-btn{padding:12px 14px;font-size:14px}
+    .nm-profile-btn .nm-icon{width:32px;height:32px;font-size:14px}
 }
 </style>
 
-<!-- PWA Manifest -->
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#6C63FF">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="نور المعرفة">
-<link rel="apple-touch-icon" href="./icons/icon-192.png">
-    <style>
-        :root{--primary:#6C63FF;--primary-dark:#5A4FCF;--primary-light:#8B83FF;--primary-glow:rgba(108,99,255,.3);--bg-body:#f0f2f8;--bg-header:rgba(255,255,255,.85);--bg-chat:rgba(255,255,255,.7);--bg-message-user:linear-gradient(135deg,#6C63FF,#5A4FCF);--bg-message-ai:rgba(255,255,255,.9);--text-primary:#1a1a2e;--text-secondary:#6B6B8A;--text-muted:#999;--shadow:0 8px 32px rgba(0,0,0,.08);--shadow-hover:0 16px 48px rgba(108,99,255,.15);--border-color:rgba(108,99,255,.12);--radius:20px;--transition:.4s cubic-bezier(.34,1.56,.64,1);--bg-input:rgba(255,255,255,.8)}
-        body.dark-mode{--bg-body:#0a0a1a;--bg-header:rgba(21,21,47,.9);--bg-chat:rgba(21,21,47,.7);--bg-message-ai:rgba(30,30,60,.9);--text-primary:#EEEEFF;--text-secondary:#A8A8C8;--text-muted:#777;--shadow:0 8px 32px rgba(0,0,0,.4);--border-color:rgba(45,45,74,.5);--bg-input:rgba(30,30,60,.8)}
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:'Tajawal',sans-serif;background:var(--bg-body);color:var(--text-primary);height:100vh;display:flex;flex-direction:column;padding:16px;overflow:hidden;transition:all var(--transition)}
-        .bg-animation{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
-        .bg-animation .orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:.15;animation:orbFloat 20s infinite alternate ease-in-out}
-        .bg-animation .orb:nth-child(1){width:400px;height:400px;top:-100px;right:-100px;background:#6C63FF;animation-duration:25s}
-        .bg-animation .orb:nth-child(2){width:300px;height:300px;bottom:-80px;left:-80px;background:#FF6B6B;animation-duration:20s;animation-delay:-5s}
-        .bg-animation .orb:nth-child(3){width:250px;height:250px;top:50%;left:50%;transform:translate(-50%,-50%);background:#00D2FF;animation-duration:30s;animation-delay:-10s}
-        @keyframes orbFloat{0%{transform:translate(0,0) scale(1)}33%{transform:translate(60px,-40px) scale(1.1)}66%{transform:translate(-40px,60px) scale(.9)}100%{transform:translate(30px,-30px) scale(1.05)}}
-        .header{position:relative;z-index:1;background:var(--bg-header);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding:12px 24px;border-radius:var(--radius);display:flex;justify-content:space-between;align-items:center;border:1px solid var(--border-color);box-shadow:var(--shadow);flex-shrink:0;min-height:68px}
-        .header .brand{display:flex;align-items:center;gap:14px;flex:0 0 auto}
-        .header .brand .back-btn{background:rgba(108,99,255,.1);border:1px solid var(--border-color);width:42px;height:42px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-primary);transition:all var(--transition)}
-        .header .brand .back-btn:hover{background:var(--primary);color:#fff;transform:rotate(180deg) scale(1.05);box-shadow:0 4px 20px var(--primary-glow)}
-        .header .brand .icon-wrapper{width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;box-shadow:0 4px 20px var(--primary-glow);animation:iconPulse 3s infinite}
-        @keyframes iconPulse{0%,100%{box-shadow:0 4px 20px var(--primary-glow)}50%{box-shadow:0 4px 40px rgba(108,99,255,.5)}}
-        .header .brand .info h2{font-size:20px;font-weight:800;background:linear-gradient(135deg,var(--primary),var(--primary-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-        .header .brand .info span{font-size:11px;color:var(--text-secondary);display:block}
-        .header-actions{display:flex;gap:12px;align-items:center;justify-content:center;flex:1;margin:0 10px}
-        .header-actions .theme-toggle{background:rgba(108,99,255,.08);border:1px solid var(--border-color);width:42px;height:42px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-primary);transition:all var(--transition)}
-        .header-actions .theme-toggle:hover{background:var(--primary);color:#fff;transform:scale(1.08);box-shadow:0 4px 20px var(--primary-glow)}
-        .btn-features-premium{position:relative;background:rgba(108,99,255,.08);color:var(--primary);border:1px solid var(--border-color);border-radius:12px;padding:10px 24px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Tajawal',sans-serif;display:flex;align-items:center;gap:10px;min-height:42px;justify-content:center;letter-spacing:.3px;transition:all var(--transition)}
-        .btn-features-premium:hover{background:var(--primary);color:#fff;transform:translateY(-2px);box-shadow:0 4px 25px var(--primary-glow);border-color:var(--primary)}
-        .btn-features-premium:active{transform:scale(.96)}
-        .btn-features-premium .premium-icon{font-size:18px;display:inline-block}
-        .btn-features-premium .premium-badge{background:#FF6B6B;color:#fff;font-size:9px;font-weight:900;padding:1px 8px;border-radius:0;margin-right:2px}
-        .btn-features-premium .premium-text{display:flex;align-items:center;gap:6px;font-size:15px}
-        body.dark-mode .btn-features-premium{background:rgba(108,99,255,.12);color:var(--primary-light)}
-        body.dark-mode .btn-features-premium:hover{background:var(--primary);color:#fff}
-        .chat-wrapper{position:relative;z-index:1;flex:1;background:var(--bg-chat);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-radius:var(--radius);display:flex;flex-direction:column;overflow:hidden;margin-top:16px;border:1px solid var(--border-color);box-shadow:var(--shadow);height:calc(100vh - 92px);min-height:680px}
-        .messages{flex:1;overflow-y:auto;padding:24px 28px;display:flex;flex-direction:column;gap:12px;min-height:0}
-        .messages::-webkit-scrollbar{width:5px}
-        .messages::-webkit-scrollbar-track{background:transparent}
-        .messages::-webkit-scrollbar-thumb{background:var(--primary);border-radius:10px}
-        .welcome{text-align:center;padding:10px 10px 20px;animation:fadeInUp .8s ease}
-        @keyframes fadeInUp{from{opacity:0;transform:translateY(30px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
-        .welcome .main-icon{font-size:64px;display:block;margin-bottom:12px;animation:floatIcon 4s infinite ease-in-out}
-        @keyframes floatIcon{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-12px) rotate(3deg)}}
-        .welcome h2{font-size:28px;font-weight:900;background:linear-gradient(135deg,var(--primary),#FF6B6B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin:6px 0}
-        .welcome p{color:var(--text-secondary);font-size:16px;line-height:1.8}
-        .welcome p strong{color:var(--primary)}
-        .usage-box{background:rgba(108,99,255,.06);border-radius:18px;padding:20px 24px;margin:16px 0 20px;text-align:right;border:1px solid var(--border-color)}
-        .usage-title{font-weight:700;font-size:17px;color:var(--text-primary);margin-bottom:12px;display:flex;align-items:center;gap:10px;justify-content:center}
-        .usage-section{margin:6px 0}
-        .usage-label{font-weight:600;font-size:14px;color:var(--primary);margin-bottom:4px;display:flex;align-items:center;gap:6px}
-        .usage-item{font-size:13px;color:var(--text-secondary);padding:2px 18px 2px 0;position:relative}
-        .usage-item::before{content:"✦";color:var(--primary);position:absolute;right:0;font-size:10px}
-        .tafsir-list-welcome{margin:14px 0 18px}
-        .tafsir-books-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
-        .tafsir-book-card{background:rgba(255,255,255,.05);border-radius:16px;overflow:hidden;border:1px solid var(--border-color);transition:all var(--transition)}
-        .tafsir-book-card:hover{transform:translateY(-4px);border-color:var(--primary);box-shadow:0 8px 30px rgba(0,0,0,.1)}
-        .tafsir-book-header{padding:10px 16px;display:flex;align-items:center;gap:10px}
-        .tafsir-book-header .icon{font-size:18px}
-        .tafsir-book-header .name{font-weight:700;font-size:14px;color:#fff}
-        .tafsir-book-desc{padding:10px 16px 14px;font-size:12px;color:var(--text-secondary);line-height:1.7;background:rgba(0,0,0,.05)}
-        body.dark-mode .tafsir-book-desc{background:rgba(0,0,0,.2)}
-        .examples{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:16px}
-        .examples button{background:rgba(108,99,255,.08);border:1px solid var(--border-color);padding:8px 20px;border-radius:50px;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:13px;transition:all var(--transition);color:var(--text-primary)}
-        .examples button:hover{background:var(--primary);color:#fff;transform:scale(1.05) translateY(-2px);box-shadow:0 4px 20px var(--primary-glow)}
-        .message{padding:16px 24px;border-radius:20px;max-width:min(96%,1100px);word-wrap:break-word;animation:messageSlide .5s cubic-bezier(.34,1.56,.64,1);border:1px solid transparent;box-shadow:0 2px 10px rgba(0,0,0,.04);line-height:1.9;font-size:17px}
-        @keyframes messageSlide{from{opacity:0;transform:translateY(15px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
-        .message pre{white-space:pre-wrap;font-family:'Tajawal',sans-serif;margin:0;padding:0;direction:rtl;text-align:right;font-size:17px;line-height:2;overflow-wrap:anywhere}
-        .message .time{font-size:10px;opacity:.5;display:block;margin-top:8px}
-        .message.user{background:var(--bg-message-user);color:#fff;align-self:flex-end;border-bottom-left-radius:6px}
-        .message.user pre{color:#fff}
-        .message.user .time{color:rgba(255,255,255,.6)}
-        .message.ai{background:var(--bg-message-ai);color:var(--text-primary);align-self:flex-start;border-bottom-right-radius:6px;border-color:var(--border-color)}
-        .typing{display:none;padding:10px 18px;background:var(--bg-message-ai);border-radius:18px;align-self:flex-start;gap:6px;border:1px solid var(--border-color);border-bottom-right-radius:6px}
-        .typing.active{display:flex}
-        .typing span{color:var(--text-secondary);font-size:13px}
-        .typing .dot{width:8px;height:8px;background:var(--primary);border-radius:50%;animation:typingBounce 1.4s infinite}
-        .typing .dot:nth-child(2){animation-delay:.2s}
-        .typing .dot:nth-child(3){animation-delay:.4s}
-        @keyframes typingBounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-8px)}}
-        .input-area{display:flex;gap:10px;padding:14px 20px;border-top:1px solid var(--border-color);flex-shrink:0;background:rgba(0,0,0,.02);align-items:center}
-        body.dark-mode .input-area{background:rgba(0,0,0,.15)}
-        .input-area textarea{flex:1;padding:12px 18px;border:2px solid var(--border-color);border-radius:16px;font-size:15px;font-family:'Tajawal',sans-serif;resize:none;min-height:48px;max-height:130px;background:var(--bg-input);color:var(--text-primary);line-height:1.6;transition:all var(--transition)}
-        .input-area textarea::placeholder{color:var(--text-muted)}
-        .input-area textarea:focus{border-color:var(--primary);outline:none;box-shadow:0 0 0 4px var(--primary-glow)}
-        .input-area .send-btn{padding:0 28px;border:none;border-radius:16px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;font-weight:700;font-size:16px;cursor:pointer;height:48px;font-family:'Tajawal',sans-serif;flex-shrink:0;display:flex;align-items:center;gap:8px;transition:all var(--transition)}
-        .input-area .send-btn:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 4px 25px var(--primary-glow)}
-        .input-area .send-btn:disabled{opacity:.5;cursor:not-allowed}
-        .footer-info{display:flex;justify-content:space-between;padding:8px 20px;font-size:11px;color:var(--text-secondary);border-top:1px solid var(--border-color);flex-shrink:0;background:rgba(0,0,0,.02)}
-        body.dark-mode .footer-info{background:rgba(0,0,0,.1)}
-        .footer-info .badge{background:rgba(108,99,255,.1);color:var(--primary);padding:2px 14px;border-radius:20px;font-weight:600}
-        .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:1000;justify-content:center;align-items:center;animation:fadeInOverlay .4s ease}
-        .overlay.active{display:flex}
-        @keyframes fadeInOverlay{from{opacity:0}to{opacity:1}}
-        .tafsir-popup{background:var(--bg-chat);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);border-radius:32px;max-width:620px;width:95%;max-height:85vh;padding:32px 28px 28px;box-shadow:0 30px 80px rgba(0,0,0,.5);animation:slideUp .5s cubic-bezier(.34,1.56,.64,1);overflow-y:auto;border:1px solid var(--border-color)}
-        @keyframes slideUp{from{transform:translateY(60px) scale(.95);opacity:0}to{transform:translateY(0) scale(1);opacity:1}}
-        .tafsir-popup::-webkit-scrollbar{width:5px}
-        .tafsir-popup::-webkit-scrollbar-thumb{background:var(--primary);border-radius:10px}
-        .popup-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:15px;border-bottom:2px solid var(--border-color)}
-        .popup-header h3{font-size:22px;font-weight:800;color:var(--text-primary);display:flex;align-items:center;gap:12px}
-        .popup-close{background:rgba(108,99,255,.08);border:1px solid var(--border-color);width:42px;height:42px;border-radius:50%;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-primary);transition:all var(--transition)}
-        .popup-close:hover{background:#ff4757;color:#fff;transform:rotate(90deg) scale(1.05)}
-        .popup-verse{background:linear-gradient(135deg,rgba(108,99,255,.08),rgba(108,99,255,.03));border-radius:18px;padding:18px 24px;margin-bottom:20px;text-align:center;font-size:20px;line-height:1.9;color:var(--text-primary);border-right:4px solid var(--primary)}
-        .popup-verse .surah-name{display:block;font-size:14px;color:var(--text-secondary);margin-bottom:6px;font-weight:500}
-        .popup-verse .verse-text{font-weight:600}
-        .popup-subtitle{font-size:15px;color:var(--text-secondary);margin-bottom:16px;display:flex;align-items:center;gap:10px}
-        .popup-subtitle .count{background:var(--primary);color:#fff;border-radius:20px;padding:0 14px;font-size:12px;line-height:26px;font-weight:700}
-        .tafsir-list{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
-        .tafsir-option{display:flex;align-items:center;gap:14px;padding:14px 18px;border:2px solid var(--border-color);border-radius:16px;cursor:pointer;background:var(--bg-input);position:relative;transition:all var(--transition)}
-        .tafsir-option:hover{border-color:var(--primary);transform:translateX(-4px);box-shadow:0 4px 20px rgba(108,99,255,.1)}
-        .tafsir-option.selected{border-color:var(--primary);background:rgba(108,99,255,.06);box-shadow:0 4px 25px rgba(108,99,255,.12)}
-        .tafsir-option .icon{font-size:28px;flex-shrink:0}
-        .tafsir-option .info{flex:1}
-        .tafsir-option .info .name{font-weight:600;font-size:16px;color:var(--text-primary)}
-        .tafsir-option .info .desc{font-size:12px;color:var(--text-secondary);margin-top:2px}
-        .tafsir-option .check{width:26px;height:26px;border-radius:50%;border:2px solid var(--border-color);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px;color:#fff;transition:all var(--transition)}
-        .tafsir-option.selected .check{background:var(--primary);border-color:var(--primary)}
-        .tafsir-option .color-bar{position:absolute;right:0;top:0;bottom:0;width:5px;border-radius:0 16px 16px 0}
-        .popup-actions{display:flex;gap:12px;margin-top:6px;flex-wrap:wrap}
-        .popup-actions .btn-primary{flex:1;padding:14px 20px;border:none;border-radius:16px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;font-weight:700;font-size:16px;cursor:pointer;font-family:'Tajawal',sans-serif;min-width:120px;transition:all var(--transition)}
-        .popup-actions .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px var(--primary-glow)}
-        .popup-actions .btn-primary:disabled{opacity:.5;cursor:not-allowed}
-        .popup-actions .btn-all{flex:1;padding:14px 20px;border:2px solid var(--primary);border-radius:16px;background:transparent;color:var(--primary);font-weight:700;font-size:16px;cursor:pointer;font-family:'Tajawal',sans-serif;min-width:120px;transition:all var(--transition)}
-        .popup-actions .btn-all:hover{background:var(--primary);color:#fff;transform:translateY(-2px);box-shadow:0 8px 30px var(--primary-glow)}
-        .popup-actions .btn-all.active{background:var(--primary);color:#fff}
-        .features-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);z-index:9999;align-items:center;justify-content:center;padding:20px;animation:fadeInOverlay .4s ease}
-        .features-modal-overlay.active{display:flex}
-        .features-modal-container{width:min(940px,96vw);max-height:88vh;background:var(--bg-chat);backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);border:1px solid var(--border-color);border-radius:40px;box-shadow:0 50px 120px rgba(0,0,0,.5);overflow:hidden;animation:slideUp .5s cubic-bezier(.34,1.56,.64,1)}
-        .features-modal-header{display:flex;justify-content:space-between;align-items:center;padding:24px 32px;border-bottom:1px solid var(--border-color);background:linear-gradient(135deg,rgba(108,99,255,.06),rgba(255,107,107,.03))}
-        .features-modal-title{display:flex;align-items:center;gap:16px}
-        .features-modal-icon{font-size:34px;animation:iconPulse 2s infinite}
-        .features-modal-title h2{font-size:26px;font-weight:900;background:linear-gradient(135deg,var(--primary),#FF6B6B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin:0}
-        .features-modal-version{font-size:12px;font-weight:700;color:var(--text-secondary);background:rgba(108,99,255,.1);padding:4px 16px;border-radius:20px;border:1px solid var(--border-color)}
-        .features-modal-close{width:48px;height:48px;border-radius:50%;border:1px solid var(--border-color);background:var(--bg-input);color:var(--text-primary);font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all var(--transition)}
-        .features-modal-close:hover{background:#FF6B6B;color:#fff;border-color:#FF6B6B;transform:rotate(90deg) scale(1.05)}
-        .features-modal-body{padding:28px 32px;overflow-y:auto;max-height:calc(88vh - 90px)}
-        .features-modal-body::-webkit-scrollbar{width:5px}
-        .features-modal-body::-webkit-scrollbar-thumb{background:var(--primary);border-radius:10px}
-        .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-        .feature-item{display:flex;align-items:center;gap:14px;padding:16px 20px;border:1px solid var(--border-color);border-radius:20px;background:var(--bg-input);cursor:pointer;position:relative;overflow:hidden;transition:all var(--transition)}
-        .feature-item::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(108,99,255,.06),transparent 70%);opacity:0;transition:opacity .4s ease}
-        .feature-item:hover::before{opacity:1}
-        .feature-item:hover{transform:translateY(-4px) scale(1.02);border-color:var(--primary);box-shadow:0 12px 40px rgba(108,99,255,.12)}
-        .feature-item:active{transform:scale(.97)}
-        .feature-item-icon{width:50px;height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;color:#fff;flex-shrink:0;box-shadow:0 4px 16px rgba(0,0,0,.1);position:relative;z-index:1}
-        .feature-item-content{flex:1;position:relative;z-index:1}
-        .feature-item-content h4{font-size:15px;font-weight:700;margin:0 0 2px;color:var(--text-primary)}
-        .feature-item-content p{font-size:12px;color:var(--text-secondary);margin:0;line-height:1.4}
-        .feature-tag{display:inline-block;font-size:9px;font-weight:700;padding:1px 10px;border-radius:12px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;margin-top:4px;position:absolute;top:8px;left:8px}
-        .features-modal-footer{display:flex;align-items:center;justify-content:space-between;margin-top:20px;padding-top:18px;border-top:1px solid var(--border-color);flex-wrap:wrap;gap:12px}
-        .features-stats{display:flex;gap:18px;flex-wrap:wrap}
-        .features-stats span{font-size:13px;font-weight:600;color:var(--text-secondary);background:rgba(108,99,255,.06);padding:4px 16px;border-radius:20px;border:1px solid var(--border-color)}
-        .features-start-btn{padding:12px 32px;border:none;border-radius:16px;background:linear-gradient(135deg,var(--primary),#FF6B6B);color:#fff;font-weight:800;font-size:16px;cursor:pointer;font-family:'Tajawal',sans-serif;box-shadow:0 4px 20px rgba(108,99,255,.3);transition:all var(--transition)}
-        .features-start-btn:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 8px 35px rgba(108,99,255,.4)}
-        body.dark-mode .features-modal-container{background:rgba(21,21,47,.95)}
-        body.dark-mode .feature-item{background:rgba(30,30,60,.6)}
-        @media(max-width:900px){.features-grid{grid-template-columns:repeat(2,1fr);gap:10px}.features-modal-title h2{font-size:20px}.features-modal-header{padding:18px 22px}.features-modal-body{padding:18px 20px}}
-        @media(max-width:768px){body{padding:10px}.header{padding:10px 16px;flex-wrap:wrap;gap:8px}.header .brand .info h2{font-size:17px}.header-actions button{width:36px;height:36px;font-size:14px}.btn-features-premium{padding:8px 16px;font-size:13px;min-height:36px}.messages{padding:14px 16px}.tafsir-popup{padding:20px 16px}.popup-header h3{font-size:18px}.tafsir-option{padding:12px 14px}.popup-actions{flex-direction:column}.welcome h2{font-size:22px}.welcome .main-icon{font-size:50px}.usage-box{padding:14px 16px}.input-area{padding:10px 12px;gap:8px}.input-area textarea{font-size:14px;min-height:40px;padding:10px 14px}.input-area .send-btn{padding:0 16px;font-size:14px;height:42px}.tafsir-books-grid{grid-template-columns:1fr}.message{max-width:97%;padding:12px 16px;font-size:16px}.message pre{font-size:16px}.chat-wrapper{height:calc(100vh - 78px);min-height:560px}}
-        @media(max-width:600px){.features-grid{grid-template-columns:1fr 1fr}.feature-item{padding:12px 14px}.feature-item-icon{width:42px;height:42px;font-size:20px}.features-modal-container{width:100%;border-radius:24px}.features-modal-title h2{font-size:17px}.features-modal-footer{flex-direction:column;align-items:stretch}.features-start-btn{width:100%;text-align:center}}
-        @media(max-width:400px){.features-grid{grid-template-columns:1fr}.header-actions{gap:6px}.btn-features-premium{padding:6px 12px;font-size:12px;min-height:32px}.btn-features-premium .premium-text{font-size:12px}.btn-features-premium .premium-icon{font-size:14px}}
-        @media(max-width:480px){.header .brand .back-btn{width:36px;height:36px;font-size:16px}.header .brand .icon-wrapper{width:38px;height:38px;font-size:18px}.header .brand .info h2{font-size:15px}.welcome h2{font-size:20px}.examples button{font-size:12px;padding:6px 14px}}
-    </style>
+<style id="nm-settings-css">
+.nm-settings-overlay{
+    display:none;
+    position:fixed;inset:0;
+    background:rgba(0,0,0,.7);
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+    z-index:2147483100;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+.nm-settings-overlay.active{display:flex !important}
+
+.nm-settings-modal{
+    width:min(900px,96vw);
+    max-height:88vh;
+    background:#fff;
+    color:#2D2D3F;
+    border-radius:24px;
+    box-shadow:0 30px 90px rgba(0,0,0,.45);
+    display:grid;
+    grid-template-columns:230px 1fr;
+    overflow:hidden;
+    direction:rtl;
+    font-family:'Tajawal',sans-serif;
+    border:1px solid rgba(108,99,255,.15);
+}
+
+.nm-settings-side{
+    background:linear-gradient(180deg,rgba(108,99,255,.08),rgba(108,99,255,.03));
+    padding:20px 16px;
+    border-left:1px solid rgba(108,99,255,.12);
+    overflow-y:auto;
+}
+
+.nm-settings-title{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:18px;
+    padding-bottom:14px;
+    border-bottom:1px solid rgba(108,99,255,.12);
+}
+
+.nm-settings-title h3{
+    margin:0;
+    font-size:18px;
+    color:#6C63FF;
+    font-weight:800;
+}
+
+.nm-settings-close{
+    width:34px;height:34px;
+    border:0;border-radius:50%;
+    background:rgba(108,99,255,.1);
+    color:#6C63FF;
+    font-size:18px;font-weight:700;
+    cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    transition:all .2s;
+}
+.nm-settings-close:hover{background:#FF4757;color:#fff;transform:rotate(90deg)}
+
+.nm-settings-nav{display:flex;flex-direction:column;gap:6px}
+
+.nm-settings-nav button{
+    display:flex;align-items:center;gap:10px;
+    width:100%;padding:11px 14px;
+    border:0;border-radius:12px;
+    background:transparent;
+    color:#2D2D3F;
+    font-family:'Tajawal',sans-serif;
+    font-size:14px;font-weight:700;
+    text-align:right;cursor:pointer;
+    transition:all .2s;
+    box-sizing:border-box;
+}
+.nm-settings-nav button:hover{
+    background:rgba(108,99,255,.1);
+    color:#6C63FF;
+}
+.nm-settings-nav button.active{
+    background:linear-gradient(135deg,#6C63FF,#5A4FCF);
+    color:#fff;
+    box-shadow:0 6px 20px rgba(108,99,255,.3);
+}
+
+.nm-settings-content{
+    padding:26px 30px;
+    overflow-y:auto;
+    max-height:88vh;
+}
+
+.nm-settings-section{display:none}
+.nm-settings-section.active{display:block}
+
+.nm-settings-section h2{
+    margin:0 0 8px;
+    font-size:24px;
+    font-weight:900;
+    color:#2D2D3F;
+}
+
+.nm-settings-section .nm-desc{
+    margin:0 0 22px;
+    color:#6B6B8A;
+    font-size:14px;
+    line-height:1.7;
+}
+
+.nm-settings-card{
+    background:#fafaff;
+    border:1px solid rgba(108,99,255,.12);
+    border-radius:16px;
+    padding:18px;
+    margin-bottom:14px;
+}
+.nm-settings-card.full{grid-column:1/-1}
+.nm-settings-card label{
+    display:block;
+    font-weight:800;
+    margin-bottom:8px;
+    font-size:14px;
+    color:#2D2D3F;
+}
+.nm-settings-card small{
+    display:block;
+    color:#6B6B8A;
+    line-height:1.6;
+    margin-top:6px;
+    font-size:12px;
+}
+
+.nm-settings-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:14px;
+}
+
+.nm-settings-input, .nm-settings-select{
+    width:100%;
+    box-sizing:border-box;
+    padding:12px 14px;
+    border:1px solid rgba(108,99,255,.15);
+    border-radius:11px;
+    background:#fff;
+    color:#2D2D3F;
+    font-family:'Tajawal',sans-serif;
+    font-size:14px;
+    outline:none;
+    transition:all .2s;
+}
+.nm-settings-input:focus, .nm-settings-select:focus{
+    border-color:#6C63FF;
+    box-shadow:0 0 0 4px rgba(108,99,255,.1);
+}
+
+.nm-settings-range{width:100%;margin-top:8px;accent-color:#6C63FF}
+
+.nm-settings-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+}
+
+.nm-settings-switch{
+    position:relative;
+    width:50px;height:28px;
+    flex:0 0 auto;
+}
+.nm-settings-switch input{display:none}
+.nm-settings-switch span{
+    position:absolute;inset:0;
+    background:#ccc;
+    border-radius:20px;
+    cursor:pointer;
+    transition:.2s;
+}
+.nm-settings-switch span:before{
+    content:'';
+    position:absolute;
+    width:22px;height:22px;
+    top:3px;right:3px;
+    background:#fff;
+    border-radius:50%;
+    transition:.2s;
+}
+.nm-settings-switch input:checked + span{background:#6C63FF}
+.nm-settings-switch input:checked + span:before{transform:translateX(-22px)}
+
+.nm-settings-actions{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:16px;
+}
+
+.nm-settings-btn{
+    border:0;
+    border-radius:12px;
+    padding:12px 22px;
+    background:linear-gradient(135deg,#6C63FF,#5A4FCF);
+    color:#fff;
+    font:800 14px 'Tajawal',sans-serif;
+    cursor:pointer;
+    transition:all .2s;
+    box-shadow:0 6px 20px rgba(108,99,255,.3);
+}
+.nm-settings-btn:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(108,99,255,.4)}
+.nm-settings-btn.secondary{
+    background:rgba(108,99,255,.1);
+    color:#6C63FF;
+    box-shadow:none;
+}
+.nm-settings-btn.secondary:hover{background:rgba(108,99,255,.2)}
+
+.nm-settings-message{
+    display:none;
+    margin-top:12px;
+    padding:12px 14px;
+    border-radius:10px;
+    background:rgba(52,168,83,.1);
+    color:#23843e;
+    font-size:13px;
+    font-weight:600;
+}
+.nm-settings-message.error{
+    background:rgba(214,69,69,.1);
+    color:#c53b3b;
+}
+
+.nm-settings-profile-avatar{
+    width:80px;height:80px;
+    border-radius:50%;
+    background:linear-gradient(135deg,#6C63FF,#5A4FCF);
+    color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-size:32px;font-weight:900;
+    margin-bottom:14px;
+    box-shadow:0 10px 30px rgba(108,99,255,.35);
+}
+
+.nm-about-list{display:grid;gap:10px}
+.nm-about-item{
+    padding:14px 16px;
+    border:1px solid rgba(108,99,255,.12);
+    border-radius:14px;
+    background:#fafaff;
+    line-height:1.7;
+}
+.nm-about-item strong{color:#6C63FF}
+
+body.dark-mode .nm-settings-modal{
+    background:#15152F;
+    color:#EEEEFF;
+    border-color:rgba(255,255,255,.1);
+}
+body.dark-mode .nm-settings-side{
+    background:linear-gradient(180deg,rgba(108,99,255,.15),rgba(108,99,255,.05));
+    border-left-color:rgba(255,255,255,.1);
+}
+body.dark-mode .nm-settings-title{border-bottom-color:rgba(255,255,255,.1)}
+body.dark-mode .nm-settings-nav button{color:#EEEEFF}
+body.dark-mode .nm-settings-nav button:hover{background:rgba(108,99,255,.2);color:#AFA8FF}
+body.dark-mode .nm-settings-nav button.active{background:linear-gradient(135deg,#6C63FF,#5A4FCF);color:#fff}
+body.dark-mode .nm-settings-section h2{color:#EEEEFF}
+body.dark-mode .nm-settings-section .nm-desc{color:#A8A8C8}
+body.dark-mode .nm-settings-card{
+    background:rgba(30,30,60,.6);
+    border-color:rgba(255,255,255,.1);
+}
+body.dark-mode .nm-settings-card label{color:#EEEEFF}
+body.dark-mode .nm-settings-card small{color:#A8A8C8}
+body.dark-mode .nm-settings-input, body.dark-mode .nm-settings-select{
+    background:rgba(15,15,35,.8);
+    color:#EEEEFF;
+    border-color:rgba(255,255,255,.1);
+}
+body.dark-mode .nm-about-item{
+    background:rgba(30,30,60,.6);
+    border-color:rgba(255,255,255,.1);
+}
+body.dark-mode .nm-settings-close{background:rgba(108,99,255,.2);color:#AFA8FF}
+
+@media(max-width:720px){
+    .nm-settings-modal{grid-template-columns:1fr;max-height:94vh}
+    .nm-settings-side{
+        border-left:0;
+        border-bottom:1px solid rgba(108,99,255,.12);
+        padding:14px;
+    }
+    .nm-settings-nav{
+        flex-direction:row;
+        overflow-x:auto;
+        gap:6px;
+    }
+    .nm-settings-nav button{
+        white-space:nowrap;
+        padding:8px 12px;
+        font-size:12px;
+    }
+    .nm-settings-content{padding:20px}
+    .nm-settings-grid{grid-template-columns:1fr}
+    .nm-settings-section h2{font-size:20px}
+}
+</style>
 
 <style id="nm-mobile-performance">
+/* Responsive layer: نفس الشكل، أقل استهلاكًا على الهاتف */
 html{width:100%;min-width:0;overflow-x:hidden;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 *,*::before,*::after{box-sizing:border-box}
 body{width:100%;min-width:0;max-width:100vw}
@@ -209,38 +669,51 @@ img,svg,video,canvas{max-width:100%;height:auto}
 button,input,textarea,select{max-width:100%;font:inherit}
 input,textarea,select{font-size:16px}
 pre,code{max-width:100%;overflow-x:auto;overflow-wrap:anywhere}
-@media(max-width:768px){
- body{min-height:100dvh}
- .header,.chat-wrapper,.container,.main-container,.main-content,.content,.app{min-width:0;max-width:100%}
- .header{flex-wrap:wrap}
- .messages{min-width:0;max-width:100%;overflow-y:auto;-webkit-overflow-scrolling:touch}
- .bg-animation .orb{animation:none!important;filter:blur(30px)!important}
- .header,.chat-wrapper,.overlay,.tafsir-popup,.features-modal-overlay,.features-modal-container{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+@media (max-width:768px){
+  body{min-height:100dvh}
+  .header,.chat-wrapper,.container,.main-container,.main-content,.content,.app{min-width:0;max-width:100%}
+  .header{flex-wrap:wrap}
+  .messages{min-width:0;max-width:100%;overflow-y:auto;-webkit-overflow-scrolling:touch}
+  /* لا نلغي الشكل؛ فقط نخفف المؤثرات المكلفة على الهاتف */
+  .bg-animation .orb{animation:none!important;filter:blur(30px)!important}
+  .header,.chat-wrapper,.overlay,.tafsir-popup,.features-modal-overlay,.features-modal-container{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
 }
-@media(max-width:480px){
- body{padding:6px!important;overflow-x:hidden}
- .header{padding:8px 10px!important;gap:6px!important;border-radius:16px!important}
- .header-actions{gap:5px!important;margin:0!important}
- .chat-wrapper{margin-top:8px!important;height:calc(100dvh - 82px)!important;min-height:0!important;border-radius:16px!important}
- .messages{padding:10px 9px!important;gap:8px!important}
- .welcome{padding:6px 4px 12px!important}
- .welcome .main-icon{font-size:44px!important;animation:none!important}
- .welcome h2{font-size:19px!important}.welcome p{font-size:13px!important;line-height:1.65!important}
- .usage-box{padding:11px 12px!important;margin:10px 0 12px!important}
- .tafsir-books-grid{grid-template-columns:1fr!important}
- .message{max-width:100%!important;padding:10px 12px!important;font-size:15px!important;line-height:1.75!important;animation:none!important}
- .examples{justify-content:flex-start!important;flex-wrap:nowrap!important;overflow-x:auto!important;scrollbar-width:none}
- .examples::-webkit-scrollbar{display:none}.examples button{flex:0 0 auto!important;padding:7px 12px!important}
- .input-area{padding:7px 8px!important;gap:6px!important}.input-area textarea{min-width:0!important;max-width:100%!important;font-size:16px!important}
- .input-area .send-btn{flex:0 0 auto!important;padding-inline:16px!important}
- .features-modal-overlay,.overlay{padding:8px!important}
- .features-modal-container,.tafsir-popup{width:calc(100vw - 16px)!important;max-width:calc(100vw - 16px)!important;max-height:calc(100dvh - 16px)!important}
- .features-modal-body{max-height:calc(100dvh - 150px)!important;overflow-y:auto!important}
- .features-grid{grid-template-columns:1fr 1fr!important}
+@media (max-width:480px){
+  body{padding:6px!important;overflow-x:hidden}
+  .header{padding:8px 10px!important;gap:6px!important;border-radius:16px!important}
+  .header-actions{gap:5px!important;margin:0!important}
+  .chat-wrapper{margin-top:8px!important;height:calc(100dvh - 82px)!important;min-height:0!important;border-radius:16px!important}
+  .messages{padding:10px 9px!important;gap:8px!important}
+  .welcome{padding:6px 4px 12px!important}
+  .welcome .main-icon{font-size:44px!important;animation:none!important}
+  .welcome h2{font-size:19px!important}
+  .welcome p{font-size:13px!important;line-height:1.65!important}
+  .usage-box{padding:11px 12px!important;margin:10px 0 12px!important}
+  .tafsir-books-grid{grid-template-columns:1fr!important}
+  .message{max-width:100%!important;padding:10px 12px!important;font-size:15px!important;line-height:1.75!important;animation:none!important}
+  .examples{justify-content:flex-start!important;flex-wrap:nowrap!important;overflow-x:auto!important;scrollbar-width:none}
+  .examples::-webkit-scrollbar{display:none}
+  .examples button{flex:0 0 auto!important;padding:7px 12px!important}
+  .input-area{padding:7px 8px!important;gap:6px!important}
+  .input-area textarea{min-width:0!important;max-width:100%!important;font-size:16px!important}
+  .input-area .send-btn{flex:0 0 auto!important;padding-inline:16px!important}
+  .features-modal-overlay,.overlay{padding:8px!important}
+  .features-modal-container,.tafsir-popup{width:calc(100vw - 16px)!important;max-width:calc(100vw - 16px)!important;max-height:calc(100dvh - 16px)!important}
+  .features-modal-body{max-height:calc(100dvh - 150px)!important;overflow-y:auto!important}
+  .features-grid{grid-template-columns:1fr 1fr!important}
 }
-@media(max-width:360px){.features-grid{grid-template-columns:1fr!important}.btn-features-premium .premium-text{display:none!important}}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+@media (max-width:360px){
+  .features-grid{grid-template-columns:1fr!important}
+  .btn-features-premium .premium-text{display:none!important}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}
+}
 </style>
+
+    <!-- 🔧 Eruda Console for Mobile Debugging -->
+    <script>
+          </script>
 
 <style id="nm-performance-css">
 /* ⚡ تحسينات الأداء — للأجهزة الضعيفة */
@@ -310,6 +783,14 @@ pre,code{max-width:100%;overflow-x:auto;overflow-wrap:anywhere}
 }
 </style>
 
+
+<style id="scroll-fix">
+html, body {
+  min-height: 100vh !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
+</style>
 </head>
 <body>
 
@@ -934,7 +1415,7 @@ pre,code{max-width:100%;overflow-x:auto;overflow-wrap:anywhere}
       أهلاً وسهلاً بك
       <span class="nm-name-title-sub">في رحاب نور المعرفة</span>
     </h2>
-    <p class="nm-name-subtitle">ما اسمك؟ حتى نرحّب بك كما تستحق 🌸</p>
+    <p class="nm-name-subtitle">ما اسمك؟ حياكم الله في التطبيق 🌸</p>
     
     <label class="nm-name-label">📝 اسمك الكامل</label>
     <input type="text" id="nmNameInput" class="nm-name-input" placeholder="اكتب اسمك هنا..." maxlength="30" autocomplete="off">
@@ -1166,889 +1647,233 @@ pre,code{max-width:100%;overflow-x:auto;overflow-wrap:anywhere}
 
 
 
-<div class="bg-animation"><div class="orb"></div><div class="orb"></div><div class="orb"></div></div>
+<div id="particles"></div>
+<div class="bg-gradient"></div>
 
-<div class="header">
-    <div class="brand">
-        <button class="back-btn" onclick="window.location.href='index.html'">➤</button>
-        <div class="icon-wrapper">📖</div>
-        <div class="info">
-            <h2>نور المعرفة</h2>
-            <span>🤖 مع الذكاء الاصطناعي "نور"</span>
+<div class="container">
+    <header class="header">
+        <div class="header-right">
+            <button class="btn-theme" id="themeBtn" onclick="toggleTheme()">🌙</button>
         </div>
-    </div>
-    <div class="header-actions">
-            <span class="premium-icon">✦</span>
-        </button>
-        <button class="theme-toggle" onclick="toggleTheme()" title="تبديل الوضع">🌙</button>
-    </div>
-    <div style="flex:0 0 auto;width:44px;"></div>
-</div>
-
-<div class="chat-wrapper">
-    <div class="messages" id="messages">
-        <div class="welcome" id="welcome">
-            <span class="main-icon">📖</span>
-            <h2>مرحباً بك في نور المعرفة</h2>
-            <p>🤖 أنا <strong>نور</strong>، مساعدك الذكي للقرآن الكريم مع <strong>7 كتب تفسير</strong></p>
-            <p style="font-size:13px;color:var(--text-muted);">جميع السور والآيات (6236 آية) - 30+ ميزة متطورة</p>
-            <div class="usage-box">
-                <div class="usage-title">📝 طريقة الاستخدام</div>
-                <div class="usage-section">
-                    <div class="usage-label">📖 لعرض سورة كاملة:</div>
-                    <div class="usage-item">اسم السورة (مثال: البقرة، الإخلاص)</div>
-                    <div class="usage-item">سورة + اسم السورة (مثال: سورة البقرة)</div>
-                    <div class="usage-item">رقم السورة (مثال: 2، 112)</div>
-                </div>
-                <div class="usage-section">
-                    <div class="usage-label">📖 لعرض آية محددة:</div>
-                    <div class="usage-item">سورة:آية (مثال: 2:255، 4:5)</div>
-                    <div class="usage-item">اسم السورة آية/اية/الأية/الاية/أية رقم</div>
-                    <div class="usage-item">نطاق آيات (مثال: البقرة 1-5)</div>
-                </div>
-            </div>
-            <div class="tafsir-list-welcome">
-                <div class="usage-title">📚 كتب التفسير المتوفرة</div>
-                <div class="tafsir-books-grid">
-                    <div class="tafsir-book-card"><div class="tafsir-book-header" style="background:#4CAF50;"><span class="icon">📖</span><span class="name">التفسير الميسر</span></div><div class="tafsir-book-desc">تفسير ميسر وسهل الفهم، مناسب للمبتدئين.</div></div>
-                    <div class="tafsir-book-card"><div class="tafsir-book-header" style="background:#2196F3;"><span class="icon">📕</span><span class="name">تفسير الجلالين</span></div><div class="tafsir-book-desc">تفسير مختصر للإمامين المحلي والسيوطي.</div></div>
-                    <div class="tafsir-book-card"><div class="tafsir-book-header" style="background:#FF9800;"><span class="icon">📗</span><span class="name">تفسير ابن كثير</span></div><div class="tafsir-book-desc">أشهر التفاسير بالمأثور.</div></div>
-                    <div class="tafsir-book-card"><div class="tafsir-book-header" style="background:#9C27B0;"><span class="icon">📘</span><span class="name">تفسير السعدي</span></div><div class="tafsir-book-desc">تفسير ميسر مع المعاني الإيمانية.</div></div>
-                    <div class="tafsir-book-card"><div class="tafsir-book-header" style="background:#F44336;"><span class="icon">📙</span><span class="name">تفسير الطبري</span></div><div class="tafsir-book-desc">أقدم وأهم التفاسير جامع لأقوال السلف.</div></div>
-                    <div class="tafsir-book-card"><div class="tafsir-book-header" style="background:#009688;"><span class="icon">📚</span><span class="name">تفسير القرطبي</span></div><div class="tafsir-book-desc">الجامع لأحكام القرآن.</div></div>
-                </div>
-            </div>
-            <div class="examples">
-                <button onclick="sendExample('البقرة')">📖 سورة البقرة</button>
-                <button onclick="sendExample('البقرة آية 6')">📖 البقرة آية 6</button>
-                <button onclick="sendExample('2:255')">📖 آية الكرسي</button>
-                <button onclick="sendExample('الإخلاص')">📖 سورة الإخلاص</button>
-                <button onclick="sendExample('البقرة 1-5')">📖 البقرة 1-5</button>
-
+        <div class="header-left">
+            <div class="logo">
+                <span class="logo-icon">📖</span>
+                نور المعرفة
             </div>
         </div>
-    </div>
+    </header>
 
-    <div class="typing" id="typing">
-        <span>🤖 نور يفكر</span>
-        <div class="dot"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
-    </div>
+    <section class="welcome-section">
+        <h1>السلام عليكم ✨</h1>
+        <p>مرحباً بك في منصة نور المعرفة - القرآن الكريم مع 7 كتب تفسير</p>
+        <span class="badge">✨ مساعد قرآن وتفسير</span>
+    </section>
 
-    <div class="input-area">
-        <textarea id="input" rows="1" placeholder="اسأل نور عن أي آية أو سورة..."></textarea>
-        <button class="send-btn" id="sendBtn">إرسال ➤</button>
-    </div>
-
-    <div class="footer-info">
-        <span>🤖 نور - مساعدك الذكي للقرآن الكريم</span>
-        <span class="badge">📖 114 سورة - 7 تفاسير - 30+ ميزة</span>
+    <div class="cards-grid">
+        <div class="card" onclick="window.location.href='quran.html'">
+            <div class="card-icon-wrapper purple">📖</div>
+            <h3>القرآن والتفسير</h3>
+            <p>تفسير الآيات والسور من 7 كتب</p>
+            <span class="tag purple-light">📚 تفاسير متقدمة</span>
+        </div>
+        <div class="card" onclick="showFeature('الحديث الشريف')">
+            <div class="card-icon-wrapper green">📚</div>
+            <h3>الحديث الشريف</h3>
+            <p>البحث في الأحاديث النبوية</p>
+            <span class="tag green-light">⭐ صحيح البخاري</span>
+        </div>
+        <div class="card" onclick="showFeature('الذكاء الاصطناعي الدعوي')">
+            <div class="card-icon-wrapper teal">🤖</div>
+            <h3>الذكاء الاصطناعي الدعوي</h3>
+            <p>إجابات شرعية دقيقة من مصادر موثوقة</p>
+            <span class="tag teal-light">📖 فتاوى ودروس</span>
+        </div>
+        <div class="card" onclick="showFeature('الفقه والفتاوى')">
+            <div class="card-icon-wrapper orange">⚖️</div>
+            <h3>الفقه والفتاوى</h3>
+            <p>أحكام وفتاوى شرعية</p>
+            <span class="tag orange-light">📜 مصادر موثوقة</span>
+        </div>
+        <div class="card" onclick="showFeature('السيرة والتاريخ')">
+            <div class="card-icon-wrapper red">🕋</div>
+            <h3>السيرة والتاريخ</h3>
+            <p>السيرة النبوية والتاريخ الإسلامي</p>
+            <span class="tag red-light">📅 أحداث تاريخية</span>
+        </div>
+        <div class="card" onclick="showFeature('الأكواد والبرمجة')">
+            <div class="card-icon-wrapper blue">💻</div>
+            <h3>الأكواد والبرمجة</h3>
+            <p>شرح وتحليل الأكواد</p>
+            <span class="tag blue-light">🐍 Python</span>
+        </div>
+        <div class="card-full" onclick="showFeature('المعرفة العامة')">
+            <div class="card-icon-wrapper">🌍</div>
+            <h3>المعرفة العامة</h3>
+            <p>قسم المعرفة العامة بأمور حياتك</p>
+            <span class="tag">📖 قسم المعرفة</span>
+        </div>
     </div>
 </div>
 
-<div class="overlay" id="tafsirOverlay">
-    <div class="tafsir-popup">
-        <div class="popup-header">
-            <h3><span class="icon">📚</span> اختر التفسير</h3>
-            <button class="popup-close" onclick="closePopup()">✕</button>
+<div class="dev-btn-container">
+    <button class="dev-btn" id="devBtn" onclick="toggleDevModal()">
+        👨‍💻
+        <span class="tooltip">المطور</span>
+    </button>
+    <div class="dev-modal" id="devModal">
+        <div class="modal-header">
+            <h3>👨‍💻 معلومات المطور</h3>
+            <button class="close-btn" onclick="toggleDevModal()">✕</button>
         </div>
-        <div class="popup-verse" id="popupVerse">
-            <span class="surah-name" id="popupSurahName">سورة البقرة</span>
-            <span class="verse-text" id="popupVerseText">﴿ ... ﴾</span>
-        </div>
-        <div class="popup-subtitle">
-            <span>📖 اختر التفسير الذي تريد عرضه</span>
-            <span class="count" id="selectedCount">0</span>
-        </div>
-        <div class="tafsir-list" id="tafsirList"></div>
-        <div class="popup-actions">
-            <button class="btn-all" id="btnAllTafsirs" onclick="selectAllTafsirs()">📚 جميع التفاسير</button>
-            <button class="btn-primary" id="btnShowTafsir" onclick="showSelectedTafsirs()">✅ عرض التفسير</button>
-        </div>
-    </div>
-</div>
-
-<div class="features-modal-overlay" id="featuresModalOverlay">
-    <div class="features-modal-container">
-        <div class="features-modal-header">
-            <div class="features-modal-title">
-                <span class="features-modal-icon">✦</span>
-                <h2>الميزات المتطورة</h2>
-                <span class="features-modal-version">v30.0</span>
-            </div>
-            <button class="features-modal-close" onclick="toggleFeaturesModal()">✕</button>
-        </div>
-        <div class="features-modal-body">
-            <div class="features-grid">
-                <div class="feature-item" onclick="openSurahIndex();toggleFeaturesModal()">
-                    <div class="feature-item-icon" style="background:linear-gradient(135deg,#6C63FF,#3F3D9E);">📚</div>
-                    <div class="feature-item-content"><h4>فهرس السور</h4><p>تصفح 114 سورة</p><span class="feature-tag">متقدم</span></div>
-                </div>
-                <div class="feature-item" onclick="openQuranSearch();toggleFeaturesModal()">
-                    <div class="feature-item-icon" style="background:linear-gradient(135deg,#00BCD4,#00838F);">🔎</div>
-                    <div class="feature-item-content"><h4>البحث عن آية أو كلمة</h4><p>ابحث داخل القرآن</p><span class="feature-tag">بحث</span></div>
-                </div>
-                <div class="feature-item" onclick="loadRandomVerse(false);toggleFeaturesModal()">
-                    <div class="feature-item-icon" style="background:linear-gradient(135deg,#FF9800,#E67E22);">🎲</div>
-                    <div class="feature-item-content"><h4>آية عشوائية</h4><p>اكتشف آية جديدة</p><span class="feature-tag">ممتع</span></div>
-                </div>
-                <div class="feature-item" onclick="loadRandomVerse(true);toggleFeaturesModal()">
-                    <div class="feature-item-icon" style="background:linear-gradient(135deg,#2ECC71,#27AE60);">🌅</div>
-                    <div class="feature-item-content"><h4>آية اليوم</h4><p>آية وتفسير يومي</p><span class="feature-tag">يومي</span></div>
-                </div>
-                <div class="feature-item" onclick="openFavorites();toggleFeaturesModal()">
-                    <div class="feature-item-icon" style="background:linear-gradient(135deg,#E91E63,#C2185B);">⭐</div>
-                    <div class="feature-item-content"><h4>المفضلة</h4><p>آياتك المحفوظة</p><span class="feature-tag">سهل</span></div>
-                </div>
-                <div class="feature-item" onclick="resumeLastRead();toggleFeaturesModal()">
-                    <div class="feature-item-icon" style="background:linear-gradient(135deg,#795548,#4E342E);">↩️</div>
-                    <div class="feature-item-content"><h4>متابعة القراءة</h4><p>ارجع لآخر موضع</p><span class="feature-tag">مفيد</span></div>
-                </div>
-                <div class="feature-item" onclick="openTafsirLibrary();toggleFeaturesModal()">
-                    <div class="feature-item-icon" style="background:linear-gradient(135deg,#F44336,#C62828);">📖</div>
-                    <div class="feature-item-content"><h4>مكتبة التفاسير</h4><p>تعرف على التفاسير</p><span class="feature-tag">تعليمي</span></div>
-                </div>
-                <div class="feature-item" onclick="toggleReadingMode();toggleFeaturesModal()">
-                    <div class="feature-item-icon" style="background:linear-gradient(135deg,#1ABC9C,#0E6655);">🕯️</div>
-                    <div class="feature-item-content"><h4>وضع القراءة</h4><p>واجهة هادئة</p><span class="feature-tag">مريح</span></div>
-                </div>
-                <div class="feature-item" onclick="changeFontSize(1);toggleFeaturesModal()">
-                    <div class="feature-item-icon" style="background:linear-gradient(135deg,#9C27B0,#6A1B9A);">🔤</div>
-                    <div class="feature-item-content"><h4>تكبير الخط</h4><p>نص أكبر</p><span class="feature-tag">إمكانية</span></div>
-                </div>
-                <div class="feature-item" onclick="changeFontSize(-1);toggleFeaturesModal()">
-                    <div class="feature-item-icon" style="background:linear-gradient(135deg,#00BCD4,#00838F);">🔤</div>
-                    <div class="feature-item-content"><h4>تصغير الخط</h4><p>نص أصغر</p><span class="feature-tag">إمكانية</span></div>
-                </div>
-                <div class="feature-item" onclick="showSurahStats();toggleFeaturesModal()">
-                    <div class="feature-item-icon" style="background:linear-gradient(135deg,#D32F2F,#B71C1C);">📊</div>
-                    <div class="feature-item-content"><h4>إحصائيات السورة</h4><p>تحليل السورة</p><span class="feature-tag">احترافي</span></div>
-                </div>
-                <div class="feature-item" onclick="clearChat();toggleFeaturesModal()">
-                    <div class="feature-item-icon" style="background:linear-gradient(135deg,#607D8B,#37474F);">🗑️</div>
-                    <div class="feature-item-content"><h4>مسح المحادثة</h4><p>تصفية الشات</p><span class="feature-tag">مفيد</span></div>
-                </div>
-                <div class="feature-item" onclick="toggleTheme();toggleFeaturesModal()">
-                    <div class="feature-item-icon" style="background:linear-gradient(135deg,#FF6B6B,#ee5a24);">🌙</div>
-                    <div class="feature-item-content"><h4>الوضع الليلي</h4><p>تبديل الوضع</p><span class="feature-tag">جمالي</span></div>
+        <div class="dev-info">
+            <div class="info-item" onclick="copyEmail()">
+                <span class="icon">📧</span>
+                <div class="text">
+                    <span class="label">البريد الإلكتروني</span>
+                    <span class="value">bilalimhamad051@gmail.com</span>
                 </div>
             </div>
-            <div class="features-modal-footer">
-                <div class="features-stats">
-                    <span>📚 7 كتب تفسير</span>
-                    <span>📖 114 سورة</span>
-                    <span>🔢 6236 آية</span>
-                    <span>✨ 30+ ميزة</span>
+            <div class="info-item" onclick="copyWhatsApp()">
+                <span class="icon">💬</span>
+                <div class="text">
+                    <span class="label">واتساب</span>
+                    <span class="value">+96181274729</span>
                 </div>
-                <button class="features-start-btn" onclick="document.getElementById('input').focus();toggleFeaturesModal()">🚀 استكشف الآن</button>
             </div>
         </div>
-    </div>
-</div>
-
-<div class="overlay" id="surahOverlay" onclick="if(event.target===this)closePopup()">
-    <div class="tafsir-popup" style="max-width:700px;">
-        <div class="popup-header"><h3>📚 فهرس السور</h3><button class="popup-close" onclick="closePopup()">✕</button></div>
-        <input type="text" id="surahFilter" placeholder="🔎 ابحث باسم السورة..." style="width:100%;padding:10px 14px;border:1px solid var(--border-color);border-radius:12px;background:var(--bg-input);color:var(--text-primary);font-family:Tajawal,sans-serif;margin-bottom:12px;outline:none;" oninput="filterSurahs()">
-        <div id="surahGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;"></div>
-    </div>
-</div>
-
-<div class="overlay" id="favoritesOverlay" onclick="if(event.target===this)closePopup()">
-    <div class="tafsir-popup" style="max-width:700px;">
-        <div class="popup-header"><h3>⭐ الآيات المحفوظة</h3><button class="popup-close" onclick="closePopup()">✕</button></div>
-        <div id="favoritesList"></div>
-    </div>
-</div>
-
-<div class="overlay" id="statsOverlay" onclick="if(event.target===this)closePopup()">
-    <div class="tafsir-popup" style="max-width:500px;">
-        <div class="popup-header"><h3>📊 إحصائيات السورة</h3><button class="popup-close" onclick="closePopup()">✕</button></div>
-        <div id="statsContent"></div>
-    </div>
-</div>
-
-<div class="overlay" id="booksOverlay" onclick="if(event.target===this)closePopup()">
-    <div class="tafsir-popup" style="max-width:700px;">
-        <div class="popup-header"><h3>📚 مكتبة التفاسير</h3><button class="popup-close" onclick="closePopup()">✕</button></div>
-        <div id="booksGrid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;"><p>⏳ جاري التحميل...</p></div>
     </div>
 </div>
 
 <script>
-// ============================================================
-// نور المعرفة - سكربت الشات الكامل
-// ============================================================
-// إصلاح CSRF: كل طلبات POST من صفحة القرآن تحمل التوكن الموجود في cookie.
-(function installQuranCsrfFetch(){
-    if (window.__quranCsrfFetchInstalled) return;
-    window.__quranCsrfFetchInstalled = true;
-    const nativeFetch = window.fetch.bind(window);
-    function getCsrfToken(){
-        const match = document.cookie.match(/(?:^|;\s*)csrf_token=([^;]+)/);
-        return match ? decodeURIComponent(match[1]) : '';
-    }
-    window.fetch = function(input, init){
-        init = init || {};
-        const method = String(init.method || 'GET').toUpperCase();
-        if (['POST','PUT','PATCH','DELETE'].includes(method)) {
-            const headers = new Headers(init.headers || {});
-            const token = getCsrfToken();
-            if (token) headers.set('X-CSRF-Token', token);
-            headers.set('Accept', 'application/json');
-            init.headers = headers;
-            init.credentials = 'include';
+    // CSRF wrapper
+    (function(){
+        const nativeFetch = window.fetch.bind(window);
+        function csrfCookie(){
+            const m = document.cookie.match(/(?:^|; )csrf_token=([^;]+)/);
+            return m ? decodeURIComponent(m[1]) : '';
         }
-        return nativeFetch(input, init);
-    };
-})();
-
-let isProcessing = false;
-let chatId = 'quran_' + Date.now();
-let currentVerseInfo = null;
-let selectedTafsirs = new Set();
-let currentLimit = 20;
-
-// ---------- الوضع الليلي ----------
-function toggleTheme() {
-    var body = document.body;
-    var btn = document.querySelector('.theme-toggle');
-    body.classList.toggle('dark-mode');
-    if (btn) btn.textContent = body.classList.contains('dark-mode') ? '☀️' : '🌙';
-    try { localStorage.setItem('theme', body.classList.contains('dark-mode') ? 'dark' : 'light'); } catch(e){}
-}
-
-function loadTheme() {
-    try {
+        window.fetch = function(input, init){
+            init = init || {};
+            const method = String(init.method || 'GET').toUpperCase();
+            if (['POST','PUT','PATCH','DELETE'].includes(method)) {
+                const headers = new Headers(init.headers || {});
+                const token = csrfCookie();
+                if (token) headers.set('X-CSRF-Token', token);
+                headers.set('Accept', 'application/json');
+                init.headers = headers;
+                init.credentials = 'include';
+            }
+            return nativeFetch(input, init);
+        };
+    })();
+    
+    function toggleTheme() {
+        var body = document.body;
+        var btn = document.getElementById('themeBtn');
+        body.classList.toggle('dark-mode');
+        btn.textContent = body.classList.contains('dark-mode') ? '☀️' : '🌙';
+        localStorage.setItem('theme', body.classList.contains('dark-mode') ? 'dark' : 'light');
+    }
+    
+    function loadTheme() {
         if (localStorage.getItem('theme') === 'dark') {
             document.body.classList.add('dark-mode');
-            var btn = document.querySelector('.theme-toggle');
-            if (btn) btn.textContent = '☀️';
+            document.getElementById('themeBtn').textContent = '☀️';
         }
-    } catch(e){}
-}
-
-// ---------- الميزات ----------
-function toggleFeaturesModal() {
-    var overlay = document.getElementById('featuresModalOverlay');
-    if (!overlay) return;
-    var isActive = overlay.classList.contains('active');
-    overlay.classList.toggle('active');
-    document.body.style.overflow = isActive ? '' : 'hidden';
-}
-
-function sendExample(text) {
-    var inp = document.getElementById('input');
-    if (!inp) return;
-    inp.value = text;
-    sendMessage();
-}
-
-// ---------- إضافة رسالة ----------
-function escapeHtml(s) {
-    return String(s || '').replace(/[&<>"']/g, function(c) {
-        return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c];
-    });
-}
-
-function addMessage(text, type) {
-    var container = document.getElementById('messages');
-    var welcome = document.getElementById('welcome');
-    if (welcome) welcome.style.display = 'none';
-    if (!container) return;
-    var div = document.createElement('div');
-    div.className = 'message ' + type;
-    var time = new Date().toLocaleTimeString('ar-SA', {hour: '2-digit', minute: '2-digit'});
-    var pre = document.createElement('pre');
-    pre.textContent = String(text || '');
-    var timeEl = document.createElement('span');
-    timeEl.className = 'time';
-    timeEl.textContent = time;
-    div.appendChild(pre);
-    div.appendChild(timeEl);
-    container.appendChild(div);
-    container.scrollTop = container.scrollHeight;
-}
-
-function showTyping(show) {
-    var typing = document.getElementById('typing');
-    if (typing) typing.classList.toggle('active', !!show);
-}
-
-// ---------- القائمة المنبثقة للتفسير ----------
-function openPopup(verseInfo, tafsirBooks) {
-    currentVerseInfo = verseInfo;
-    selectedTafsirs = new Set();
-    var nameEl = document.getElementById('popupSurahName');
-    var textEl = document.getElementById('popupVerseText');
-    if (nameEl) nameEl.textContent = 'سورة ' + verseInfo.surah_name;
-    var verseCount = Array.isArray(verseInfo.verses) ? verseInfo.verses.length : 1;
-    if (textEl) textEl.textContent = verseCount > 1 ? ('تفسير ' + verseCount + ' آيات') : ('﴿ ' + (verseInfo.verse_text || '') + ' ﴾');
-    var list = document.getElementById('tafsirList');
-    if (!list) return;
-    list.innerHTML = '';
-    (tafsirBooks || []).forEach(function(book) {
-        var div = document.createElement('div');
-        div.className = 'tafsir-option';
-        div.dataset.key = book.key;
-        var color = book.color || '#6C63FF';
-        if (!/^#[0-9a-fA-F]{6}$/.test(color)) color = '#6C63FF';
-        div.innerHTML = '<span class="icon">' + (book.icon || '📖') + '</span>' +
-            '<div class="info"><div class="name">' + (book.name || '') + '</div>' +
-            '<div class="desc">' + ((book.text && !book.text.includes('⚠️')) ? '✅ متوفر' : '⚠️ غير متوفر') + '</div></div>' +
-            '<div class="check">✓</div>' +
-            '<div class="color-bar" style="background:' + color + '"></div>';
-        if (!book.text || book.text.includes('⚠️')) {
-            div.style.opacity = '0.5';
-            div.style.cursor = 'not-allowed';
-        } else {
-            div.addEventListener('click', function() { toggleTafsir(div.dataset.key); });
-        }
-        list.appendChild(div);
-    });
-    var btn = document.getElementById('btnAllTafsirs');
-    if (btn) { btn.classList.remove('active'); btn.textContent = '📚 جميع التفاسير'; }
-    updateSelectedCount();
-    var overlay = document.getElementById('tafsirOverlay');
-    if (overlay) overlay.classList.add('active');
-    document.body.style.overflow = 'hidden';
-}
-
-function closePopup() {
-    ['tafsirOverlay','surahOverlay','favoritesOverlay','statsOverlay','booksOverlay'].forEach(function(id){
-        var el = document.getElementById(id);
-        if (el) el.classList.remove('active');
-    });
-    document.body.style.overflow = '';
-    currentVerseInfo = null;
-    selectedTafsirs = new Set();
-}
-
-function toggleTafsir(key) {
-    if (selectedTafsirs.has(key)) selectedTafsirs.delete(key);
-    else selectedTafsirs.add(key);
-    updateUI();
-}
-
-function selectAllTafsirs() {
-    var allKeys = document.querySelectorAll('.tafsir-option:not([style*="opacity: 0.5"])');
-    var btn = document.getElementById('btnAllTafsirs');
-    if (selectedTafsirs.size === allKeys.length && allKeys.length > 0) {
-        selectedTafsirs = new Set();
-        if (btn) { btn.classList.remove('active'); btn.textContent = '📚 جميع التفاسير'; }
-    } else {
-        selectedTafsirs = new Set();
-        allKeys.forEach(function(el) { selectedTafsirs.add(el.dataset.key); });
-        if (btn) { btn.classList.add('active'); btn.textContent = '📚 إلغاء الكل'; }
-    }
-    updateUI();
-}
-
-function updateUI() {
-    document.querySelectorAll('.tafsir-option').forEach(function(el){
-        el.classList.toggle('selected', selectedTafsirs.has(el.dataset.key));
-    });
-    updateSelectedCount();
-}
-
-function updateSelectedCount() {
-    var el = document.getElementById('selectedCount');
-    if (el) el.textContent = selectedTafsirs.size;
-}
-
-async function showSelectedTafsirs() {
-    if (selectedTafsirs.size === 0) {
-        alert('⚠️ اختر تفسيراً واحداً على الأقل');
-        return;
     }
     
-    var btn = document.getElementById('btnShowTafsir');
-    if (btn) { btn.disabled = true; btn.textContent = '⏳ جاري التحميل...'; }
-    
-    try {
-        var selected = Array.from(selectedTafsirs);
-        var verses = (currentVerseInfo.verses && currentVerseInfo.verses.length) 
-            ? currentVerseInfo.verses 
-            : [currentVerseInfo];
-        
-        var responseParts = [];
-        
-        for (var i = 0; i < verses.length; i++) {
-            var v = verses[i];
-            var sid = v.surah_id || currentVerseInfo.surah_id;
-            var vn = v.verse_number;
-            var sn = v.surah_name || currentVerseInfo.surah_name;
-            var vt = v.verse_text || '';
-            
-            responseParts.push('📖 سورة ' + sn + ' — الآية ' + vn);
-            responseParts.push('﴿ ' + vt + ' ﴾');
-            responseParts.push('');
-            
-            for (var j = 0; j < selected.length; j++) {
-                var key = selected[j];
-                try {
-                    var tafsirText = await window.NoorDB.getTafsir(key, sid, vn);
-                    var book = await window.NoorDB.getTafsirBook(key);
-                    
-                    if (tafsirText && !tafsirText.startsWith('⚠️')) {
-                        responseParts.push((book && book.icon ? book.icon : '📖') + ' تفسير ' + (book && book.short_name ? book.short_name : key) + ':');
-                        responseParts.push(tafsirText);
-                        responseParts.push('');
-                    }
-                } catch (e) {
-                    console.warn('فشل تفسير ' + key, e);
-                }
-            }
-            responseParts.push('─────────────────');
-            responseParts.push('');
+    function createParticles() {
+        if (window.matchMedia("(max-width: 768px)").matches) return;
+        var container = document.getElementById('particles');
+        for (var i = 0; i < 30; i++) {
+            var dot = document.createElement('div');
+            dot.className = 'dot';
+            dot.style.left = Math.random() * 100 + '%';
+            dot.style.top = Math.random() * 100 + '%';
+            dot.style.width = (2 + Math.random() * 6) + 'px';
+            dot.style.height = dot.style.width;
+            dot.style.animationDelay = (Math.random() * 20) + 's';
+            dot.style.animationDuration = (15 + Math.random() * 15) + 's';
+            container.appendChild(dot);
         }
-        
-        responseParts.push('ملاحظة: من كتب التفسير المعتمدة عند أهل السنة والجماعة');
-        
-        addMessage(responseParts.join('\n'), 'ai');
-        closePopup();
-    } catch(err) {
-        alert('❌ خطأ: ' + err.message);
-    } finally {
-        if (btn) { btn.disabled = false; btn.textContent = '✅ عرض التفسير'; }
     }
-}// ---------- إرسال الرسائل ----------
-async function sendMessage() {
-    var input = document.getElementById('input');
-    if (!input) return;
-    var text = input.value.trim();
-    if (!text || isProcessing) return;
     
-    addMessage(text, 'user');
-    input.value = '';
-    isProcessing = true;
+    function createRipple(e) {
+        var card = e.currentTarget;
+        var ripple = document.createElement('span');
+        ripple.className = 'ripple';
+        var rect = card.getBoundingClientRect();
+        var size = Math.max(rect.width, rect.height);
+        ripple.style.width = ripple.style.height = size + 'px';
+        ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+        ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+        card.appendChild(ripple);
+        setTimeout(function() { ripple.remove(); }, 600);
+    }
     
-    var btn = document.getElementById('sendBtn');
-    if (btn) { btn.disabled = true; btn.textContent = '⏳'; }
-    showTyping(true);
-
-    try {
-        // ✅ البحث المحلي مباشرة (بدون fetch)
-        if (!window.QuranSearchEngine) {
-            throw new Error('محرك البحث غير جاهز');
-        }
-        
-        var result = await window.QuranSearchEngine.search(text, window.NoorDB);
-        
-        showTyping(false);
-        
-        if (result.success && result.type === 'verse') {
-            try { localStorage.setItem('lastRead', JSON.stringify(result.data)); } catch(e){}
-            openPopup(result.data, result.data.tafsir_books);
-        } else if (result.success && result.type === 'surah') {
-            var verses = result.data.verses || [];
-            var msg = '📖 سورة ' + result.data.surah_name + ' (' + result.data.verse_count + ' آية)\n\n';
-            verses.slice(0, 20).forEach(function(v) {
-                msg += v.verse_number + '. ﴿ ' + v.verse_text + ' ﴾\n\n';
-            });
-            if (verses.length > 20) msg += '\n... و ' + (verses.length - 20) + ' آية أخرى';
-            addMessage(msg, 'ai');
-            if (verses.length > 0 && result.data.tafsir_books && result.data.tafsir_books.length > 0) {
-                openPopup(result.data, result.data.tafsir_books);
-            }
-        } else if (result.success && result.type === 'range') {
-            var verses2 = result.data.verses || [];
-            var msg2 = '📖 سورة ' + result.data.surah_name + ' (' + result.data.start_verse + '-' + result.data.end_verse + ')\n\n';
-            verses2.forEach(function(v){ msg2 += v.verse_number + '. ﴿ ' + v.verse_text + ' ﴾\n\n'; });
-            addMessage(msg2, 'ai');
-            if (verses2.length > 0 && result.data.tafsir_books) {
-                openPopup(result.data, result.data.tafsir_books);
-            }
-        } else if (result.success && result.type === 'search') {
-            var results = result.data.results || [];
-            var msg3 = '🔍 نتائج البحث (' + results.length + '):\n\n';
-            results.slice(0, 10).forEach(function(r, i) {
-                msg3 += (i+1) + '. ' + r.surah_name + ' ' + r.verse_number + ': ﴿ ' + r.verse_text.substring(0, 100) + '... ﴾\n\n';
-            });
-            addMessage(msg3, 'ai');
-        } else {
-            addMessage(result.reply || '❌ لم أجد نتيجة', 'ai');
-        }
-    } catch(err) {
-        showTyping(false);
-        console.error('[Chat] خطأ:', err);
-        addMessage('❌ ' + err.message, 'ai');
-    } finally {
-        if (btn) { btn.disabled = false; btn.textContent = 'إرسال ➤'; }
-        if (input) input.focus();
-        isProcessing = false;
-    }
-}// ---------- الميزات الأخرى ----------
-async function openSurahIndex() {
-    var overlay = document.getElementById('surahOverlay');
-    if (overlay) overlay.classList.add('active');
-    var grid = document.getElementById('surahGrid');
-    if (!grid || grid.dataset.loaded === '1') return;
-    grid.innerHTML = '<p>⏳ جاري التحميل...</p>';
-    try {
-        var r = await fetch('./data/surahs.json');
-        var d = await r.json();
-        if (!d.success) throw new Error(d.error);
-        grid.innerHTML = d.surahs.map(function(s){
-            return '<button onclick="openSurahById(' + s.id + ')" style="border:1px solid var(--border-color);background:var(--bg-input);padding:12px;border-radius:14px;cursor:pointer;text-align:right;color:var(--text-primary);width:100%;"><strong>' + s.id + '. ' + s.name_ar + '</strong><br><small style="color:var(--text-secondary);font-size:11px;">' + s.verses_count + ' آية</small></button>';
-        }).join('');
-        grid.dataset.loaded = '1';
-    } catch(e) {
-        grid.innerHTML = '<p>❌ تعذر التحميل</p>';
-    }
-}
-
-function filterSurahs() {
-    var q = (document.getElementById('surahFilter') || {}).value || '';
-    q = q.trim().toLowerCase();
-    document.querySelectorAll('#surahGrid .surah-card, #surahGrid button').forEach(function(el){
-        var name = (el.dataset.name || el.textContent || '').toLowerCase();
-        el.style.display = name.includes(q) ? 'block' : 'none';
-    });
-}
-
-function openSurahById(id) {
-    var overlay = document.getElementById('surahOverlay');
-    if (overlay) overlay.classList.remove('active');
-    var inp = document.getElementById('input');
-    if (inp) inp.value = String(id);
-    sendMessage();
-}
-
-function openQuranSearch(){
-    var inp = document.getElementById('input');
-    if (!inp) return;
-    inp.value = '';
-    inp.placeholder = 'اكتب اسم السورة أو رقم الآية أو كلمة للبحث...';
-    inp.focus();
-    try { inp.scrollIntoView({behavior:'smooth', block:'center'}); } catch(e){}
-}
-
-async function loadRandomVerse(daily) {
-    try {
-        var r = await fetch('/api/verse/random?daily=' + (daily ? 1 : 0));
-        var d = await r.json();
-        if (!d.success) throw new Error(d.error);
-        showVerseFeature(d.verse);
-    } catch(e) {
-        addMessage('❌ تعذر تحميل الآية', 'ai');
-    }
-}
-
-function showVerseFeature(v) {
-    try { localStorage.setItem('lastRead', JSON.stringify(v)); } catch(e){}
-    currentVerseInfo = {surah_name: v.surah_name, surah_id: v.surah_id, verse_number: v.verse_number, verse_text: v.verse_text};
-    addMessage('📖 سورة ' + v.surah_name + ' — الآية ' + v.verse_number + '\n\n﴿ ' + v.verse_text + ' ﴾', 'ai');
-    fetch('./data/tafsirs_index.json').then(function(r){ return r.json(); }).then(function(d){ openPopup(currentVerseInfo, d.books || []); }).catch(function(){});
-}
-
-function saveCurrentVerse() {
-    if (!currentVerseInfo) return;
-    var arr = [];
-    try { arr = JSON.parse(localStorage.getItem('quranFavorites') || '[]'); } catch(e){}
-    var item = {surah_id: currentVerseInfo.surah_id, surah_name: currentVerseInfo.surah_name, verse_number: currentVerseInfo.verse_number, verse_text: currentVerseInfo.verse_text};
-    var exists = arr.some(function(x){ return x.surah_id === item.surah_id && x.verse_number === item.verse_number; });
-    if (!exists) {
-        arr.unshift(item);
-        arr = arr.slice(0, 100);
-        try { localStorage.setItem('quranFavorites', JSON.stringify(arr)); } catch(e){}
-        alert('⭐ تم حفظ الآية');
-    } else {
-        alert('⭐ محفوظة مسبقاً');
-    }
-}
-
-function openFavorites() {
-    var list = document.getElementById('favoritesList');
-    if (!list) return;
-    var arr = [];
-    try { arr = JSON.parse(localStorage.getItem('quranFavorites') || '[]'); } catch(e){}
-    if (arr.length === 0) {
-        list.innerHTML = '<p>لا توجد آيات محفوظة.</p>';
-    } else {
-        list.innerHTML = arr.map(function(v, i){
-            return '<div style="padding:16px;border:1px solid var(--border-color);border-radius:16px;background:var(--bg-input);margin-bottom:9px;"><strong style="display:block;margin-bottom:7px;color:var(--primary);">📖 سورة ' + v.surah_name + ' — ' + v.verse_number + '</strong><div style="line-height:2;font-size:15px;">﴿ ' + v.verse_text + ' ﴾</div><button onclick="openFavorite(' + i + ')" style="margin-top:10px;margin-left:6px;border:1px solid var(--border-color);background:rgba(108,99,255,.08);color:var(--text-primary);border-radius:10px;padding:7px 12px;cursor:pointer;">عرض</button><button onclick="removeFavorite(' + i + ')" style="margin-top:10px;margin-left:6px;border:1px solid var(--border-color);background:rgba(108,99,255,.08);color:var(--text-primary);border-radius:10px;padding:7px 12px;cursor:pointer;">حذف</button></div>';
-        }).join('');
-    }
-    var overlay = document.getElementById('favoritesOverlay');
-    if (overlay) overlay.classList.add('active');
-}
-
-function openFavorite(i) {
-    var arr = [];
-    try { arr = JSON.parse(localStorage.getItem('quranFavorites') || '[]'); } catch(e){}
-    var v = arr[i];
-    if (!v) return;
-    var overlay = document.getElementById('favoritesOverlay');
-    if (overlay) overlay.classList.remove('active');
-    showVerseFeature(v);
-}
-
-function removeFavorite(i) {
-    var arr = [];
-    try { arr = JSON.parse(localStorage.getItem('quranFavorites') || '[]'); } catch(e){}
-    arr.splice(i, 1);
-    try { localStorage.setItem('quranFavorites', JSON.stringify(arr)); } catch(e){}
-    openFavorites();
-}
-
-function resumeLastRead() {
-    var v = null;
-    try { v = JSON.parse(localStorage.getItem('lastRead') || 'null'); } catch(e){}
-    if (v) showVerseFeature(v);
-    else alert('ℹ️ لا توجد قراءة سابقة');
-}
-
-function changeFontSize(dir) {
-    document.body.classList.remove('font-large', 'font-xl');
-    var n = parseInt(localStorage.getItem('quranFont') || '0') + dir;
-    n = Math.max(0, Math.min(2, n));
-    if (n === 1) document.body.classList.add('font-large');
-    if (n === 2) document.body.classList.add('font-xl');
-    try { localStorage.setItem('quranFont', String(n)); } catch(e){}
-}
-
-function loadFontSize() {
-    var n = parseInt(localStorage.getItem('quranFont') || '0');
-    if (n === 1) document.body.classList.add('font-large');
-    if (n === 2) document.body.classList.add('font-xl');
-}
-
-async function copyCurrentVerse() {
-    if (!currentVerseInfo) return;
-    try {
-        await navigator.clipboard.writeText('سورة ' + currentVerseInfo.surah_name + ' — الآية ' + currentVerseInfo.verse_number + '\n﴿ ' + currentVerseInfo.verse_text + ' ﴾');
-        alert('📋 تم النسخ');
-    } catch(e) { alert('❌ تعذر النسخ'); }
-}
-
-async function shareCurrentVerse() {
-    if (!currentVerseInfo) return;
-    var text = 'سورة ' + currentVerseInfo.surah_name + ' — الآية ' + currentVerseInfo.verse_number + '\n﴿ ' + currentVerseInfo.verse_text + ' ﴾';
-    try {
-        if (navigator.share) await navigator.share({title: 'آية', text: text});
-        else { await navigator.clipboard.writeText(text); alert('📋 تم نسخ النص'); }
-    } catch(e){}
-}
-
-function showCurrentSurah() {
-    if (!currentVerseInfo) return;
-    var name = currentVerseInfo.surah_name;
-    closePopup();
-    var inp = document.getElementById('input');
-    if (inp) inp.value = name;
-    sendMessage();
-}
-
-async function showSurahStats() {
-    if (!currentVerseInfo) return;
-    try {
-        var r = await fetch('/api/surah/' + currentVerseInfo.surah_id + '/stats');
-        var d = await r.json();
-        if (!d.success) throw new Error(d.error);
-        var el = document.getElementById('statsContent');
-        if (el) el.innerHTML = '<h3>سورة ' + d.surah_name + '</h3><p>🔢 رقم: ' + d.surah_id + '</p><p>📖 عدد الآيات: ' + d.verses_count + '</p>';
-        var overlay = document.getElementById('statsOverlay');
-        if (overlay) overlay.classList.add('active');
-    } catch(e) { alert('❌ تعذر التحميل'); }
-}
-
-async function navigateVerse(delta) {
-    if (!currentVerseInfo) return;
-    var n = Number(currentVerseInfo.verse_number) + delta;
-    try {
-        var r = await fetch('/api/verse/' + currentVerseInfo.surah_id + '/' + n);
-        var d = await r.json();
-        if (!d.success) { alert(delta < 0 ? 'هذه أول آية' : 'هذه آخر آية'); return; }
-        showVerseFeature(d.verse);
-    } catch(e) { alert('❌ تعذر الانتقال'); }
-}
-
-function toggleReadingMode() {
-    document.body.classList.toggle('reading-mode');
-    try { localStorage.setItem('readingMode', document.body.classList.contains('reading-mode') ? '1' : '0'); } catch(e){}
-}
-
-async function openTafsirLibrary() {
-    var overlay = document.getElementById('booksOverlay');
-    if (overlay) overlay.classList.add('active');
-    var grid = document.getElementById('booksGrid');
-    if (!grid || grid.dataset.loaded === '1') return;
-    try {
-        var r = await fetch('./data/tafsirs_index.json');
-        var d = await r.json();
-        var books = d.books || [];
-        if (books.length === 0) { grid.innerHTML = '<p>لا توجد كتب.</p>'; return; }
-        grid.innerHTML = books.map(function(b){
-            return '<div style="padding:16px;border:1px solid var(--border-color);border-radius:16px;background:var(--bg-input);"><strong>' + (b.icon || '📖') + ' ' + (b.name || b.short_name || 'تفسير') + '</strong><p style="color:var(--text-secondary);font-size:11px;line-height:1.7;margin:0;">' + (b.desc || '') + '</p></div>';
-        }).join('');
-        grid.dataset.loaded = '1';
-    } catch(e) { grid.innerHTML = '<p>❌ تعذر التحميل</p>'; }
-}
-
-function clearChat() {
-    if (!confirm('مسح المحادثة؟')) return;
-    location.reload();
-}
-
-// ---------- التشغيل ----------
-document.addEventListener('DOMContentLoaded', function() {
-    var input = document.getElementById('input');
-    var sendBtn = document.getElementById('sendBtn');
-    loadTheme();
-    loadFontSize();
-    try { if (localStorage.getItem('readingMode') === '1') document.body.classList.add('reading-mode'); } catch(e){}
-    
-    if (sendBtn) sendBtn.addEventListener('click', sendMessage);
-    if (input) {
-        input.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                sendMessage();
-            }
+    function trackMouse(e) {
+        document.querySelectorAll('.card').forEach(function(card) {
+            var rect = card.getBoundingClientRect();
+            card.style.setProperty('--x', ((e.clientX - rect.left) / rect.width) * 100 + '%');
+            card.style.setProperty('--y', ((e.clientY - rect.top) / rect.height) * 100 + '%');
         });
-        input.addEventListener('input', function() {
-            this.style.height = 'auto';
-            this.style.height = Math.min(this.scrollHeight, 130) + 'px';
-        });
-        input.focus();
     }
     
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            closePopup();
-            var overlay = document.getElementById('featuresModalOverlay');
-            if (overlay && overlay.classList.contains('active')) {
-                overlay.classList.remove('active');
-                document.body.style.overflow = '';
-            }
+    function toggleDevModal() {
+        document.getElementById('devModal').classList.toggle('active');
+    }
+    
+    function copyEmail() {
+        var email = 'bilalimhamad051@gmail.com';
+        navigator.clipboard.writeText(email);
+        showToast('📧 تم نسخ البريد الإلكتروني: ' + email);
+    }
+    
+    function copyWhatsApp() {
+        var whatsapp = '+96181274729';
+        navigator.clipboard.writeText(whatsapp);
+        showToast('💬 تم نسخ رقم واتساب: ' + whatsapp);
+    }
+    
+    // ✅ دالة toast أنيقة بدلاً من alert
+    function showToast(msg) {
+        var old = document.querySelector('.nm-toast');
+        if (old) old.remove();
+        var toast = document.createElement('div');
+        toast.className = 'nm-toast';
+        toast.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#6C63FF,#5A4FCF);color:white;padding:14px 28px;border-radius:14px;font-weight:700;font-size:15px;box-shadow:0 10px 40px rgba(108,99,255,.4);z-index:99999;font-family:Tajawal,sans-serif;';
+        toast.textContent = msg;
+        document.body.appendChild(toast);
+        setTimeout(function(){ toast.style.transition='all .3s'; toast.style.opacity='0'; setTimeout(function(){toast.remove();},300); }, 2000);
+    }
+    
+    // ✅ دالة showFeature للبطاقات
+    window.showFeature = function(name) {
+        showToast('✨ ' + name + ' - قريباً جداً!');
+    };
+    
+    document.addEventListener('click', function(e) {
+        var modal = document.getElementById('devModal');
+        var btn = document.getElementById('devBtn');
+        if (modal.classList.contains('active') && !modal.contains(e.target) && !btn.contains(e.target)) {
+            modal.classList.remove('active');
         }
     });
-});
-
-// ═══════════════════════════════════════════════════════
-// 🔧 FIX: جعل كل الدوال متاحة للـ inline onclick
-// ═══════════════════════════════════════════════════════
-(function exposeGlobals() {
-    [
-        'toggleTheme','loadTheme','sendExample','toggleFeaturesModal','openPopup','closePopup',
-        'openSurahIndex','openSurahById','filterSurahs','openQuranSearch','loadRandomVerse','showVerseFeature',
-        'saveCurrentVerse','openFavorites','openFavorite','removeFavorite','resumeLastRead','changeFontSize',
-        'loadFontSize','copyCurrentVerse','shareCurrentVerse','showCurrentSurah','showSurahStats','navigateVerse',
-        'toggleReadingMode','openTafsirLibrary','clearChat','selectAllTafsirs','showSelectedTafsirs',
-        'toggleTafsir','updateUI','updateSelectedCount','sendMessage','addMessage','showTyping','escapeHtml'
-    ].forEach(function(name){
-        if (typeof window[name] !== 'function' && typeof globalThis[name] === 'function') {
-            window[name] = globalThis[name];
-        }
-    });
-})();
-
-// ═══════════════════════════════════════════════════════
-// 🔧 FIX: ربط الأزرار بـ addEventListener كحل احتياطي
-// ═══════════════════════════════════════════════════════
-document.addEventListener('DOMContentLoaded', function() {
-    // ربط أزرار الأمثلة
-    document.querySelectorAll('.examples button').forEach(function(btn) {
-        if (btn.dataset.bound === '1') return;
-        btn.dataset.bound = '1';
-        var onclickAttr = btn.getAttribute('onclick') || '';
-        var match = onclickAttr.match(/sendExample\(['"](.+?)['"]\)/);
-        if (match) {
-            btn.addEventListener('click', function(e) {
-                e.preventDefault();
-                sendExample(match[1]);
-            });
-        }
-    });
-
-    // أزرار الميزات تستخدم onclick مع الدوال المكشوفة عالمياً.
-
-    // ربط أزرار إغلاق المودالات
-    document.querySelectorAll('.popup-close, .features-modal-close').forEach(function(btn) {
-        if (btn.dataset.bound === '1') return;
-        btn.dataset.bound = '1';
-        btn.addEventListener('click', function(e) {
-            e.preventDefault();
-            if (typeof closePopup === 'function') closePopup();
-            var fm = document.getElementById('featuresModalOverlay');
-            if (fm) {
-                fm.classList.remove('active');
-                document.body.style.overflow = '';
-            }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        loadTheme();
+        createParticles();
+        document.querySelectorAll('.card, .card-full').forEach(function(card) {
+            card.addEventListener('click', createRipple);
         });
+        document.addEventListener('mousemove', trackMouse);
     });
-
-    console.log('✅ تم ربط كل الأزرار بنجاح');
-});
-</script>
-<!-- تحميل سكربتات PWA -->
-<!-- تسجيل Service Worker -->
-<script>
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function() {
-        navigator.serviceWorker.register('./sw.js?v=5', { scope: '/' })
-            .then(function(reg) {
-                console.log('✅ Service Worker مسجل:', reg.scope);
-            })
-            .catch(function(err) {
-                console.warn('⚠️ فشل تسجيل Service Worker:', err);
-            });
-    });
-}
-
-// زر تحميل البيانات للعمل offline (اختياري)
-window.downloadOfflineData = async function() {
-    if (window.OfflineManager && window.OfflineManager.downloadAll) {
-        await window.OfflineManager.downloadAll();
-        alert('✅ تم تحميل كل البيانات للعمل offline');
-    } else {
-        alert('⚠️ مدير offline غير جاهز');
-    }
-};
 </script>
 
-<!-- 🔧 Eruda Console للمطورين -->
-<script src="https://cdn.jsdelivr.net/npm/eruda"></script>
-<script>
-  if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-    eruda.init({
-      tool: ['console', 'elements', 'network', 'resources', 'info'],
-      useShadowDom: true,
-      autoScale: true,
-      defaults: {
-        displaySize: 50,
-        transparency: 0.9,
-        theme: 'Dark'
-      }
-    });
-    console.log('✅ Eruda جاهز');
-  }
-</script>
-<script src="./db-offline.js"></script>
-<script src="./search_engine.js"></script>
-<script src="./download-progress.js"></script>
-<script src="./offline.js"></script>
 
 
-<script>
-window.__staticMode = true;
-(function() {
-  const origFetch = window.fetch;
-  window.fetch = function(input, init) {
-    const url = typeof input === 'string' ? input : (input && input.url) || '';
-    if (url.includes('/api/auth/me')) {
-      return Promise.resolve(new Response(
-        JSON.stringify({authenticated: true, user: {email: 'user@noor', id: 1}}),
-        {status: 200, headers: {'Content-Type': 'application/json'}}
-      ));
-    }
-    return origFetch.apply(this, arguments);
-  };
-  console.log('✅ Static Mode');
-})();
-</script>
 
-</body>
-</html>
+
+
+
+
