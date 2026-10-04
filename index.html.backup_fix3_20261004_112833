@@ -5499,7 +5499,7 @@ window.__staticMode = true;
     const target = document.getElementById('page-' + pageName);
     if (target) {
       target.classList.add('active');
-      /* ✅ محذوف: لا نحفظ الصفحة */
+      try { sessionStorage.setItem('noor_page', pageName); } catch(e){}
       window.scrollTo(0, 0);
     }
   };
@@ -5523,8 +5523,10 @@ window.__staticMode = true;
   // استرجاع الصفحة السابقة
   window.addEventListener('load', function() {
     try {
-      const lastPage = null;
-      showPage('home'); /* ✅ دائمًا الرئيسية */
+      const lastPage = sessionStorage.getItem('noor_page');
+      if (lastPage === 'quran') {
+        showPage('quran');
+      }
     } catch(e){}
   });
   
@@ -7108,35 +7110,6 @@ if ('serviceWorker' in navigator) {
       });
   });
 }
-</script>
-
-
-<!-- 🎯 إجبار الرئيسية عند التحميل -->
-<script>
-(function(){
-  function forceHome(){
-    try {
-      document.querySelectorAll('.nm-page').forEach(function(p){
-        p.classList.remove('active');
-        p.style.display = 'none';
-      });
-      var home = document.getElementById('page-home');
-      if (home) {
-        home.classList.add('active');
-        home.style.display = 'block';
-        window.scrollTo(0,0);
-      }
-      console.log('🏠 الرئيسية مُجبرة');
-    } catch(e){}
-  }
-  if (document.readyState === 'complete') {
-    forceHome();
-  } else {
-    window.addEventListener('load', forceHome);
-  }
-  // احتياطي بعد 100ms
-  setTimeout(forceHome, 100);
-})();
 </script>
 
 </body>
