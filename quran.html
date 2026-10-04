@@ -1988,7 +1988,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <script>
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
-        navigator.serviceWorker.register('./sw.js', { scope: '/' })
+        navigator.serviceWorker.register('./sw.js?v=5', { scope: '/' })
             .then(function(reg) {
                 console.log('✅ Service Worker مسجل:', reg.scope);
             })
