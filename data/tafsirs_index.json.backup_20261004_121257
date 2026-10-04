@@ -6,7 +6,7 @@
       "short_name": "الميسر",
       "icon": "📖",
       "color": "#4CAF50",
-      "file": "./data/tafsirs/muyassar.json",
+      "file": "/static/data/tafsirs/muyassar.json",
       "size_mb": 2.43
     },
     {
@@ -15,7 +15,7 @@
       "short_name": "الجلالين",
       "icon": "📕",
       "color": "#2196F3",
-      "file": "./data/tafsirs/jalalayn.json",
+      "file": "/static/data/tafsirs/jalalayn.json",
       "size_mb": 1.86
     },
     {
@@ -24,7 +24,7 @@
       "short_name": "ابن كثير",
       "icon": "📗",
       "color": "#FF9800",
-      "file": "./data/tafsirs/ibn_kathir.json",
+      "file": "/static/data/tafsirs/ibn_kathir.json",
       "size_mb": 12.75
     },
     {
@@ -33,7 +33,7 @@
       "short_name": "السعدي",
       "icon": "📘",
       "color": "#9C27B0",
-      "file": "./data/tafsirs/saadi.json",
+      "file": "/static/data/tafsirs/saadi.json",
       "size_mb": 5.84
     },
     {
@@ -42,7 +42,7 @@
       "short_name": "القرطبي",
       "icon": "📚",
       "color": "#009688",
-      "file": "./data/tafsirs/qurtubi.json",
+      "file": "/static/data/tafsirs/qurtubi.json",
       "size_mb": 18.78
     },
     {
@@ -51,7 +51,7 @@
       "short_name": "البغوي",
       "icon": "📓",
       "color": "#795548",
-      "file": "./data/tafsirs/baghawy.json",
+      "file": "/static/data/tafsirs/baghawy.json",
       "size_mb": 7.3
     }
   ]
