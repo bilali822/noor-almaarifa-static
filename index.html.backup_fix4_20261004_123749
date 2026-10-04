@@ -1654,7 +1654,9 @@ async function sendMessage() {
             openPopup(result.data, result.data.tafsir_books);
         } else if (result.success && result.type === 'surah') {
             var verses = result.data.verses || [];
-            var msg = '📖 سورة ' + result.data.surah_name + ' (' + result.data.verse_count + ' آية)\n;
+            var msg = '📖 سورة ' + result.data.surah_name + ' (' + result.data.verse_count + ' آية)
+
+';
             verses.slice(0, 20).forEach(function(v) {
                 msg += v.verse_number + '. ﴿ ' + v.verse_text + ' ﴾
 
@@ -1668,7 +1670,9 @@ async function sendMessage() {
             }
         } else if (result.success && result.type === 'range') {
             var verses2 = result.data.verses || [];
-            var msg2 = '📖 سورة ' + result.data.surah_name + ' (' + result.data.start_verse + '-' + result.data.end_verse + ')\n;
+            var msg2 = '📖 سورة ' + result.data.surah_name + ' (' + result.data.start_verse + '-' + result.data.end_verse + ')
+
+';
             verses2.forEach(function(v){ msg2 += v.verse_number + '. ﴿ ' + v.verse_text + ' ﴾
 
 '; });
