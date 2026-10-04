@@ -1619,8 +1619,7 @@ async function showSelectedTafsirs() {
         
         responseParts.push('ملاحظة: من كتب التفسير المعتمدة عند أهل السنة والجماعة');
         
-        addMessage(responseParts.join('
-'), 'ai');
+        addMessage(responseParts.join('\n'), 'ai');
         closePopup();
     } catch(err) {
         alert('❌ خطأ: ' + err.message);
