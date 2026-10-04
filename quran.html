@@ -1656,9 +1656,7 @@ async function sendMessage() {
             var verses = result.data.verses || [];
             var msg = '📖 سورة ' + result.data.surah_name + ' (' + result.data.verse_count + ' آية)\n;
             verses.slice(0, 20).forEach(function(v) {
-                msg += v.verse_number + '. ﴿ ' + v.verse_text + ' ﴾
-
-';
+                msg += v.verse_number + '. ﴿ ' + v.verse_text + ' ﴾\n;
             });
             if (verses.length > 20) msg += '
 ... و ' + (verses.length - 20) + ' آية أخرى';
@@ -1669,22 +1667,16 @@ async function sendMessage() {
         } else if (result.success && result.type === 'range') {
             var verses2 = result.data.verses || [];
             var msg2 = '📖 سورة ' + result.data.surah_name + ' (' + result.data.start_verse + '-' + result.data.end_verse + ')\n;
-            verses2.forEach(function(v){ msg2 += v.verse_number + '. ﴿ ' + v.verse_text + ' ﴾
-
-'; });
+            verses2.forEach(function(v){ msg2 += v.verse_number + '. ﴿ ' + v.verse_text + ' ﴾\n; });
             addMessage(msg2, 'ai');
             if (verses2.length > 0 && result.data.tafsir_books) {
                 openPopup(result.data, result.data.tafsir_books);
             }
         } else if (result.success && result.type === 'search') {
             var results = result.data.results || [];
-            var msg3 = '🔍 نتائج البحث (' + results.length + '):
-
-';
+            var msg3 = '🔍 نتائج البحث (' + results.length + '):\n;
             results.slice(0, 10).forEach(function(r, i) {
-                msg3 += (i+1) + '. ' + r.surah_name + ' ' + r.verse_number + ': ﴿ ' + r.verse_text.substring(0, 100) + '... ﴾
-
-';
+                msg3 += (i+1) + '. ' + r.surah_name + ' ' + r.verse_number + ': ﴿ ' + r.verse_text.substring(0, 100) + '... ﴾\n;
             });
             addMessage(msg3, 'ai');
         } else {
