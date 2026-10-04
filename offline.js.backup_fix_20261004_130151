@@ -56,87 +56,45 @@
       setPct(0, '⬇️ بدء التحميل...');
 
       try {
-        const db = await NoorDB.open();
-
-        // ═══ 1. القرآن ═══
-        setPct(5, '⬇️ تحميل القرآن...');
+        // 1. القرآن
+        setPct(2, '⬇️ تحميل القرآن...');
         const q = await fetch('./data/quran_offline.json').then(r => r.json());
-        setPct(25);
+        setPct(8);
         await NoorDB.saveQuran(q);
-        setPct(30, `✅ ${q.verses.length} آية`);
+        setPct(20, `✅ ${q.verses.length} آية`);
 
-        // ═══ 2. فهرس التفاسير ═══
-        setPct(32, '⬇️ فهرس التفاسير...');
+        // 2. الفهرس
+        setPct(22, '⬇️ فهرس التفاسير...');
         const idx = await fetch('./data/tafsirs_index.json').then(r => r.json());
         const books = idx.books || [];
-        setPct(35);
-        console.log('[Offline] عدد التفاسير:', books.length);
+        setPct(25);
 
-        // ═══ 3. حمّل كل التفاسير ═══
+        // 3. التفاسير — تحميل متوازي 🚀
+        const tafsirs = {};
         let completed = 0;
-        const totalBooks = books.length;
+        const total = books.length;
 
-        for (const book of books) {
+        setPct(26, `🚀 تحميل ${total} تفاسير بالتوازي...`);
+
+        await Promise.all(books.map(async (book) => {
           try {
-            // إصلاح المسار
-            let file = book.file || ('./data/tafsirs/' + book.key + '.json');
-            file = file.replace('/static/data/', './data/');
-            file = file.replace('data/data/', 'data/');
-            if (!file.startsWith('./') && !file.startsWith('http')) {
-              file = './' + file;
-            }
-            
-            const pctBefore = 35 + Math.round((completed / totalBooks) * 55);
-            setPct(pctBefore, `⬇️ ${book.short_name || book.key} (${completed+1}/${totalBooks})`);
-            
-            console.log('[Offline] تحميل:', book.key, 'من', file);
-            
-            const res = await fetch(file);
-            if (!res.ok) {
-              throw new Error('HTTP ' + res.status);
-            }
-            const content = await res.json();
-            
-            // 💾 احفظ في IndexedDB مباشرة
-            const tx = db.transaction('tafsirs', 'readwrite');
-            const store = tx.objectStore('tafsirs');
-            store.put({ key: book.key, content: content });
-            await new Promise((resolve, reject) => {
-              tx.oncomplete = resolve;
-              tx.onerror = reject;
-            });
-            
+            const content = await fetch(book.file).then(r => r.json());
+            tafsirs[book.key] = content;
             completed++;
-            console.log('[Offline] ✅ ' + book.key + ': ' + Object.keys(content).length + ' سورة');
-            
-            const pctAfter = 35 + Math.round((completed / totalBooks) * 55);
-            setPct(pctAfter, `✅ ${book.short_name || book.key} (${completed}/${totalBooks})`);
-            
+            const pct = 25 + Math.round((completed / total) * 65);
+            setPct(pct, `✅ ${book.short_name} (${completed}/${total})`);
           } catch (e) {
-            console.warn('[Offline] ❌ فشل ' + book.key + ': ' + e.message);
+            console.warn(`فشل ${book.name}:`, e);
             completed++;
           }
-        }
+        }));
 
-        setPct(92, '💾 حفظ الفهرس...');
-
-        // ═══ 4. احفظ الفهرس ═══
-        const booksTx = db.transaction('tafsir_books', 'readwrite');
-        const booksStore = booksTx.objectStore('tafsir_books');
-        for (const book of books) {
-          booksStore.put(book);
-        }
-        await new Promise((resolve, reject) => {
-          booksTx.oncomplete = resolve;
-          booksTx.onerror = reject;
-        });
-
+        setPct(92, '💾 حفظ في IndexedDB...');
+        await NoorDB.saveTafsirs({ books, tafsirs });
         setPct(100);
+
         if (window.DownloadProgress) window.DownloadProgress.complete();
-        this.status('✅ تم التحميل — ' + completed + ' تفاسير جاهزة');
-        
-        console.log('[Offline] ✅ اكتمل التحميل — ' + completed + ' تفاسير');
-        
+        this.status('✅ تم تحميل كل البيانات');
         return true;
       } catch (e) {
         console.error('[Offline] فشل:', e);
