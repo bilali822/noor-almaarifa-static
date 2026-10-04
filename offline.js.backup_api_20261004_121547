@@ -106,26 +106,16 @@
     hookFetch() {
       const orig = window.fetch.bind(window);
       const self = this;
-      
+
       window.fetch = async function(input, init) {
-        const url = typeof input === 'string' ? input : (input && input.url) || '';
+        const url = typeof input === 'string' ? input : input.url;
         const path = new URL(url, location.origin).pathname;
-        
-        // ═══ اعترض الطلبات على /api/ أو api-*.json دائمًا ═══
-        if (path.startsWith('/api/') || path.match(/\/api-[a-z]+\.json$/)) {
-          // إذا كنا متصلين، جرّب الشبكة أولاً
-          if (self.isOnline) {
-            try {
-              return await orig(input, init);
-            } catch (e) {
-              // fallback
-            }
-          }
-          // اعتراض محلي
-          return self.local(path, init);
+
+        // تجاهل الطلبات الخارجية
+        if (!path.startsWith('/api/') && !path.startsWith('./')) {
+          return orig(input, init);
         }
-        
-        // الباقي — مرر عادي
+
         if (self.isOnline) {
           try { return await orig(input, init); }
           catch { return self.local(url, init); }
