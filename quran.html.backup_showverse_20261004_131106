@@ -1671,7 +1671,7 @@ async function sendMessage() {
         
         if (result.success && result.type === 'verse') {
             try { localStorage.setItem('lastRead', JSON.stringify(result.data)); } catch(e){}
-            openPopup(result.data, result.data.tafsir_books);
+            await openPopup(result.data, result.data.tafsir_books);
         } else if (result.success && result.type === 'surah') {
             var verses = result.data.verses || [];
             var msg = '📖 سورة ' + result.data.surah_name + ' (' + result.data.verse_count + ' آية)\n\n';
@@ -1681,7 +1681,7 @@ async function sendMessage() {
             if (verses.length > 20) msg += '\n... و ' + (verses.length - 20) + ' آية أخرى';
             addMessage(msg, 'ai');
             if (verses.length > 0 && result.data.tafsir_books && result.data.tafsir_books.length > 0) {
-                openPopup(result.data, result.data.tafsir_books);
+                await openPopup(result.data, result.data.tafsir_books);
             }
         } else if (result.success && result.type === 'range') {
             var verses2 = result.data.verses || [];
@@ -1689,7 +1689,7 @@ async function sendMessage() {
             verses2.forEach(function(v){ msg2 += v.verse_number + '. ﴿ ' + v.verse_text + ' ﴾\n\n'; });
             addMessage(msg2, 'ai');
             if (verses2.length > 0 && result.data.tafsir_books) {
-                openPopup(result.data, result.data.tafsir_books);
+                await openPopup(result.data, result.data.tafsir_books);
             }
         } else if (result.success && result.type === 'search') {
             var results = result.data.results || [];
@@ -1767,18 +1767,11 @@ async function loadRandomVerse(daily) {
     }
 }
 
-async function showVerseFeature(v) {
+function showVerseFeature(v) {
     try { localStorage.setItem('lastRead', JSON.stringify(v)); } catch(e){}
     currentVerseInfo = {surah_name: v.surah_name, surah_id: v.surah_id, verse_number: v.verse_number, verse_text: v.verse_text};
     addMessage('📖 سورة ' + v.surah_name + ' — الآية ' + v.verse_number + '\n\n﴿ ' + v.verse_text + ' ﴾', 'ai');
-    
-    try {
-        var r = await fetch('./data/tafsirs_index.json');
-        var d = await r.json();
-        openPopup(currentVerseInfo, d.books || []);
-    } catch(e) {
-        console.warn('showVerseFeature error:', e);
-    }
+    fetch('./data/tafsirs_index.json').then(function(r){ return r.json(); }).then(function(d){ await openPopup(currentVerseInfo, d.books || []); }).catch(function(){});
 }
 
 function saveCurrentVerse() {
