@@ -1565,42 +1565,16 @@ async function showSelectedTafsirs() {
     var btn = document.getElementById('btnShowTafsir');
     if (btn) { btn.disabled = true; btn.textContent = '⏳ جاري التحميل...'; }
     try {
-        // ✅ عرض التفاسير محليًا
-        var selected = Array.from(selectedTafsirs);
-        var responseParts = [];
-        
-        // الحصول على الآيات
-        var verses = currentVerseInfo.verses || [currentVerseInfo];
-        
-        for (var i = 0; i < verses.length; i++) {
-            var v = verses[i];
-            var sid = v.surah_id || currentVerseInfo.surah_id;
-            var vn = v.verse_number;
-            var sn = v.surah_name || currentVerseInfo.surah_name;
-            var vt = v.verse_text || '';
-            
-            responseParts.push('قال الله تعالى - سورة ' + sn + ' آية ' + vn + ':');
-            responseParts.push('﴿ ' + vt + ' ﴾');
-            responseParts.push('');
-            
-            for (var j = 0; j < selected.length; j++) {
-                var key = selected[j];
-                var tafsirText = await window.NoorDB.getTafsir(key, sid, vn);
-                var book = await window.NoorDB.getTafsirBook(key);
-                
-                if (tafsirText && !tafsirText.startsWith('⚠️')) {
-                    responseParts.push((book?.icon || '📖') + ' تفسير ' + (book?.short_name || key) + ':');
-                    responseParts.push(tafsirText);
-                    responseParts.push('');
-                }
-            }
-        }
-        
-        var data = {
-            success: true,
-            reply: responseParts.join('\n'),
-            chat_id: chatId
-        };
+        var res = await fetch('./api-tafsir.json', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                selected_tafsirs: Array.from(selectedTafsirs),
+                chat_id: chatId,
+                verse_info: currentVerseInfo
+            })
+        });
+        var data = await res.json();
         if (data.success) {
             addMessage(data.reply, 'ai');
             closePopup();
@@ -1628,18 +1602,12 @@ async function sendMessage() {
     showTyping(true);
 
     try {
-        // ✅ استخدام البحث المحلي بدل fetch
-        var data = await (window.QuranSearchEngine
-            ? window.QuranSearchEngine.search(text, window.NoorDB).then(function(result) {
-                return {
-                    success: result.success,
-                    type: result.type || 'ai_response',
-                    reply: result.reply,
-                    data: result.data,
-                    chat_id: chatId
-                };
-            })
-            : Promise.resolve({success: false, reply: '⚠️ محرك البحث غير جاهز'}));
+        var res = await fetch('./api-send.json', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({message: text, chat_id: chatId, limit: currentLimit})
+        });
+        var data = await res.json();
         showTyping(false);
 
         if (data.success && data.type === 'verse') {
