@@ -58,14 +58,14 @@
       try {
         // 1. القرآن
         setPct(2, '⬇️ تحميل القرآن...');
-        const q = await fetch('./data/quran_offline.json').then(r => r.json());
+        const q = await fetch('/static/data/quran_offline.json').then(r => r.json());
         setPct(8);
         await NoorDB.saveQuran(q);
         setPct(20, `✅ ${q.verses.length} آية`);
 
         // 2. الفهرس
         setPct(22, '⬇️ فهرس التفاسير...');
-        const idx = await fetch('./data/tafsirs_index.json').then(r => r.json());
+        const idx = await fetch('/static/data/tafsirs_index.json').then(r => r.json());
         const books = idx.books || [];
         setPct(25);
 
@@ -112,7 +112,7 @@
         const path = new URL(url, location.origin).pathname;
 
         // تجاهل الطلبات الخارجية
-        if (!path.startsWith('/api/') && !path.startsWith('./')) {
+        if (!path.startsWith('/api/') && !path.startsWith('/static/')) {
           return orig(input, init);
         }
 

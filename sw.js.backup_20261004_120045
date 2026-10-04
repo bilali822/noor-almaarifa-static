@@ -1,5 +1,5 @@
-// نور المعرفة — Service Worker v3 (نظيف)
-const CACHE_VERSION = 'noor-v3.0.0';
+// نور المعرفة — Service Worker (v2)
+const CACHE_VERSION = 'noor-v2.0.0';
 const STATIC_CACHE = CACHE_VERSION + '-static';
 const DATA_CACHE = CACHE_VERSION + '-data';
 
@@ -26,13 +26,13 @@ self.addEventListener('fetch', (e) => {
   // تجاهل غير GET
   if (e.request.method !== 'GET') return;
   
-  // JSON → Cache First (data)
+  // JSON → Cache First
   if (url.pathname.endsWith('.json')) {
     e.respondWith(cacheFirst(e.request, DATA_CACHE));
     return;
   }
   
-  // الباقي → Cache First (static)
+  // الباقي → Cache First
   e.respondWith(cacheFirst(e.request, STATIC_CACHE));
 });
 
