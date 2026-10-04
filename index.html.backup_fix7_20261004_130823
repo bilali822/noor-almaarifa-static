@@ -1868,34 +1868,6 @@ html, body {
         });
         document.addEventListener('mousemove', trackMouse);
     });
-
-// ✅ sendExample — إرسال مثال
-window.sendExample = function(text) {
-    var inp = document.getElementById('input');
-    if (!inp) return;
-    inp.value = text;
-    if (typeof sendMessage === 'function') {
-        sendMessage();
-    } else {
-        console.warn('sendMessage غير جاهز');
-    }
-};
-
-// ✅ toggleTheme — الوضع الليلي
-window.toggleTheme = function() {
-    var body = document.body;
-    var btn = document.querySelector('.theme-toggle');
-    if (body.classList.contains('dark-mode')) {
-        body.classList.remove('dark-mode');
-        if (btn) btn.textContent = '🌙';
-        try { localStorage.setItem('theme', 'light'); } catch(e){}
-    } else {
-        body.classList.add('dark-mode');
-        if (btn) btn.textContent = '☀️';
-        try { localStorage.setItem('theme', 'dark'); } catch(e){}
-    }
-};
-
 </script>
 
 
