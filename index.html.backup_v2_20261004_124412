@@ -1562,124 +1562,104 @@ async function showSelectedTafsirs() {
         alert('⚠️ اختر تفسيراً واحداً على الأقل');
         return;
     }
-    
     var btn = document.getElementById('btnShowTafsir');
     if (btn) { btn.disabled = true; btn.textContent = '⏳ جاري التحميل...'; }
-    
     try {
-        var selected = Array.from(selectedTafsirs);
-        var verses = (currentVerseInfo.verses && currentVerseInfo.verses.length) 
-            ? currentVerseInfo.verses 
-            : [currentVerseInfo];
-        
-        var responseParts = [];
-        
-        for (var i = 0; i < verses.length; i++) {
-            var v = verses[i];
-            var sid = v.surah_id || currentVerseInfo.surah_id;
-            var vn = v.verse_number;
-            var sn = v.surah_name || currentVerseInfo.surah_name;
-            var vt = v.verse_text || '';
-            
-            responseParts.push('📖 سورة ' + sn + ' — الآية ' + vn);
-            responseParts.push('﴿ ' + vt + ' ﴾');
-            responseParts.push('');
-            
-            for (var j = 0; j < selected.length; j++) {
-                var key = selected[j];
-                try {
-                    var tafsirText = await window.NoorDB.getTafsir(key, sid, vn);
-                    var book = await window.NoorDB.getTafsirBook(key);
-                    
-                    if (tafsirText && !tafsirText.startsWith('⚠️')) {
-                        responseParts.push((book && book.icon ? book.icon : '📖') + ' تفسير ' + (book && book.short_name ? book.short_name : key) + ':');
-                        responseParts.push(tafsirText);
-                        responseParts.push('');
-                    }
-                } catch (e) {
-                    console.warn('فشل تفسير ' + key, e);
-                }
-            }
-            responseParts.push('─────────────────');
-            responseParts.push('');
+        var res = await fetch('./api-tafsir.json', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                selected_tafsirs: Array.from(selectedTafsirs),
+                chat_id: chatId,
+                verse_info: currentVerseInfo
+            })
+        });
+        var data = await res.json();
+        if (data.success) {
+            addMessage(data.reply, 'ai');
+            closePopup();
+        } else {
+            alert('❌ ' + data.reply);
         }
-        
-        responseParts.push('ملاحظة: من كتب التفسير المعتمدة عند أهل السنة والجماعة');
-        
-        addMessage(responseParts.join('\n'), 'ai');
-        closePopup();
     } catch(err) {
-        alert('❌ خطأ: ' + err.message);
+        alert('❌ تعذر الاتصال بالخادم');
     } finally {
         if (btn) { btn.disabled = false; btn.textContent = '✅ عرض التفسير'; }
     }
-}// ---------- إرسال الرسائل ----------
+}
+
+// ---------- إرسال الرسائل ----------
 async function sendMessage() {
     var input = document.getElementById('input');
     if (!input) return;
     var text = input.value.trim();
     if (!text || isProcessing) return;
-    
     addMessage(text, 'user');
     input.value = '';
     isProcessing = true;
-    
     var btn = document.getElementById('sendBtn');
     if (btn) { btn.disabled = true; btn.textContent = '⏳'; }
     showTyping(true);
 
     try {
-        // ✅ البحث المحلي مباشرة (بدون fetch)
-        if (!window.QuranSearchEngine) {
-            throw new Error('محرك البحث غير جاهز');
-        }
-        
-        var result = await window.QuranSearchEngine.search(text, window.NoorDB);
-        
+        var res = await fetch('./api-send.json', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({message: text, chat_id: chatId, limit: currentLimit})
+        });
+        var data = await res.json();
         showTyping(false);
-        
-        if (result.success && result.type === 'verse') {
-            try { localStorage.setItem('lastRead', JSON.stringify(result.data)); } catch(e){}
-            openPopup(result.data, result.data.tafsir_books);
-        } else if (result.success && result.type === 'surah') {
-            var verses = result.data.verses || [];
-            var msg = '📖 سورة ' + result.data.surah_name + ' (' + result.data.verse_count + ' آية)\n\n';
+
+        if (data.success && data.type === 'verse') {
+            try { localStorage.setItem('lastRead', JSON.stringify(data.data)); } catch(e){}
+            openPopup(data.data, data.data.tafsir_books);
+        } else if (data.success && data.type === 'surah') {
+            var verses = data.data.verses || [];
+            var msg = '📖 سورة ' + data.data.surah_name + ' (' + data.data.verse_count + ' آية)\n\n';
             verses.slice(0, 20).forEach(function(v) {
                 msg += v.verse_number + '. ﴿ ' + v.verse_text + ' ﴾\n\n';
             });
             if (verses.length > 20) msg += '\n... و ' + (verses.length - 20) + ' آية أخرى';
             addMessage(msg, 'ai');
-            if (verses.length > 0 && result.data.tafsir_books && result.data.tafsir_books.length > 0) {
-                openPopup(result.data, result.data.tafsir_books);
+            if (verses.length > 0 && data.data.tafsir_books && data.data.tafsir_books.length > 0) {
+                openPopup({
+                    surah_name: data.data.surah_name,
+                    surah_id: data.data.surah_id,
+                    verse_number: verses[0].verse_number,
+                    verse_text: verses[0].verse_text,
+                    verses: verses.map(function(v){ return {surah_id: data.data.surah_id, surah_name: data.data.surah_name, verse_number: v.verse_number, verse_text: v.verse_text}; })
+                }, data.data.tafsir_books);
             }
-        } else if (result.success && result.type === 'range') {
-            var verses2 = result.data.verses || [];
-            var msg2 = '📖 سورة ' + result.data.surah_name + ' (' + result.data.start_verse + '-' + result.data.end_verse + ')\n\n';
+        } else if (data.success && data.type === 'range') {
+            var verses2 = data.data.verses || [];
+            var msg2 = '📖 سورة ' + data.data.surah_name + ' (' + data.data.start_verse + '-' + data.data.end_verse + ')\n\n';
             verses2.forEach(function(v){ msg2 += v.verse_number + '. ﴿ ' + v.verse_text + ' ﴾\n\n'; });
             addMessage(msg2, 'ai');
-            if (verses2.length > 0 && result.data.tafsir_books) {
-                openPopup(result.data, result.data.tafsir_books);
+            if (verses2.length > 0 && data.data.tafsir_books && data.data.tafsir_books.length > 0) {
+                openPopup({
+                    surah_name: data.data.surah_name,
+                    surah_id: data.data.surah_id,
+                    verse_number: verses2[0].verse_number,
+                    verse_text: verses2[0].verse_text,
+                    verses: verses2.map(function(v){ return {surah_id: data.data.surah_id, surah_name: data.data.surah_name, verse_number: v.verse_number, verse_text: v.verse_text}; })
+                }, data.data.tafsir_books);
             }
-        } else if (result.success && result.type === 'search') {
-            var results = result.data.results || [];
-            var msg3 = '🔍 نتائج البحث (' + results.length + '):\n\n';
-            results.slice(0, 10).forEach(function(r, i) {
-                msg3 += (i+1) + '. ' + r.surah_name + ' ' + r.verse_number + ': ﴿ ' + r.verse_text.substring(0, 100) + '... ﴾\n\n';
-            });
-            addMessage(msg3, 'ai');
+        } else if (data.success && data.type === 'ai_response') {
+            addMessage(data.reply, 'ai');
         } else {
-            addMessage(result.reply || '❌ لم أجد نتيجة', 'ai');
+            addMessage(data.reply || '❌ عذراً، حدث خطأ.', 'ai');
         }
     } catch(err) {
         showTyping(false);
-        console.error('[Chat] خطأ:', err);
-        addMessage('❌ ' + err.message, 'ai');
+        addMessage('❌ لا يمكن الاتصال بالخادم.', 'ai');
     } finally {
         if (btn) { btn.disabled = false; btn.textContent = 'إرسال ➤'; }
         if (input) input.focus();
         isProcessing = false;
     }
-}// ---------- الميزات الأخرى ----------
+}
+
+// ---------- الميزات الأخرى ----------
 async function openSurahIndex() {
     var overlay = document.getElementById('surahOverlay');
     if (overlay) overlay.classList.add('active');
