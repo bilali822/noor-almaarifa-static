@@ -1753,6 +1753,84 @@ h1, .page-title, .app-title{
 }
 </style>
 
+
+<style id="perf-boost">
+/* ⚡ PERF BOOST — نفس المظهر، أداء أعلى بكثير على الأجهزة الضعيفة */
+
+/* 1) إلغاء blur الثقيل (المظهر شبه مطابق) */
+@media (max-width: 1024px), (any-pointer: coarse), (prefers-reduced-motion: reduce) {
+  .header {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: rgba(18, 18, 46, 0.92) !important;
+  }
+  .message .bubble,
+  .typing .bubble,
+  .input-wrapper,
+  .feature-card,
+  .quick-btn,
+  .tafsir-option,
+  .tafsir-popup {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  .tafsir-popup { background: rgba(18, 18, 46, 0.98) !important; }
+  .input-wrapper { background: rgba(18, 18, 46, 0.98) !important; }
+  .overlay {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: rgba(10, 10, 26, 0.94) !important;
+  }
+
+  /* 2) إيقاف كل الأنيميشن — نفس الشكل بلا حركة */
+  .bg-orb { animation: none !important; filter: blur(40px) !important; opacity: 0.35 !important; }
+  .message,
+  .welcome,
+  .welcome .hero,
+  .header .brand .icon-wrapper,
+  .header .brand .info .status::before,
+  .typing .dot {
+    animation: none !important;
+  }
+  .welcome .hero::before { display: none !important; }
+
+  /* 3) إلغاء transition على العناصر الثقيلة */
+  .feature-card, .quick-btn, .tafsir-option,
+  .header-actions button, .header .brand .back-btn,
+  .input-area .send-btn, .btn-all, .btn-primary {
+    transition: none !important;
+  }
+}
+
+/* 4) تحسين عرض الرسائل دائمًا */
+.messages {
+  scroll-behavior: auto !important;
+  contain: layout paint !important;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+.message {
+  contain: content;
+}
+.message .bubble {
+  contain: content;
+}
+
+/* 5) إزالة will-change غير الضروري */
+* { will-change: auto !important; }
+.input-area .send-btn { will-change: transform !important; }
+
+/* 6) منع تأخير النقر 300ms */
+button, a, .quick-btn, .tafsir-option, .feature-card {
+  touch-action: manipulation;
+}
+
+/* 7) إلغاء contain: strict على overlay (كان يكسر النافذة) */
+.overlay { contain: none !important; }
+
+/* 8) منع overscroll على الصفحة كاملة */
+html, body { overscroll-behavior: none; }
+</style>
 </head>
 <body>
 
@@ -1855,7 +1933,7 @@ h1, .page-title, .app-title{
 </div>
 
 
-<script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+<!-- eruda lazy loaded with ?debug -->
 <script src="./db-offline.js"></script>
 <script src="./search_engine.js"></script>
 <script src="./download-progress.js" defer></script>
@@ -3009,18 +3087,14 @@ window.downloadOfflineData = async function() {
 };
 </script>
 <script>
-  if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-    eruda.init({
-      tool: ['console', 'elements', 'network', 'resources', 'info'],
-      useShadowDom: true,
-      autoScale: true,
-      defaults: {
-        displaySize: 50,
-        transparency: 0.9,
-        theme: 'Dark'
-      }
-    });
-    console.log('✅ Eruda جاهز');
+  // eruda فقط عند ?debug — لتسريع الأجهزة الضعيفة
+  if (location.search.indexOf('debug') !== -1 && /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+    var _s = document.createElement('script');
+    _s.src = 'https://cdn.jsdelivr.net/npm/eruda';
+    _s.onload = function () {
+      eruda.init({ tool: ['console', 'elements', 'network'], useShadowDom: true });
+    };
+    document.head.appendChild(_s);
   }
 </script>
 <script>
@@ -3042,122 +3116,10 @@ window.__staticMode = true;
 </script>
 
 
-<script>
-// ═══════════════════════════════════════════════════
-// 💥 إصلاح قسري — يعدّل <pre> مباشرة
-// يعمل مهما كانت أولويات CSS
-// ═══════════════════════════════════════════════════
-(function() {
-  'use strict';
-  
-  function fixPreElements() {
-    var pres = document.querySelectorAll('.message pre, .bubble pre, #messages pre');
-    console.log('🔧 إصلاح', pres.length, 'عنصر pre');
-    
-    pres.forEach(function(pre) {
-      // استخدم setProperty مع important
-      pre.style.setProperty('white-space', 'pre-wrap', 'important');
-      pre.style.setProperty('word-wrap', 'break-word', 'important');
-      pre.style.setProperty('overflow-wrap', 'anywhere', 'important');
-      pre.style.setProperty('word-break', 'break-word', 'important');
-      pre.style.setProperty('width', '100%', 'important');
-      pre.style.setProperty('max-width', '100%', 'important');
-      pre.style.setProperty('min-width', '0', 'important');
-      pre.style.setProperty('overflow', 'hidden', 'important');
-      pre.style.setProperty('font-family', 'inherit', 'important');
-      pre.style.setProperty('font-size', '16px', 'important');
-      pre.style.setProperty('line-height', '2', 'important');
-      pre.style.setProperty('direction', 'rtl', 'important');
-      pre.style.setProperty('text-align', 'right', 'important');
-      pre.style.setProperty('margin', '0', 'important');
-      pre.style.setProperty('padding', '0', 'important');
-      pre.style.setProperty('box-sizing', 'border-box', 'important');
-    });
-    
-    // إصلاح .bubble أيضاً
-    var bubbles = document.querySelectorAll('.message .bubble');
-    bubbles.forEach(function(b) {
-      b.style.setProperty('max-width', 'calc(100% - 50px)', 'important');
-      b.style.setProperty('overflow', 'hidden', 'important');
-      b.style.setProperty('width', 'auto', 'important');
-      b.style.setProperty('box-sizing', 'border-box', 'important');
-    });
-  }
-  
-  // 1. عند تحميل الصفحة
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', fixPreElements);
-  } else {
-    fixPreElements();
-  }
-  
-  // 2. بعد إضافة أي رسالة جديدة — راقب #messages
-  var messagesContainer = document.getElementById('messages');
-  if (messagesContainer) {
-    var observer = new MutationObserver(function(mutations) {
-      fixPreElements();
-    });
-    observer.observe(messagesContainer, {
-      childList: true,
-      subtree: true
-    });
-    console.log('✅ MutationObserver جاهز');
-  }
-  
-  // 3. إصلاح دوري كل ثانية (احتياطي)
-  ;
-  
-  console.log('💥 إصلاح pre جاهز');
-})();
-</script>
 
 
-<script>
-// 🛡️ أمان: أخفِ أي splash متبقي فورًا
-(function() {
-  function hideAnySplash() {
-    // ابحث عن كل العناصر التي قد تكون splash
-    var selectors = [
-      '#nmSplash', '#nmSplashLight', '.nm-splash-overlay',
-      '[id*="Splash"]', '[class*="splash-overlay"]'
-    ];
-    selectors.forEach(function(sel) {
-      try {
-        document.querySelectorAll(sel).forEach(function(el) {
-          el.style.display = 'none';
-          el.style.visibility = 'hidden';
-          el.style.opacity = '0';
-          el.style.pointerEvents = 'none';
-          if (el.parentNode) el.parentNode.removeChild(el);
-        });
-      } catch(e) {}
-    });
-  }
-  
-  // عند التحميل
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', hideAnySplash);
-  } else {
-    hideAnySplash();
-  }
-  
-  // بعد التحميل الكامل
-  window.addEventListener('load', hideAnySplash);
-  
-  // كل 200ms في أول ثانية
-  setTimeout(hideAnySplash, 100);
-  setTimeout(hideAnySplash, 300);
-  setTimeout(hideAnySplash, 600);
-  setTimeout(hideAnySplash, 1000);
-  setTimeout(hideAnySplash, 1500);
-  setTimeout(hideAnySplash, 2500);
-  
-  // كإجراء أخير
-  setTimeout(hideAnySplash, 5000);
-  
-  console.log('🛡️ Splash Safety جاهز');
-})();
-</script>
+
+
 
 
 <script>
