@@ -1302,8 +1302,121 @@ pre {
 </style>
 
 
+<style id="hide-old-splash">
+#nmSplash, #nmSplash.nm-splash-hide {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+</style>
+
 </head>
 <body>
+
+<!-- 💨 Splash خفيف جدًا -->
+<div id="nmSplashLight">
+  <div class="spl-box">
+    <div class="spl-icon">🌙</div>
+    <div class="spl-title">نور المعرفة</div>
+    <div class="spl-sub">القرآن الكريم</div>
+    <div class="spl-spinner"></div>
+  </div>
+</div>
+
+<style>
+#nmSplashLight {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(135deg, #5A4FCF, #6C63FF);
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: -apple-system, BlinkMacSystemFont, 'Tajawal', system-ui, sans-serif;
+  direction: rtl;
+  transition: opacity 0.15s ease;
+  will-change: opacity;
+  contain: strict;
+}
+#nmSplashLight.hide {
+  opacity: 0;
+  pointer-events: none;
+}
+#nmSplashLight .spl-box {
+  text-align: center;
+  color: white;
+  padding: 20px;
+  transform: translateZ(0);
+}
+#nmSplashLight .spl-icon {
+  font-size: 72px;
+  line-height: 1;
+  margin-bottom: 20px;
+  display: block;
+}
+#nmSplashLight .spl-title {
+  font-size: 28px;
+  font-weight: 800;
+  margin-bottom: 8px;
+  letter-spacing: -0.5px;
+}
+#nmSplashLight .spl-sub {
+  font-size: 15px;
+  opacity: 0.85;
+  margin-bottom: 30px;
+}
+#nmSplashLight .spl-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid rgba(255,255,255,0.25);
+  border-top-color: white;
+  border-radius: 50%;
+  margin: 0 auto;
+  animation: splSpin 0.9s linear infinite;
+}
+@keyframes splSpin {
+  to { transform: rotate(360deg); }
+}
+@media (max-width: 480px) {
+  #nmSplashLight .spl-icon { font-size: 56px; }
+  #nmSplashLight .spl-title { font-size: 22px; }
+  #nmSplashLight .spl-sub { font-size: 13px; }
+}
+</style>
+
+<script>
+(function() {
+  'use strict';
+  var splash = document.getElementById('nmSplashLight');
+  if (!splash) return;
+  
+  var startTime = Date.now();
+  var MIN_DISPLAY = 400;  // 0.4 ثانية فقط
+  
+  function hide() {
+    var elapsed = Date.now() - startTime;
+    var wait = Math.max(0, MIN_DISPLAY - elapsed);
+    setTimeout(function() {
+      splash.classList.add('hide');
+      setTimeout(function() {
+        if (splash.parentNode) splash.parentNode.removeChild(splash);
+      }, 200);
+    }, wait);
+  }
+  
+  // اخفِ فورًا عند تحميل الصفحة
+  if (document.readyState === 'complete') {
+    hide();
+  } else {
+    window.addEventListener('load', hide);
+  }
+  
+  // حماية قصوى: اخفِ بعد 2 ثانية كحد أقصى
+  setTimeout(hide, 2000);
+})();
+</script>
+
+
 
 <div class="bg-scene">
     <div class="bg-orb"></div>
@@ -1452,6 +1565,195 @@ pre {
     document.body.classList.add('weak-device');
     console.log('⚡ جهاز ضعيف — تم تفعيل وضع التسريع');
   }
+})();
+</script>
+<script>
+(function() {
+  'use strict';
+  
+  // ═══════════════════════════════════════════════════
+  // المحتوى الديني
+  // ═══════════════════════════════════════════════════
+  const content = [
+    {
+      icon: '📖',
+      text: '﴿ إِنَّ هَذَا الْقُرْآنَ يَهْدِي لِلَّتِي هِيَ أَقْوَمُ ﴾',
+      source: 'الإسراء: 9'
+    },
+    {
+      icon: '🌙',
+      text: '"خَيْرُكُمْ مَنْ تَعَلَّمَ الْقُرْآنَ وَعَلَّمَهُ"',
+      source: 'رواه البخاري'
+    },
+    {
+      icon: '✨',
+      text: '﴿ وَنُنَزِّلُ مِنَ الْقُرْآنِ مَا هُوَ شِفَاءٌ وَرَحْمَةٌ لِلْمُؤْمِنِينَ ﴾',
+      source: 'الإسراء: 82'
+    },
+    {
+      icon: '💫',
+      text: '"مَنْ قَرَأَ حَرْفًا مِنْ كِتَابِ اللهِ فَلَهُ بِهِ حَسَنَةٌ"',
+      source: 'رواه الترمذي'
+    },
+    {
+      icon: '🕌',
+      text: '﴿ إِنَّا نَحْنُ نَزَّلْنَا الذِّكْرَ وَإِنَّا لَهُ لَحَافِظُونَ ﴾',
+      source: 'الحجر: 9'
+    },
+    {
+      icon: '🌸',
+      text: '"اقْرَؤُوا الْقُرْآنَ فَإِنَّهُ يَأْتِي يَوْمَ الْقِيَامَةِ شَفِيعًا لِأَصْحَابِهِ"',
+      source: 'رواه مسلم'
+    },
+    {
+      icon: '🌿',
+      text: '﴿ أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ ﴾',
+      source: 'الرعد: 28'
+    },
+    {
+      icon: '⭐',
+      text: '"الدَّالُّ عَلَى الْخَيْرِ كَفَاعِلِهِ"',
+      source: 'رواه الترمذي'
+    },
+    {
+      icon: '📿',
+      text: '﴿ وَقُلْ رَبِّ زِدْنِي عِلْمًا ﴾',
+      source: 'طه: 114'
+    },
+    {
+      icon: '🌅',
+      text: '"مَنْ سَلَكَ طَرِيقًا يَطْلُبُ فِيهِ عِلْمًا سَلَكَ اللهُ بِهِ طَرِيقًا إِلَى الْجَنَّةِ"',
+      source: 'رواه مسلم'
+    }
+  ];
+  
+  // رسائل حالة
+  const statusMessages = [
+    'جاري تجهيز التطبيق...',
+    'تحميل بيانات القرآن...',
+    'تجهيز التفاسير...',
+    'التحضير شبه جاهز...',
+    'لحظات من فضلك...',
+    'قد يستغرق بعض الوقت...',
+    'جاري الاتصال بالخادم...'
+  ];
+  
+  let contentIndex = 0;
+  let statusIndex = 0;
+  let progress = 0;
+  
+  const iconEl = document.getElementById('nmSplashIcon');
+  const textEl = document.getElementById('nmSplashText');
+  const sourceEl = document.getElementById('nmSplashSource');
+  const statusEl = document.getElementById('nmSplashStatus');
+  const barEl = document.getElementById('nmSplashBar');
+  const skipBtn = document.getElementById('nmSplashSkip');
+  
+  // ═══════════════════════════════════════════════════
+  // تغيير المحتوى
+  // ═══════════════════════════════════════════════════
+  function changeContent() {
+    if (textEl) textEl.classList.add('nm-splash-fade');
+    if (sourceEl) sourceEl.classList.add('nm-splash-fade');
+    
+    setTimeout(() => {
+      contentIndex = (contentIndex + 1) % content.length;
+      const item = content[contentIndex];
+      
+      if (iconEl) iconEl.textContent = item.icon;
+      if (textEl) textEl.textContent = item.text;
+      if (sourceEl) sourceEl.textContent = item.source;
+      
+      if (textEl) textEl.classList.remove('nm-splash-fade');
+      if (sourceEl) sourceEl.classList.remove('nm-splash-fade');
+    }, 400);
+  }
+  
+  // ═══════════════════════════════════════════════════
+  // تغيير الحالة
+  // ═══════════════════════════════════════════════════
+  function changeStatus() {
+    statusIndex = (statusIndex + 1) % statusMessages.length;
+    if (statusEl) statusEl.textContent = statusMessages[statusIndex];
+  }
+  
+  // ═══════════════════════════════════════════════════
+  // زيادة التقدم
+  // ═══════════════════════════════════════════════════
+  function incrementProgress() {
+    if (progress < 90) {
+      progress += Math.random() * 5 + 2;
+      if (progress > 90) progress = 90;
+      if (barEl) barEl.style.width = progress + '%';
+    }
+  }
+  
+  // ═══════════════════════════════════════════════════
+  // إخفاء الـ Splash
+  // ═══════════════════════════════════════════════════
+  function hideSplash() {
+    const splash = document.getElementById('nmSplash');
+    if (!splash) return;
+    
+    progress = 100;
+    if (barEl) barEl.style.width = '100%';
+    if (statusEl) statusEl.textContent = '✅ جاهز!';
+    if (textEl) textEl.textContent = 'بارك الله فيك، تفضّل 🌙';
+    if (sourceEl) sourceEl.textContent = '';
+    
+    setTimeout(() => {
+      splash.classList.add('nm-splash-hide');
+      setTimeout(() => splash.remove(), 800);
+    }, 800);
+  }
+  
+  // ═══════════════════════════════════════════════════
+  // التشغيل
+  // ═══════════════════════════════════════════════════
+  
+  // المحتوى الأول
+  const first = content[0];
+  if (iconEl) iconEl.textContent = first.icon;
+  if (textEl) textEl.textContent = first.text;
+  if (sourceEl) sourceEl.textContent = first.source;
+  
+  // تغيير المحتوى كل 4.5 ثوانٍ
+  const speedFactor = (window.innerWidth <= 768 || navigator.hardwareConcurrency <= 4) ? 2000 : 4500;
+  const contentTimer = setInterval(changeContent, speedFactor);
+  
+  // تغيير الحالة كل 2.5 ثانية
+  const statusTimer = setInterval(changeStatus, 1500);
+  
+  // زيادة التقدم
+  const progressTimer = setInterval(incrementProgress, 500);
+  
+  // اخفاء تلقائي عند تحميل الموقع
+  function tryHide() {
+    if (document.readyState === 'complete') {
+      setTimeout(hideSplash, 1000);
+    }
+  }
+  
+  if (document.readyState === 'complete') {
+    tryHide();
+  } else {
+    window.addEventListener('load', () => setTimeout(hideSplash, 1000));
+  }
+  
+  // احتياطي — بعد 20 ثانية
+  setTimeout(hideSplash, (window.innerWidth <= 768 || navigator.hardwareConcurrency <= 4) ? 5000 : 20000);
+  
+  // زر التخطي
+  if (skipBtn) {
+    skipBtn.onclick = () => {
+      clearInterval(contentTimer);
+      clearInterval(statusTimer);
+      clearInterval(progressTimer);
+      hideSplash();
+    };
+  }
+  
+  console.log('[Splash] ✅ جاهز — محتوى ديني');
 })();
 </script>
 <script>
@@ -2675,54 +2977,6 @@ window.__staticMode = true;
   setInterval(fixPreElements, 1000);
   
   console.log('💥 إصلاح pre جاهز');
-})();
-</script>
-
-
-<script>
-// 🛡️ أمان: أخفِ أي splash متبقي فورًا
-(function() {
-  function hideAnySplash() {
-    // ابحث عن كل العناصر التي قد تكون splash
-    var selectors = [
-      '#nmSplash', '#nmSplashLight', '.nm-splash-overlay',
-      '[id*="Splash"]', '[class*="splash-overlay"]'
-    ];
-    selectors.forEach(function(sel) {
-      try {
-        document.querySelectorAll(sel).forEach(function(el) {
-          el.style.display = 'none';
-          el.style.visibility = 'hidden';
-          el.style.opacity = '0';
-          el.style.pointerEvents = 'none';
-          if (el.parentNode) el.parentNode.removeChild(el);
-        });
-      } catch(e) {}
-    });
-  }
-  
-  // عند التحميل
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', hideAnySplash);
-  } else {
-    hideAnySplash();
-  }
-  
-  // بعد التحميل الكامل
-  window.addEventListener('load', hideAnySplash);
-  
-  // كل 200ms في أول ثانية
-  setTimeout(hideAnySplash, 100);
-  setTimeout(hideAnySplash, 300);
-  setTimeout(hideAnySplash, 600);
-  setTimeout(hideAnySplash, 1000);
-  setTimeout(hideAnySplash, 1500);
-  setTimeout(hideAnySplash, 2500);
-  
-  // كإجراء أخير
-  setTimeout(hideAnySplash, 5000);
-  
-  console.log('🛡️ Splash Safety جاهز');
 })();
 </script>
 
