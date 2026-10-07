@@ -1302,98 +1302,6 @@ pre {
 </style>
 
 
-
-<style id="tap-fix">
-/* ═══════════════════════════════════════════════════
-   🚫 إزالة المربعات الزرقاء عند الضغط
-   ═══════════════════════════════════════════════════ */
-
-/* 1. إزالة highlight الأزرق */
-*,
-*::before,
-*::after {
-    -webkit-tap-highlight-color: transparent !important;
-    -webkit-tap-highlight-color: rgba(0,0,0,0) !important;
-    -webkit-touch-callout: none !important;
-}
-
-/* 2. منع تحديد النص (ما عدا المدخلات) */
-* {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
-/* 3. السماح بتحديد النص في المدخلات فقط */
-input,
-textarea,
-[contenteditable="true"] {
-    -webkit-user-select: text !important;
-    -moz-user-select: text !important;
-    -ms-user-select: text !important;
-    user-select: text !important;
-}
-
-/* 4. السماح بتحديد نص الرسائل (للتحديد والنسخ) */
-.message pre,
-.message .bubble,
-.message .bubble * {
-    -webkit-user-select: text !important;
-    -moz-user-select: text !important;
-    user-select: text !important;
-    -webkit-touch-callout: default !important;
-}
-
-/* 5. أزرار بدون highlight */
-button,
-a,
-.card,
-.card-full,
-.quick-btn,
-.examples button,
-.tafsir-option,
-.feature-card {
-    -webkit-tap-highlight-color: transparent !important;
-    outline: none !important;
-    -webkit-tap-highlight-color: rgba(0,0,0,0) !important;
-}
-
-/* 6. عند الضغط — لا تأثير أزرق */
-button:focus,
-a:focus,
-input:focus,
-textarea:focus,
-div:focus {
-    outline: none !important;
-    -webkit-tap-highlight-color: transparent !important;
-}
-
-/* 7. تنسيق الوقت بشكل صحيح */
-.message .time {
-    font-size: 11px !important;
-    opacity: 0.55 !important;
-    display: inline-block !important;
-    margin-top: 6px !important;
-    font-weight: 500 !important;
-    letter-spacing: 0.3px !important;
-    direction: ltr !important;
-    unicode-bidi: embed !important;
-    white-space: nowrap !important;
-    font-family: 'Tajawal', system-ui, sans-serif !important;
-}
-
-/* 8. avatar — حرف الميم بشكل صحيح */
-.message .avatar {
-    font-family: 'Tajawal', system-ui, sans-serif !important;
-    font-size: 14px !important;
-    font-weight: 800 !important;
-    letter-spacing: 0 !important;
-    line-height: 1 !important;
-    text-transform: none !important;
-}
-</style>
-
 </head>
 <body>
 
@@ -1949,7 +1857,7 @@ function addMessage(text, type) {
     if (!container) return;
     var div = document.createElement('div');
     div.className = 'message ' + type;
-    var time = window.formatTime ? window.formatTime(new Date()) : new Date().toLocaleTimeString('ar-SA', {hour: '2-digit', minute: '2-digit'});
+    var time = new Date().toLocaleTimeString('ar-SA', {hour: '2-digit', minute: '2-digit'});
     var pre = document.createElement('pre');
     pre.textContent = String(text || '');
     var timeEl = document.createElement('span');
@@ -2210,7 +2118,7 @@ function addMessageWithId(text, type, id) {
     div.className = 'message ' + type;
     div.id = id;
     
-    var time = window.formatTime ? window.formatTime(new Date()) : new Date().toLocaleTimeString('ar-SA', {hour: '2-digit', minute: '2-digit'});
+    var time = new Date().toLocaleTimeString('ar-SA', {hour: '2-digit', minute: '2-digit'});
     var pre = document.createElement('pre');
     pre.textContent = String(text || '');
     var timeEl = document.createElement('span');
@@ -2813,39 +2721,6 @@ window.__staticMode = true;
   setTimeout(hideAnySplash, 5000);
   
   console.log('🛡️ Splash Safety جاهز');
-})();
-</script>
-
-
-<script>
-// ═══════════════════════════════════════════════════
-// ⏰ تنسيق الوقت بشكل صحيح
-// ═══════════════════════════════════════════════════
-(function() {
-    'use strict';
-    
-    // دالة تنسيق الوقت — نسخة محسّنة
-    window.formatTime = function(date) {
-        if (!date) date = new Date();
-        
-        var hours = date.getHours();
-        var minutes = date.getMinutes();
-        
-        // صباح / مساء
-        var period = hours >= 12 ? 'م' : 'ص';
-        
-        // 12 ساعة
-        var h12 = hours % 12;
-        if (h12 === 0) h12 = 12;
-        
-        // إضافة صفر للدقائق
-        var m = minutes < 10 ? '0' + minutes : String(minutes);
-        
-        // تنسيق: 3:45 م
-        return h12 + ':' + m + ' ' + period;
-    };
-    
-    console.log('⏰ formatTime جاهز');
 })();
 </script>
 
