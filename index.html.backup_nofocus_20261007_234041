@@ -792,85 +792,6 @@ html, body {
 }
 </style>
 
-
-<style id="home-perf">
-/* ⚡ أداء الصفحة الرئيسية — للأجهزة الضعيفة */
-
-/* 1. تعطيل الحركات الثقيلة */
-@media (max-width: 768px), (prefers-reduced-motion: reduce) {
-    .card, .card-full {
-        animation: none !important;
-        transition: transform 0.15s ease !important;
-    }
-    
-    .header .logo-icon,
-    .dev-btn {
-        animation: none !important;
-    }
-    
-    /* إزالة blur */
-    .header, .card, .card-full, .dev-modal, .dev-btn {
-        backdrop-filter: none !important;
-        -webkit-backdrop-filter: none !important;
-    }
-    
-    /* إزالة الظلال الثقيلة */
-    .card:hover, .card-full:hover {
-        transform: translateY(-2px) !important;
-        box-shadow: 0 4px 12px rgba(108, 99, 255, 0.15) !important;
-    }
-}
-
-/* 2. تعطيل particles على الأجهزة الضعيفة */
-@media (max-width: 1024px) {
-    #particles,
-    .bg-gradient {
-        display: none !important;
-    }
-}
-
-/* 3. تحسين الأداء العام */
-* {
-    -webkit-tap-highlight-color: transparent;
-}
-
-body {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeSpeed;
-}
-
-/* 4. card improvements */
-.card, .card-full {
-    contain: layout style paint;
-    will-change: transform;
-}
-
-/* 5. responsive خفيف */
-@media (max-width: 480px) {
-    .card {
-        padding: 20px 12px !important;
-    }
-    .card .card-icon-wrapper {
-        width: 50px !important;
-        height: 50px !important;
-        font-size: 22px !important;
-    }
-    .card h3 {
-        font-size: 16px !important;
-    }
-    .card p {
-        font-size: 13px !important;
-    }
-    .welcome-section {
-        padding: 30px 16px !important;
-    }
-    .welcome-section h1 {
-        font-size: 24px !important;
-    }
-}
-</style>
-
 </head>
 <body>
 
@@ -1836,10 +1757,19 @@ body {
     }
     
     function createParticles() {
-    // ⚡ معطّل على الأجهزة الضعيفة
-    if (window.matchMedia("(max-width: 1024px)").matches) return;
-    if (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) return;
-}
+        if (window.matchMedia("(max-width: 768px)").matches) return;
+        var container = document.getElementById('particles');
+        for (var i = 0; i < 30; i++) {
+            var dot = document.createElement('div');
+            dot.className = 'dot';
+            dot.style.left = Math.random() * 100 + '%';
+            dot.style.top = Math.random() * 100 + '%';
+            dot.style.width = (2 + Math.random() * 6) + 'px';
+            dot.style.height = dot.style.width;
+            dot.style.animationDelay = (Math.random() * 20) + 's';
+            dot.style.animationDuration = (15 + Math.random() * 15) + 's';
+            container.appendChild(dot);
+        }
     }
     
     function createRipple(e) {

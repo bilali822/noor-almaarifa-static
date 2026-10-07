@@ -1508,7 +1508,7 @@ pre {
     o.style.display = 'flex';
     setTimeout(() => {
       const i = document.getElementById('nmNameInput');
-      if (i) { i.focus(); try { i.select(); } catch(e) {} }
+      if (i) { try { i.select(); } catch(e) {} }
     }, 400);
   }
   
@@ -1598,7 +1598,6 @@ pre {
         
         if (!v || v.length < 2) {
           input.style.borderColor = '#FF4757';
-          input.focus();
           input.placeholder = '⚠️ اكتب اسمك (حرفان على الأقل)';
           return;
         }
@@ -2238,7 +2237,7 @@ async function sendMessage() {
         addMessage('❌ ' + err.message, 'ai');
     } finally {
         if (btn) { btn.disabled = false; btn.textContent = 'إرسال ➤'; }
-        if (input) input.focus();
+        if (input)
         isProcessing = false;
     }
 }// ---------- الميزات الأخرى ----------
@@ -2481,7 +2480,6 @@ document.addEventListener('DOMContentLoaded', function() {
             this.style.height = 'auto';
             this.style.height = Math.min(this.scrollHeight, 130) + 'px';
         });
-        input.focus();
     }
     
     document.addEventListener('keydown', function(e) {
@@ -2672,7 +2670,7 @@ window.__staticMode = true;
   }
   
   // 3. إصلاح دوري كل ثانية (احتياطي)
-  setInterval(fixPreElements, 1000);
+  ;
   
   console.log('💥 إصلاح pre جاهز');
 })();
