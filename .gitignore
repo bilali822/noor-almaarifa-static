@@ -1,6 +1,11 @@
+android/
+node_modules/
+.gradle/
+build/
+*.apk
+*.aab
+*.keystore
 .DS_Store
 Thumbs.db
-*:Zone.Identifier
 *.log
-.vscode/
-.idea/
+www/android/

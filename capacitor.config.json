@@ -1,0 +1,12 @@
+{
+  "appId": "com.noor.almaarifa",
+  "appName": "نور المعرفة",
+  "webDir": "www",
+  "android": {
+    "allowMixedContent": true,
+    "captureInput": true
+  },
+  "server": {
+    "androidScheme": "https"
+  }
+}

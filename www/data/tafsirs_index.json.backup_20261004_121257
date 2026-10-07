@@ -1,0 +1,58 @@
+{
+  "books": [
+    {
+      "key": "muyassar",
+      "name": "التفسير الميسر",
+      "short_name": "الميسر",
+      "icon": "📖",
+      "color": "#4CAF50",
+      "file": "/static/data/tafsirs/muyassar.json",
+      "size_mb": 2.43
+    },
+    {
+      "key": "jalalayn",
+      "name": "تفسير الجلالين",
+      "short_name": "الجلالين",
+      "icon": "📕",
+      "color": "#2196F3",
+      "file": "/static/data/tafsirs/jalalayn.json",
+      "size_mb": 1.86
+    },
+    {
+      "key": "ibn_kathir",
+      "name": "تفسير ابن كثير",
+      "short_name": "ابن كثير",
+      "icon": "📗",
+      "color": "#FF9800",
+      "file": "/static/data/tafsirs/ibn_kathir.json",
+      "size_mb": 12.75
+    },
+    {
+      "key": "saadi",
+      "name": "تفسير السعدي",
+      "short_name": "السعدي",
+      "icon": "📘",
+      "color": "#9C27B0",
+      "file": "/static/data/tafsirs/saadi.json",
+      "size_mb": 5.84
+    },
+    {
+      "key": "qurtubi",
+      "name": "تفسير القرطبي",
+      "short_name": "القرطبي",
+      "icon": "📚",
+      "color": "#009688",
+      "file": "/static/data/tafsirs/qurtubi.json",
+      "size_mb": 18.78
+    },
+    {
+      "key": "baghawy",
+      "name": "تفسير البغوي",
+      "short_name": "البغوي",
+      "icon": "📓",
+      "color": "#795548",
+      "file": "/static/data/tafsirs/baghawy.json",
+      "size_mb": 7.3
+    }
+  ]
+}
