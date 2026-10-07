@@ -3,16 +3,23 @@
   "short_name": "نور المعرفة",
   "description": "منصة قرآنية ذكية مع 6 كتب تفسير تعمل بدون إنترنت",
   "id": "/quran.html",
-  "start_url": "./quran.html",
-  "scope": "./",
+  "start_url": "/quran.html",
+  "scope": "/",
   "display": "standalone",
-  "display_override": ["standalone", "minimal-ui"],
-  "orientation": "portrait-primary",
+  "display_override": [
+    "standalone",
+    "fullscreen"
+  ],
+  "orientation": "portrait",
   "background_color": "#6C63FF",
   "theme_color": "#6C63FF",
   "lang": "ar",
   "dir": "rtl",
-  "categories": ["education", "books", "lifestyle"],
+  "categories": [
+    "education",
+    "books",
+    "lifestyle"
+  ],
   "prefer_related_applications": false,
   "icons": [
     {
