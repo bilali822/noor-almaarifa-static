@@ -1406,35 +1406,6 @@ pre,code{max-width:100%;overflow-x:auto;overflow-wrap:anywhere}
 
 
 // ═══════════════════════════════════════════════════
-
-// ═══════════════════════════════════════════════════
-// 📚 أسماء التفاسير الثابتة (بالعربي)
-// ═══════════════════════════════════════════════════
-window.TAFSIR_ARABIC_NAMES = {
-  'muyassar':    { name: 'التفسير الميسر',    icon: '📖' },
-  'jalalayn':    { name: 'تفسير الجلالين',    icon: '📕' },
-  'ibn_kathir':  { name: 'تفسير ابن كثير',    icon: '📗' },
-  'saadi':       { name: 'تفسير السعدي',      icon: '📘' },
-  'tabari':      { name: 'تفسير الطبري',      icon: '📙' },
-  'qurtubi':     { name: 'تفسير القرطبي',     icon: '📚' },
-  'baghawy':     { name: 'تفسير البغوي',      icon: '📓' }
-};
-
-// ✅ دالة الحصول على اسم عربي
-window.getTafsirArabicName = function(key, fallbackName) {
-  if (window.TAFSIR_ARABIC_NAMES[key]) {
-    return window.TAFSIR_ARABIC_NAMES[key].name;
-  }
-  return fallbackName || key;
-};
-
-window.getTafsirArabicIcon = function(key, fallbackIcon) {
-  if (window.TAFSIR_ARABIC_NAMES[key]) {
-    return window.TAFSIR_ARABIC_NAMES[key].icon;
-  }
-  return fallbackIcon || '📖';
-};
-
 // 💡 Tafsir Fallback Helpers
 // يعمل مع الإنترنت (fetch من data/) وبدونها (IndexedDB)
 // ═══════════════════════════════════════════════════
@@ -1614,6 +1585,7 @@ async function openPopup(verseInfo, tafsirBooks) {
     var verseNumber = verseInfo.verse_number;
     
     try {
+        // ✅ استخدم الـ Fallback: IndexedDB ← أو ← الخادم
         var allTafsirs = await window.getAllTafsirsWithFallback(surahId, verseNumber);
         
         list.innerHTML = '';
@@ -1629,14 +1601,10 @@ async function openPopup(verseInfo, tafsirBooks) {
                 var color = book.color || '#6C63FF';
                 if (!/^#[0-9a-fA-F]{6}$/.test(color)) color = '#6C63FF';
                 
-                // ✅ الاسم العربي الثابت
-                var arabicName = window.getTafsirArabicName(book.key, book.name || book.short_name);
-                var arabicIcon = window.getTafsirArabicIcon(book.key, book.icon);
-                
                 var hasText = book.text && !book.text.startsWith('⚠️');
                 
-                div.innerHTML = '<span class="icon">' + arabicIcon + '</span>' +
-                    '<div class="info"><div class="name">' + arabicName + '</div>' +
+                div.innerHTML = '<span class="icon">' + (book.icon || '📖') + '</span>' +
+                    '<div class="info"><div class="name">' + (book.name || book.short_name || '') + '</div>' +
                     '<div class="desc">' + (hasText ? '✅ متوفر' : '⚠️ غير متوفر') + '</div></div>' +
                     '<div class="check">✓</div>' +
                     '<div class="color-bar" style="background:' + color + '"></div>';
@@ -1744,11 +1712,12 @@ async function showSelectedTafsirs() {
         addMessageWithId(tempText, 'ai', tempId);
         
         // ═══════════════════════════════════════════
-        // 🚀 2. حمّل كل التفاسير بالتوازي
+        // 🚀 2. جلب كل التفاسير بالتوازي
         // ═══════════════════════════════════════════
-        var loadedBooks = {};
-        await Promise.all(selected.map(async function(key) {
-            loadedBooks[key] = await window.fetchTafsirBook(key);
+        
+        // ابدأ بتحميل الكتب المختارة (في الخلفية)
+        var booksToLoad = await Promise.all(selected.map(function(key) {
+            return window.fetchTafsirBook(key);
         }));
         
         // ═══════════════════════════════════════════
@@ -1774,29 +1743,27 @@ async function showSelectedTafsirs() {
             parts.push('﴿ ' + vt + ' ﴾');
             parts.push('');
             
+            // التفاسير — استخدم الكتب المحمّلة
             for (var j = 0; j < selected.length; j++) {
                 var key = selected[j];
                 var book = await window.NoorDB.getTafsirBook(key);
+                var bookName = book && book.name ? book.name : (book && book.short_name ? book.short_name : key);
+                var bookIcon = book && book.icon ? book.icon : '📖';
                 
-                // ✅ استخدم الاسم العربي الثابت
-                var bookName = window.getTafsirArabicName(key, book ? (book.name || book.short_name) : null);
-                var bookIcon = window.getTafsirArabicIcon(key, book ? book.icon : null);
-                
+                // ابحث عن النص في الكتب المحمّلة
                 var tafsirText = '⚠️ غير متوفر';
-                var content = loadedBooks[key];
-                if (content && content[String(sid)] && content[String(sid)][String(vn)]) {
-                    tafsirText = content[String(sid)][String(vn)];
-                }
+                try {
+                    var content = await window.fetchTafsirBook(key);
+                    if (content && content[String(sid)] && content[String(sid)][String(vn)]) {
+                        tafsirText = content[String(sid)][String(vn)];
+                    }
+                } catch(e) {}
                 
                 if (tafsirText && !tafsirText.startsWith('⚠️')) {
                     parts.push('─────────────────');
                     parts.push(bookIcon + ' ' + bookName + ':');
                     parts.push('');
                     parts.push(tafsirText);
-                    parts.push('');
-                } else {
-                    parts.push('─────────────────');
-                    parts.push(bookIcon + ' ' + bookName + ': ⚠️ غير متوفر');
                     parts.push('');
                 }
             }
@@ -1825,7 +1792,9 @@ async function showSelectedTafsirs() {
     } finally {
         if (btn) { btn.disabled = false; btn.textContent = '✅ عرض التفسير'; }
     }
-}// ✅ إضافة رسالة مع ID (للاستبدال)
+}
+
+// ✅ إضافة رسالة مع ID (للاستبدال)
 function addMessageWithId(text, type, id) {
     var container = document.getElementById('messages');
     var welcome = document.getElementById('welcome');
