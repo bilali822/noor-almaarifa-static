@@ -1,0 +1,50 @@
+# Cloudflare Workers Assets — الملفات المستبعدة
+# يمنع رفع ملفات البناء الضخمة
+
+# Node modules
+node_modules/
+**/node_modules/
+
+# Android build (Capacitor)
+android/
+**/android/
+.gradle/
+**/.gradle/
+build/
+**/build/
+
+# APK files
+*.apk
+*.aab
+*.keystore
+local.properties
+
+# Git
+.git/
+.gitignore
+
+# Backups
+*.backup_*
+*.broken_*
+*.save*
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+*:Zone.Identifier
+
+# Capacitor
+capacitor.config.json
+package.json
+package-lock.json
+bun.lockb
+
+# GitHub Actions
+.github/
+
+# Other
+www/node_modules/
+www/android/
