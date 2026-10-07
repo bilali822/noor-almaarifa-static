@@ -1577,6 +1577,182 @@ div:focus {
 }
 </style>
 
+
+<style id="noor-anim">
+/* ===== متغيرات ===== */
+:root{
+  --noor-ease: cubic-bezier(.22,.61,.36,1);
+  --noor-fast: 180ms;
+  --noor-med: 320ms;
+}
+
+/* ===== 1) دخول الصفحة: ظل + انزلاق ناعم للعناصر الرئيسية ===== */
+@keyframes noor-fade-up{
+  from{opacity:0;transform:translate3d(0,14px,0)}
+  to  {opacity:1;transform:translate3d(0,0,0)}
+}
+@keyframes noor-fade-in{
+  from{opacity:0} to{opacity:1}
+}
+.main-container, .chat-wrapper, .card, .message, .app-header{
+  animation: noor-fade-up 480ms var(--noor-ease) both;
+}
+.message{animation-duration:360ms}
+.message:nth-child(2){animation-delay:40ms}
+.message:nth-child(3){animation-delay:80ms}
+.message:nth-child(4){animation-delay:120ms}
+.message:nth-child(n+5){animation-delay:160ms}
+
+/* ===== 2) الرسائل: انزلاق من جهة المرسل ===== */
+@keyframes noor-slide-user{
+  from{opacity:0;transform:translate3d(18px,0,0)}
+  to  {opacity:1;transform:translate3d(0,0,0)}
+}
+@keyframes noor-slide-bot{
+  from{opacity:0;transform:translate3d(-18px,0,0)}
+  to  {opacity:1;transform:translate3d(0,0,0)}
+}
+.message.user, .message--user{animation:noor-slide-user 320ms var(--noor-ease) both}
+.message.bot,  .message--bot {animation:noor-slide-bot  320ms var(--noor-ease) both}
+
+/* ===== 3) الأزرار: رفع خفيف + بريق ===== */
+button, .btn, a.btn{
+  transition: transform var(--noor-fast) var(--noor-ease),
+              box-shadow var(--noor-fast) var(--noor-ease),
+              filter var(--noor-fast) var(--noor-ease);
+  will-change: transform;
+  position: relative;
+  overflow: hidden;
+}
+button:hover, .btn:hover, a.btn:hover{
+  transform: translate3d(0,-2px,0);
+  box-shadow: 0 8px 20px rgba(0,0,0,.12);
+  filter: brightness(1.05);
+}
+button:active, .btn:active, a.btn:active{
+  transform: translate3d(0,0,0) scale(.98);
+}
+/* بريق يمرّ على الزر */
+button::after, .btn::after{
+  content:"";
+  position:absolute; inset:0;
+  background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.35) 50%,transparent 70%);
+  transform:translateX(-120%);
+  transition:transform 600ms var(--noor-ease);
+  pointer-events:none;
+}
+button:hover::after, .btn:hover::after{transform:translateX(120%)}
+
+/* ===== 4) الروابط: خط سفلي ينمو ===== */
+a:not(.btn):not(button){
+  position:relative;
+  transition:color var(--noor-fast) var(--noor-ease);
+}
+a:not(.btn):not(button)::after{
+  content:"";
+  position:absolute; left:0; bottom:-2px;
+  width:100%; height:2px;
+  background:currentColor;
+  transform:scaleX(0); transform-origin:right;
+  transition:transform var(--noor-med) var(--noor-ease);
+}
+a:not(.btn):not(button):hover::after{
+  transform:scaleX(1); transform-origin:left;
+}
+
+/* ===== 5) العنوان الرئيسي: تدرّج متحرك ناعم ===== */
+@keyframes noor-shimmer{
+  0%  {background-position:0% 50%}
+  100%{background-position:200% 50%}
+}
+h1, .page-title, .app-title{
+  background:linear-gradient(90deg,
+    currentColor 0%, currentColor 40%,
+    #d4af37 50%,
+    currentColor 60%, currentColor 100%);
+  background-size:200% 100%;
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+  animation:noor-shimmer 6s linear infinite;
+}
+
+/* ===== 6) المودال: ظهور ناعم + scale ===== */
+@keyframes noor-modal-in{
+  from{opacity:0;transform:scale(.94) translate3d(0,8px,0)}
+  to  {opacity:1;transform:scale(1)   translate3d(0,0,0)}
+}
+.dev-modal{
+  position:fixed; inset:0; z-index:10000;
+  display:none;
+}
+.dev-modal.open{display:block;animation:noor-fade-in 200ms ease both}
+.dev-modal__backdrop{
+  position:absolute; inset:0;
+  background:rgba(0,0,0,.5);
+  backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);
+}
+.dev-modal__panel{
+  position:relative;
+  max-width:520px; margin:8vh auto;
+  background:#fff; color:#222;
+  border-radius:16px;
+  padding:20px 22px;
+  box-shadow:0 20px 60px rgba(0,0,0,.3);
+  animation:noor-modal-in 260ms var(--noor-ease) both;
+}
+.dev-modal__head{
+  display:flex; justify-content:space-between; align-items:center;
+  margin-bottom:14px; padding-bottom:10px;
+  border-bottom:1px solid #eee;
+}
+.dev-modal__head h3{margin:0;font-size:1.1rem}
+.dev-modal__close{
+  background:transparent; border:0; font-size:1.2rem;
+  cursor:pointer; padding:4px 10px; border-radius:8px;
+}
+.dev-modal__close:hover{background:#f2f2f2}
+.dev-modal__body p{margin:8px 0; font-size:.95rem}
+.dev-btn-danger{
+  margin-top:10px; padding:8px 14px;
+  background:#e74c3c; color:#fff; border:0;
+  border-radius:10px; cursor:pointer;
+}
+
+/* ===== 7) تأثير الظهور عند التمرير (IntersectionObserver) ===== */
+.noor-reveal{
+  opacity:0; transform:translate3d(0,16px,0);
+  transition:opacity 500ms var(--noor-ease), transform 500ms var(--noor-ease);
+  will-change:opacity, transform;
+}
+.noor-reveal.is-visible{
+  opacity:1; transform:translate3d(0,0,0);
+}
+
+/* ===== 8) مؤشر الكتابة (نقاط تنبض بلطف) ===== */
+@keyframes noor-dot{
+  0%,80%,100%{transform:translateY(0);opacity:.4}
+  40%{transform:translateY(-4px);opacity:1}
+}
+.typing-dot, .dot{
+  display:inline-block; width:6px; height:6px; margin:0 2px;
+  border-radius:50%; background:currentColor;
+  animation:noor-dot 1.2s infinite ease-in-out;
+}
+.typing-dot:nth-child(2){animation-delay:.15s}
+.typing-dot:nth-child(3){animation-delay:.3s}
+
+/* ===== 9) احترام تقليل الحركة ===== */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{
+    animation-duration:.001ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.001ms !important;
+  }
+}
+</style>
+
 </head>
 <body>
 
@@ -3014,6 +3190,83 @@ window.__staticMode = true;
     
     console.log('⏰ formatTime جاهز');
 })();
+</script>
+
+
+<script id="noor-fixes">
+/* ====== حماية من الأخطاء: تعريف الدوال الناقصة ====== */
+window.toggleTheme = window.toggleTheme || function () {
+  /* الوضع الليلي محذوف — دالة فارغة لتجنّب أخطاء onclick */
+  console.log('[noor] theme toggle معطّل');
+};
+
+window.toggleDevModal = function () {
+  let modal = document.getElementById('dev-modal');
+  if (modal) {
+    modal.classList.toggle('open');
+    document.body.style.overflow = modal.classList.contains('open') ? 'hidden' : '';
+    return;
+  }
+  // إنشاء المودال تلقائيًا
+  modal = document.createElement('div');
+  modal.id = 'dev-modal';
+  modal.className = 'dev-modal open';
+  modal.innerHTML = `
+    <div class="dev-modal__backdrop" onclick="toggleDevModal()"></div>
+    <div class="dev-modal__panel">
+      <div class="dev-modal__head">
+        <h3>🔧 وضع المطوّر</h3>
+        <button class="dev-modal__close" onclick="toggleDevModal()" aria-label="إغلاق">✕</button>
+      </div>
+      <div class="dev-modal__body">
+        <p><strong>النسخة:</strong> <span id="dev-ver">—</span></p>
+        <p><strong>الحالة:</strong> <span id="dev-status">—</span></p>
+        <p><strong>الاتصال:</strong> <span id="dev-online">—</span></p>
+        <p><strong>الذاكرة:</strong> <span id="dev-mem">—</span></p>
+        <p><strong>الوقت:</strong> <span id="dev-time">—</span></p>
+        <hr>
+        <button class="dev-btn-danger" onclick="localStorage.clear();location.reload()">مسح التخزين</button>
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
+  document.body.style.overflow = 'hidden';
+
+  // بيانات حيّة
+  document.getElementById('dev-ver').textContent    = '1.0.0';
+  document.getElementById('dev-status').textContent = 'يعمل ✅';
+  document.getElementById('dev-online').textContent = navigator.onLine ? 'متصل' : 'غير متصل';
+  document.getElementById('dev-mem').textContent    = (performance.memory
+        ? (performance.memory.usedJSHeapSize/1048576).toFixed(1) + ' MB'
+        : 'غير متاح');
+  document.getElementById('dev-time').textContent   = new Date().toLocaleString('ar-EG');
+};
+
+/* ====== إصلاح زر المطوّر (إن كان onclick قديمًا) ====== */
+document.addEventListener('DOMContentLoaded', () => {
+  const devBtns = document.querySelectorAll(
+    '[data-action="dev"], #devBtn, #dev-btn, .dev-btn, ' +
+    'button[onclick*="dev" i], a[onclick*="dev" i]'
+  );
+  devBtns.forEach(btn => {
+    btn.disabled = false;
+    btn.style.pointerEvents = 'auto';
+    btn.style.zIndex = '9999';
+    if (!btn.dataset.noorBound) {
+      btn.dataset.noorBound = '1';
+      btn.addEventListener('click', e => {
+        e.preventDefault();
+        toggleDevModal();
+      });
+    }
+  });
+
+  /* إزالة أي زر وضع ليلي متبقّي */
+  document.querySelectorAll(
+    '.theme-toggle, #theme-toggle, [onclick*="toggleTheme"]'
+  ).forEach(el => el.remove());
+
+  console.log('✅ [noor-fixes] تم تفعيل الإصلاحات');
+});
 </script>
 
 </body>
