@@ -457,138 +457,6 @@ body.weak-device #nmSplash .splash-box {
 }
 </style>
 
-
-<style id="splash-speedup">
-/* ⚡ Splash خفيف جدًا على الأجهزة الضعيفة */
-
-/* على الهاتف — إزالة كل الحركات المكلفة */
-@media (max-width: 1024px), (prefers-reduced-motion: reduce) {
-  
-  /* 1. خلفية سادة بدل متدرجة متحركة */
-  #nmSplash {
-    background: linear-gradient(135deg, #2d2d5f, #6C63FF) !important;
-    animation: none !important;
-    transition: opacity 0.15s ease !important;
-  }
-  
-  #nmSplash::before {
-    display: none !important;
-    animation: none !important;
-  }
-  
-  /* 2. إزالة نبض الأيقونة */
-  .nm-splash-top-icon,
-  .nm-splash-icon,
-  #nmSplash .splash-icon {
-    animation: none !important;
-    filter: none !important;
-    transform: none !important;
-  }
-  
-  /* 3. إزالة دوران اللودر */
-  .nm-splash-spinner,
-  #nmSplash .splash-loader {
-    animation: nmSplashSpin 1.5s linear infinite !important;
-  }
-  
-  /* 4. إزالة blur من الصندوق */
-  .nm-splash-box,
-  #nmSplash .splash-box {
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    background: rgba(255, 255, 255, 0.12) !important;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  }
-  
-  /* 5. إزالة حدود متحركة */
-  .nm-splash-box::before {
-    display: none !important;
-    animation: none !important;
-  }
-  
-  /* 6. شريط تقدم بسيط */
-  .nm-splash-progress-bar,
-  #nmSplash .splash-bar {
-    animation: none !important;
-    background: #FFD93D !important;
-    transition: width 0.3s ease !important;
-  }
-  
-  /* 7. إخفاء النقاط المتحركة */
-  .nm-splash-dots {
-    display: none !important;
-  }
-  
-  /* 8. تقليل حجم الأيقونة */
-  .nm-splash-top-icon {
-    font-size: 48px !important;
-  }
-  
-  .nm-splash-app-name {
-    font-size: 26px !important;
-  }
-  
-  .nm-splash-basmala {
-    font-size: 14px !important;
-  }
-  
-  /* 9. GPU acceleration */
-  #nmSplash {
-    transform: translateZ(0);
-    will-change: opacity;
-  }
-  
-  /* 10. إخفاء الأسطر المتوهجة */
-  .nm-splash-box::before {
-    display: none !important;
-  }
-}
-
-/* للشاشات الصغيرة جدًا */
-@media (max-width: 480px) {
-  /* إزالة كل الحركات */
-  #nmSplash * {
-    animation: none !important;
-    transition: none !important;
-  }
-  
-  #nmSplash {
-    transition: opacity 0.1s ease !important;
-  }
-  
-  /* اللودر فقط يعمل */
-  #nmSplash .splash-loader,
-  .nm-splash-spinner {
-    animation: nmSplashSpin 2s linear infinite !important;
-  }
-  
-  /* خلفية سادة تمامًا */
-  #nmSplash {
-    background: #5A4FCF !important;
-  }
-  
-  /* تبسيط المربع */
-  .nm-splash-box,
-  #nmSplash .splash-box {
-    background: rgba(0, 0, 0, 0.15) !important;
-    padding: 18px 14px !important;
-    min-height: 120px !important;
-  }
-  
-  /* نص أوضح */
-  .nm-splash-text,
-  #nmSplash .splash-text {
-    font-size: 15px !important;
-    line-height: 1.6 !important;
-  }
-  
-  /* إخفاء الكتب المصغرة */
-  .tafsir-books-grid {
-    grid-template-columns: 1fr !important;
-  }
-}
-</style>
-
 </head>
 <body>
 
@@ -994,11 +862,10 @@ body.weak-device #nmSplash .splash-box {
   if (sourceEl) sourceEl.textContent = first.source;
   
   // تغيير المحتوى كل 4.5 ثوانٍ
-  const speedFactor = (window.innerWidth <= 768 || navigator.hardwareConcurrency <= 4) ? 2000 : 4500;
-  const contentTimer = setInterval(changeContent, speedFactor);
+  const contentTimer = setInterval(changeContent, 4500);
   
   // تغيير الحالة كل 2.5 ثانية
-  const statusTimer = setInterval(changeStatus, 1500);
+  const statusTimer = setInterval(changeStatus, 2500);
   
   // زيادة التقدم
   const progressTimer = setInterval(incrementProgress, 500);
@@ -1017,7 +884,7 @@ body.weak-device #nmSplash .splash-box {
   }
   
   // احتياطي — بعد 20 ثانية
-  setTimeout(hideSplash, (window.innerWidth <= 768 || navigator.hardwareConcurrency <= 4) ? 5000 : 20000);
+  setTimeout(hideSplash, 20000);
   
   // زر التخطي
   if (skipBtn) {
