@@ -1,3 +1,4 @@
+# Android build artifacts
 android/
 node_modules/
 .gradle/
@@ -5,7 +6,14 @@ build/
 *.apk
 *.aab
 *.keystore
+local.properties
+
+# OS
 .DS_Store
 Thumbs.db
+
+# Logs
 *.log
+
+# فقط استبعد android/ من داخل www
 www/android/
