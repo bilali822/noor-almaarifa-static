@@ -1544,6 +1544,39 @@ div:focus {
 }
 </style>
 
+
+<style id="smooth-perf">
+/* 1) عزل تخطيط حاوية المحادثة */
+.chat-wrapper { contain: layout style; }
+/* 2) عزل كل رسالة */
+.message { contain: content; }
+/* 3) تقليل التمويه من 80px إلى 60px */
+[class*="blur"], .bg-blur, .orb {
+  filter: blur(60px) !important;
+}
+/* 4) إبطاء حركة الكرات من 20s إلى 40s */
+.orb, [class*="orb"] {
+  animation-duration: 40s !important;
+}
+/* 5) عدم الإفراط في will-change */
+* { will-change: auto !important; }
+/* 6) منع انتقال التمرير */
+.chat-wrapper, .messages, .messages-container {
+  overscroll-behavior: contain;
+}
+/* 7) احترام prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+/* 8) إزالة أنيميشن النبض */
+.icon-pulse, [class*="iconPulse"], [class*="pulse"] {
+  animation: none !important;
+}
+</style>
+
 </head>
 <body>
 
