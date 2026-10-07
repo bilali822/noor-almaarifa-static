@@ -963,117 +963,6 @@ div:focus {
 }
 </style>
 
-
-<style id="toast-notify">
-/* ═══════════════════════════════════════════════════
-   🔔 إشعار أنيق — للأقسام قيد التطوير
-   ═══════════════════════════════════════════════════ */
-
-.nm-toast {
-    position: fixed;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%) translateY(100px);
-    background: linear-gradient(135deg, #6C63FF, #5A4FCF);
-    color: #ffffff;
-    padding: 16px 28px;
-    border-radius: 18px;
-    font-family: 'Tajawal', system-ui, sans-serif;
-    font-size: 15px;
-    font-weight: 700;
-    box-shadow: 0 20px 60px rgba(108, 99, 255, 0.5);
-    z-index: 99999;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    direction: rtl;
-    max-width: calc(100vw - 40px);
-    opacity: 0;
-    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    pointer-events: none;
-    text-align: center;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-}
-
-.nm-toast.show {
-    transform: translateX(-50%) translateY(0);
-    opacity: 1;
-}
-
-.nm-toast .nm-toast-icon {
-    width: 40px;
-    height: 40px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 22px;
-    flex-shrink: 0;
-    animation: nm-toast-pulse 2s ease-in-out infinite;
-}
-
-@keyframes nm-toast-pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-}
-
-.nm-toast .nm-toast-content {
-    flex: 1;
-    min-width: 0;
-}
-
-.nm-toast .nm-toast-title {
-    font-size: 15px;
-    font-weight: 800;
-    margin-bottom: 2px;
-    color: #ffffff;
-}
-
-.nm-toast .nm-toast-desc {
-    font-size: 12px;
-    font-weight: 500;
-    opacity: 0.9;
-    color: #ffffff;
-}
-
-/* 🔔 إشعار النجاح */
-.nm-toast.success {
-    background: linear-gradient(135deg, #10B981, #059669);
-    box-shadow: 0 20px 60px rgba(16, 185, 129, 0.5);
-}
-
-/* ⚠️ إشعار التحذير */
-.nm-toast.warning {
-    background: linear-gradient(135deg, #F59E0B, #D97706);
-    box-shadow: 0 20px 60px rgba(245, 158, 11, 0.5);
-}
-
-/* ⏰ على الشاشات الصغيرة */
-@media (max-width: 480px) {
-    .nm-toast {
-        bottom: 20px;
-        padding: 14px 20px;
-        font-size: 14px;
-        border-radius: 16px;
-        max-width: calc(100vw - 24px);
-    }
-    .nm-toast .nm-toast-icon {
-        width: 36px;
-        height: 36px;
-        font-size: 18px;
-    }
-    .nm-toast .nm-toast-title {
-        font-size: 14px;
-    }
-    .nm-toast .nm-toast-desc {
-        font-size: 11px;
-    }
-}
-</style>
-
 </head>
 <body>
 
@@ -2095,7 +1984,9 @@ div:focus {
     }
     
     // ✅ دالة showFeature للبطاقات
-    
+    window.showFeature = function(name) {
+        showToast('✨ ' + name + ' - قريباً جداً!');
+    };
     
     document.addEventListener('click', function(e) {
         var modal = document.getElementById('devModal');
