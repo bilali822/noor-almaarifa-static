@@ -1030,105 +1030,34 @@ body {
 
 
 
-
-<style id="final-fixes">
+<style id="clean-fixes">
 /* ═══════════════════════════════════════════════════
-   🔧 إصلاح عرض الرسائل + زر الإرسال
+   🔧 إصلاحات دقيقة — لا تغيّر التصميم
    ═══════════════════════════════════════════════════ */
 
-/* ═══ 1. الرسائل — عرض عمودي نظيف ═══ */
-.messages {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    padding: 20px 18px;
-    overflow-x: hidden;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-.message {
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
-}
-
-.message.user {
-    flex-direction: row-reverse;
-    justify-content: flex-start;
-}
-
-/* ═══ 2. Avatar ═══ */
-.message .avatar {
-    width: 42px;
-    height: 42px;
-    min-width: 42px;
-    max-width: 42px;
+/* ═══ 1. زر الإرسال — دائرة نظيفة ═══ */
+.input-area .send-btn {
+    width: 52px;
+    min-width: 52px;
+    max-width: 52px;
+    height: 52px;
+    padding: 0;
     border-radius: 50%;
+    font-size: 20px;
+    font-weight: 900;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 16px;
-    font-weight: 800;
     flex-shrink: 0;
     overflow: hidden;
     line-height: 1;
+    text-indent: 0;
+}
+.input-area .send-btn span {
+    display: none;
 }
 
-/* ═══ 3. الفقاعة — تأخذ الباقي فقط ═══ */
-.message .bubble {
-    flex: 1 1 auto;
-    min-width: 0;
-    max-width: calc(100% - 54px);
-    padding: 16px 20px;
-    border-radius: 20px;
-    line-height: 2;
-    font-size: 16px;
-    box-sizing: border-box;
-    overflow: hidden;
-    word-wrap: break-word;
-    word-break: normal;
-    overflow-wrap: break-word;
-    hyphens: auto;
-}
-
-/* ═══ 4. النص داخل الفقاعة ═══ */
-.message .bubble pre {
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    word-break: normal;
-    font-family: var(--font);
-    font-size: 16px;
-    line-height: 2.1;
-    margin: 0;
-    padding: 0;
-    color: inherit;
-    direction: rtl;
-    text-align: right;
-    width: 100%;
-    max-width: 100%;
-    overflow: hidden;
-    box-sizing: border-box;
-}
-
-/* ═══ 5. كل العناصر داخل bubble ═══ */
-.message .bubble * {
-    max-width: 100%;
-    box-sizing: border-box;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-}
-
-/* ═══ 6. الآية (﴿ ... ﴾) — مميزة ═══ */
-.message .bubble pre {
-    letter-spacing: 0.3px;
-}
-
-/* ═══ 7. زر الإرسال — دائرة نظيفة ═══ */
+/* ═══ 2. حاوية الإدخال ═══ */
 .input-area {
     display: flex;
     flex-direction: row;
@@ -1137,7 +1066,6 @@ body {
     padding: 14px 18px 18px;
     width: 100%;
     box-sizing: border-box;
-    background: transparent;
 }
 
 .input-wrapper {
@@ -1145,18 +1073,10 @@ body {
     min-width: 0;
     display: flex;
     background: rgba(18, 18, 46, 0.85);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
     border: 1.5px solid var(--border);
-    border-radius: 26px;
+    border-radius: 24px;
     padding: 4px 6px;
     box-sizing: border-box;
-    transition: all 0.3s;
-}
-
-.input-wrapper:focus-within {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 4px rgba(108, 99, 255, 0.15);
 }
 
 .input-area textarea {
@@ -1174,66 +1094,96 @@ body {
     box-sizing: border-box;
 }
 
-.input-area .send-btn {
-    width: 54px;
-    min-width: 54px;
-    max-width: 54px;
-    height: 54px;
+/* ═══ 3. الرسائل — تحتوي النص كاملاً ═══ */
+.message {
+    max-width: 88%;
+    width: fit-content;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+.message .bubble {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 16px 20px;
+    border-radius: 22px;
+    line-height: 2;
+    font-size: 16px;
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+/* ═══ 4. النص داخل الرسالة ═══ */
+.message .bubble pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    font-family: var(--font);
+    font-size: 16px;
+    line-height: 2.1;
+    margin: 0;
     padding: 0;
+    color: inherit;
+    direction: rtl;
+    text-align: right;
+    max-width: 100%;
+}
+
+/* ═══ 5. avatar المستخدم — حجم مناسب ═══ */
+.message .avatar {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    max-width: 40px;
     border-radius: 50%;
-    border: none;
-    background: linear-gradient(135deg, var(--primary), var(--accent));
-    color: white;
-    font-size: 22px;
-    font-weight: 900;
-    cursor: pointer;
+    font-size: 14px;
+    font-weight: 800;
+    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0;
-    overflow: hidden;
+    padding: 0;
     line-height: 1;
-    text-indent: 0;
-    transition: all 0.3s;
+    flex-shrink: 0;
 }
 
-.input-area .send-btn span {
-    display: none;
-}
-
-/* ═══ 8. منع التجاوز الأفقي ═══ */
-html, body, .chat-wrapper, .messages, .message, .bubble {
+/* ═══ 6. منع تجاوز الحدود ═══ */
+html, body {
     overflow-x: hidden;
     max-width: 100vw;
+}
+
+.chat-wrapper, .messages {
+    max-width: 100%;
+    overflow-x: hidden;
     box-sizing: border-box;
 }
 
-.chat-wrapper {
-    width: 100%;
-}
-
-/* ═══ 9. Responsive — الهواتف ═══ */
+/* ═══ 7. على الهاتف ═══ */
 @media (max-width: 768px) {
-    .messages {
-        padding: 16px 12px;
-        gap: 14px;
-    }
-    .message .avatar {
-        width: 38px;
-        height: 38px;
-        min-width: 38px;
-        max-width: 38px;
-        font-size: 14px;
+    .message {
+        max-width: 94%;
     }
     .message .bubble {
-        max-width: calc(100% - 48px);
-        padding: 14px 16px;
-        font-size: 15.5px;
+        padding: 13px 16px;
+        font-size: 15px;
         line-height: 2;
     }
     .message .bubble pre {
-        font-size: 15.5px;
+        font-size: 15px;
         line-height: 2;
+    }
+    .message .avatar {
+        width: 36px;
+        height: 36px;
+        min-width: 36px;
+        max-width: 36px;
+        font-size: 13px;
     }
     .input-area {
         padding: 10px 12px 14px;
@@ -1244,42 +1194,41 @@ html, body, .chat-wrapper, .messages, .message, .bubble {
         min-width: 48px;
         max-width: 48px;
         height: 48px;
-        font-size: 20px;
+        font-size: 18px;
     }
     .input-area textarea {
-        padding: 12px 14px;
         font-size: 16px;
+        padding: 12px 14px;
     }
 }
 
 @media (max-width: 480px) {
     .messages {
-        padding: 12px 10px;
-        gap: 12px;
+        padding: 14px 12px;
     }
-    .message .avatar {
-        width: 34px;
-        height: 34px;
-        min-width: 34px;
-        max-width: 34px;
-        font-size: 13px;
+    .message {
+        max-width: 97%;
     }
     .message .bubble {
-        max-width: calc(100% - 42px);
         padding: 12px 14px;
-        font-size: 15px;
-        line-height: 1.95;
+        font-size: 14.5px;
     }
     .message .bubble pre {
-        font-size: 15px;
+        font-size: 14.5px;
         line-height: 1.95;
+    }
+    .message .avatar {
+        width: 32px;
+        height: 32px;
+        min-width: 32px;
+        max-width: 32px;
+        font-size: 12px;
     }
     .input-area .send-btn {
         width: 46px;
         min-width: 46px;
         max-width: 46px;
         height: 46px;
-        font-size: 18px;
     }
 }
 </style>
