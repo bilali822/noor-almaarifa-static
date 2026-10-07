@@ -1032,23 +1032,34 @@ body {
 
 
 
-
-<style id="perf-core">
+<style id="correct-fix">
 /* ═══════════════════════════════════════════════════
-   ⚡ أداء محسّن — للأجهزة الضعيفة
+   ✅ إصلاح صحيح — يسمح بالتمرير
    ═══════════════════════════════════════════════════ */
 
-/* 1. إعادة ضبط أساسية */
-*, *::before, *::after { box-sizing: border-box; }
-
-html, body {
+/* 1. html و body — لا نمنع التمرير */
+html {
     height: 100%;
     overflow: hidden;
-    margin: 0;
-    padding: 0;
 }
 
-/* 2. chat-wrapper */
+body {
+    height: 100vh;
+    overflow: hidden;
+    width: 100%;
+    max-width: 100vw;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+/* 2. الهيدر ثابت */
+.header {
+    flex-shrink: 0;
+}
+
+/* 3. chat-wrapper — flex column */
 .chat-wrapper {
     display: flex;
     flex-direction: column;
@@ -1056,85 +1067,117 @@ html, body {
     width: 100%;
     max-width: 100%;
     overflow: hidden;
-    contain: strict;
 }
 
-/* 3. messages — منطقة التمرير الوحيدة */
+/* 4. messages — منطقة التمرير */
 .messages {
     flex: 1 1 auto;
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding: 14px 12px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 14px;
+    padding: 16px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100%;
     min-height: 0;
     -webkit-overflow-scrolling: touch;
-    contain: layout style paint;
 }
 
-/* 4. رسائل نظيفة */
+/* 5. scrollbar */
+.messages::-webkit-scrollbar {
+    width: 6px;
+}
+.messages::-webkit-scrollbar-track {
+    background: transparent;
+}
+.messages::-webkit-scrollbar-thumb {
+    background: rgba(108, 99, 255, 0.3);
+    border-radius: 10px;
+}
+.messages::-webkit-scrollbar-thumb:hover {
+    background: var(--primary);
+}
+
+/* 6. الرسائل */
 .message {
     display: flex;
-    gap: 8px;
+    gap: 10px;
     align-items: flex-start;
-    max-width: 100%;
     width: 100%;
-    contain: content;
+    max-width: 100%;
+    min-width: 0;
 }
 
-.message.user { flex-direction: row-reverse; }
+.message.user {
+    flex-direction: row-reverse;
+}
 
 .message .avatar {
-    width: 38px; height: 38px;
-    min-width: 38px; max-width: 38px;
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    max-width: 40px;
     border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 14px; font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex-shrink: 0;
     overflow: hidden;
+    padding: 0;
+    font-size: 14px;
+    font-weight: 800;
 }
 
+/* 7. الفقاعة */
 .message .bubble {
     flex: 1 1 auto;
     min-width: 0;
-    max-width: calc(100% - 46px);
-    padding: 12px 16px;
-    border-radius: 18px;
-    font-size: 15px;
-    line-height: 1.9;
+    max-width: calc(100% - 50px);
+    padding: 14px 18px;
+    border-radius: 20px;
+    line-height: 2;
+    font-size: 16px;
     overflow: hidden;
     word-wrap: break-word;
     overflow-wrap: break-word;
     word-break: break-word;
+    box-sizing: border-box;
 }
 
+/* 8. النص داخل الفقاعة — يلتف */
 .message .bubble pre,
-.message .bubble .nm-msg-text,
-.message pre {
+.message pre,
+pre {
     white-space: pre-wrap;
     word-wrap: break-word;
     overflow-wrap: anywhere;
+    word-break: break-word;
     font-family: inherit;
-    font-size: 15px;
-    line-height: 1.9;
+    font-size: 16px;
+    line-height: 2;
     direction: rtl;
     text-align: right;
     width: 100%;
     max-width: 100%;
+    min-width: 0;
     margin: 0;
     padding: 0;
     overflow: hidden;
+    box-sizing: border-box;
 }
 
-/* 5. input-area */
+/* 9. input-area ثابت أسفل */
 .input-area {
     flex-shrink: 0;
     display: flex;
-    gap: 8px;
+    flex-direction: row;
     align-items: flex-end;
-    padding: 10px 12px 14px;
+    gap: 10px;
+    padding: 12px 14px 16px;
     width: 100%;
+    box-sizing: border-box;
+    background: transparent;
 }
 
 .input-wrapper {
@@ -1143,8 +1186,9 @@ html, body {
     display: flex;
     background: rgba(18, 18, 46, 0.85);
     border: 1.5px solid var(--border);
-    border-radius: 22px;
+    border-radius: 24px;
     padding: 4px 8px;
+    box-sizing: border-box;
 }
 
 .input-area textarea {
@@ -1159,12 +1203,19 @@ html, body {
     line-height: 1.6;
     resize: none;
     outline: none;
+    box-sizing: border-box;
 }
 
+/* 10. زر الإرسال */
 .input-area .send-btn {
-    width: 50px; height: 50px;
-    min-width: 50px; max-width: 50px;
+    width: 52px;
+    min-width: 52px;
+    max-width: 52px;
+    height: 52px;
+    min-height: 52px;
+    max-height: 52px;
     padding: 0;
+    margin: 0;
     border-radius: 50%;
     border: none;
     background: linear-gradient(135deg, var(--primary), var(--accent));
@@ -1176,63 +1227,86 @@ html, body {
     justify-content: center;
     flex-shrink: 0;
     overflow: hidden;
+    line-height: 1;
 }
 
-.input-area .send-btn span { display: none; }
-
-/* 6. تعطيل كل animations على الأجهزة الضعيفة */
-@media (max-width: 1024px), (prefers-reduced-motion: reduce) {
-    .bg-orb,
-    .typing .dot,
-    .welcome .hero,
-    .spl-spinner,
-    .spl-icon {
-        animation: none !important;
-    }
-    
-    *,
-    *::before,
-    *::after {
-        transition-duration: 0.1s !important;
-        backdrop-filter: none !important;
-        -webkit-backdrop-filter: none !important;
-    }
+.input-area .send-btn span {
+    display: none;
 }
 
-/* 7. responsive */
-@media (max-width: 480px) {
-    .messages { padding: 10px 8px; gap: 10px; }
+/* 11. Responsive */
+@media (max-width: 768px) {
+    .chat-wrapper {
+        height: calc(100vh - 66px);
+    }
+    .messages {
+        padding: 12px 10px;
+        gap: 12px;
+    }
     .message .avatar {
-        width: 32px; height: 32px;
-        min-width: 32px; max-width: 32px;
+        width: 36px;
+        height: 36px;
+        min-width: 36px;
+        max-width: 36px;
+        font-size: 13px;
+    }
+    .message .bubble {
+        max-width: calc(100% - 46px);
+        padding: 12px 14px;
+        font-size: 15px;
+    }
+    .message .bubble pre,
+    pre {
+        font-size: 15px;
+    }
+    .input-area .send-btn {
+        width: 48px;
+        min-width: 48px;
+        max-width: 48px;
+        height: 48px;
+        min-height: 48px;
+        max-height: 48px;
+    }
+}
+
+@media (max-width: 480px) {
+    .messages {
+        padding: 10px 8px;
+        gap: 10px;
+    }
+    .message .avatar {
+        width: 32px;
+        height: 32px;
+        min-width: 32px;
+        max-width: 32px;
         font-size: 12px;
     }
     .message .bubble {
         max-width: calc(100% - 40px);
-        padding: 10px 14px;
+        padding: 10px 12px;
         font-size: 14.5px;
     }
     .message .bubble pre,
-    .message .bubble .nm-msg-text,
-    .message pre {
+    pre {
         font-size: 14.5px;
     }
     .input-area .send-btn {
-        width: 46px; height: 46px;
-        min-width: 46px; max-width: 46px;
+        width: 46px;
+        min-width: 46px;
+        max-width: 46px;
+        height: 46px;
+        min-height: 46px;
+        max-height: 46px;
     }
 }
+</style>
 
-/* 8. تحسين الأداء العام */
-* {
-    -webkit-tap-highlight-color: transparent;
-    -webkit-touch-callout: none;
-}
 
-body {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeSpeed;
+<style id="hide-old-splash">
+#nmSplash, #nmSplash.nm-splash-hide {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
 }
 </style>
 
@@ -1309,6 +1383,1602 @@ body {
   #nmSplashLight .spl-sub { font-size: 13px; }
 }
 </style>
+
+<script>
+(function() {
+  'use strict';
+  var splash = document.getElementById('nmSplashLight');
+  if (!splash) return;
+  
+  var startTime = Date.now();
+  var MIN_DISPLAY = 400;  // 0.4 ثانية فقط
+  
+  function hide() {
+    var elapsed = Date.now() - startTime;
+    var wait = Math.max(0, MIN_DISPLAY - elapsed);
+    setTimeout(function() {
+      splash.classList.add('hide');
+      setTimeout(function() {
+        if (splash.parentNode) splash.parentNode.removeChild(splash);
+      }, 200);
+    }, wait);
+  }
+  
+  // اخفِ فورًا عند تحميل الصفحة
+  if (document.readyState === 'complete') {
+    hide();
+  } else {
+    window.addEventListener('load', hide);
+  }
+  
+  // حماية قصوى: اخفِ بعد 2 ثانية كحد أقصى
+  setTimeout(hide, 2000);
+})();
+</script>
+
+
+
+<div class="bg-scene">
+    <div class="bg-orb"></div>
+    <div class="bg-orb"></div>
+</div>
+
+<div class="header">
+    <div class="brand">
+        <button class="back-btn" onclick="window.location.href='index.html'" title="رجوع">➤</button>
+        <div class="icon-wrapper">📖</div>
+        <div class="info">
+            <h2>نور المعرفة</h2>
+            <span class="status">متصل · 6 تفاسير جاهزة</span>
+        </div>
+    </div>
+    <div class="header-actions">
+        <button class="theme-toggle" onclick="toggleTheme()" title="تبديل الوضع">☀️</button>
+    </div>
+</div>
+
+<div class="chat-wrapper">
+    <div class="messages" id="messages">
+        <div class="welcome" id="welcome">
+            <div class="hero">📖</div>
+            <h2>السلام عليكم ورحمة الله</h2>
+            <p class="subtitle">
+                اسأل عن أي <strong>سورة</strong> أو <strong>آية</strong> من القرآن الكريم<br>
+                وسأعرض لك <strong>6 كتب تفسير</strong> معتمدة
+            </p>
+            
+            <div class="feature-cards">
+                <div class="feature-card">
+                    <span class="icon">📖</span>
+                    <div class="title">114 سورة</div>
+                    <div class="desc">قرآن كامل</div>
+                </div>
+                <div class="feature-card">
+                    <span class="icon">📚</span>
+                    <div class="title">6 تفاسير</div>
+                    <div class="desc">معتمدة</div>
+                </div>
+                <div class="feature-card">
+                    <span class="icon">⚡</span>
+                    <div class="title">فوري</div>
+                    <div class="desc">بدون إنترنت</div>
+                </div>
+            </div>
+            
+            <div class="quick-title">جرّب هذه الأمثلة</div>
+            <div class="quick-actions">
+                <button class="quick-btn" onclick="sendExample('البقرة')">📖 سورة البقرة</button>
+                <button class="quick-btn" onclick="sendExample('آية الكرسي')">📖 آية الكرسي</button>
+                <button class="quick-btn" onclick="sendExample('الإخلاص')">📖 الإخلاص</button>
+                <button class="quick-btn" onclick="sendExample('يس')">📖 سورة يس</button>
+                <button class="quick-btn" onclick="sendExample('البقرة ١-٥')">📖 البقرة ١-٥</button>
+                <button class="quick-btn" onclick="sendExample('2:255')">🔍 2:255</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="typing" id="typing">
+        <div class="avatar">🤖</div>
+        <div class="bubble">
+            <span>نور يفكر</span>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+    </div>
+
+    <div class="input-area">
+        <div class="input-wrapper">
+            <textarea id="input" rows="1" placeholder="اكتب اسم سورة، أو آية (مثل: 2:255)، أو كلمة..."></textarea>
+        </div>
+        <button class="send-btn" id="sendBtn" type="button" title="إرسال" aria-label="إرسال">➤</button>
+    </div>
+</div>
+
+<div class="overlay" id="tafsirOverlay">
+    <div class="tafsir-popup">
+        <div class="popup-header">
+            <h3><span class="icon">📚</span> اختر التفسير</h3>
+            <button class="popup-close" onclick="closePopup()">✕</button>
+        </div>
+        <div class="popup-verse" id="popupVerse">
+            <span class="surah-name" id="popupSurahName">سورة البقرة</span>
+            <span class="verse-text" id="popupVerseText">﴿ ... ﴾</span>
+        </div>
+        <div class="popup-subtitle">
+            <span>📖 اختر التفسير</span>
+            <span class="count" id="selectedCount">0</span>
+        </div>
+        <div class="tafsir-list" id="tafsirList"></div>
+        <div class="popup-actions">
+            <button class="btn-all" id="btnAllTafsirs" onclick="selectAllTafsirs()">📚 جميع التفاسير</button>
+            <button class="btn-primary" id="btnShowTafsir" onclick="showSelectedTafsirs()">✅ عرض التفسير</button>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+<script src="./db-offline.js"></script>
+<script src="./search_engine.js"></script>
+<script src="./download-progress.js" defer></script>
+<script src="./offline.js"></script>
+
+<script>
+// ⚡ كشف الجهاز الضعيف
+(function() {
+  var isWeakDevice = false;
+  
+  // 1. عدد أنوية CPU
+  if (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) {
+    isWeakDevice = true;
+  }
+  
+  // 2. الذاكرة المتاحة
+  if (navigator.deviceMemory && navigator.deviceMemory <= 4) {
+    isWeakDevice = true;
+  }
+  
+  // 3. نوع الشبكة
+  if (navigator.connection) {
+    var conn = navigator.connection;
+    if (conn.effectiveType === '2g' || conn.effectiveType === 'slow-2g') {
+      isWeakDevice = true;
+    }
+    if (conn.saveData) {
+      isWeakDevice = true;
+    }
+  }
+  
+  // 4. نوع الجهاز
+  if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+    isWeakDevice = true;
+  }
+  
+  // 5. الشاشة الصغيرة
+  if (window.innerWidth <= 768) {
+    isWeakDevice = true;
+  }
+  
+  if (isWeakDevice) {
+    document.documentElement.classList.add('weak-device');
+    document.body.classList.add('weak-device');
+    console.log('⚡ جهاز ضعيف — تم تفعيل وضع التسريع');
+  }
+})();
+</script>
+<script>
+(function() {
+  'use strict';
+  
+  // ═══════════════════════════════════════════════════
+  // المحتوى الديني
+  // ═══════════════════════════════════════════════════
+  const content = [
+    {
+      icon: '📖',
+      text: '﴿ إِنَّ هَذَا الْقُرْآنَ يَهْدِي لِلَّتِي هِيَ أَقْوَمُ ﴾',
+      source: 'الإسراء: 9'
+    },
+    {
+      icon: '🌙',
+      text: '"خَيْرُكُمْ مَنْ تَعَلَّمَ الْقُرْآنَ وَعَلَّمَهُ"',
+      source: 'رواه البخاري'
+    },
+    {
+      icon: '✨',
+      text: '﴿ وَنُنَزِّلُ مِنَ الْقُرْآنِ مَا هُوَ شِفَاءٌ وَرَحْمَةٌ لِلْمُؤْمِنِينَ ﴾',
+      source: 'الإسراء: 82'
+    },
+    {
+      icon: '💫',
+      text: '"مَنْ قَرَأَ حَرْفًا مِنْ كِتَابِ اللهِ فَلَهُ بِهِ حَسَنَةٌ"',
+      source: 'رواه الترمذي'
+    },
+    {
+      icon: '🕌',
+      text: '﴿ إِنَّا نَحْنُ نَزَّلْنَا الذِّكْرَ وَإِنَّا لَهُ لَحَافِظُونَ ﴾',
+      source: 'الحجر: 9'
+    },
+    {
+      icon: '🌸',
+      text: '"اقْرَؤُوا الْقُرْآنَ فَإِنَّهُ يَأْتِي يَوْمَ الْقِيَامَةِ شَفِيعًا لِأَصْحَابِهِ"',
+      source: 'رواه مسلم'
+    },
+    {
+      icon: '🌿',
+      text: '﴿ أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ ﴾',
+      source: 'الرعد: 28'
+    },
+    {
+      icon: '⭐',
+      text: '"الدَّالُّ عَلَى الْخَيْرِ كَفَاعِلِهِ"',
+      source: 'رواه الترمذي'
+    },
+    {
+      icon: '📿',
+      text: '﴿ وَقُلْ رَبِّ زِدْنِي عِلْمًا ﴾',
+      source: 'طه: 114'
+    },
+    {
+      icon: '🌅',
+      text: '"مَنْ سَلَكَ طَرِيقًا يَطْلُبُ فِيهِ عِلْمًا سَلَكَ اللهُ بِهِ طَرِيقًا إِلَى الْجَنَّةِ"',
+      source: 'رواه مسلم'
+    }
+  ];
+  
+  // رسائل حالة
+  const statusMessages = [
+    'جاري تجهيز التطبيق...',
+    'تحميل بيانات القرآن...',
+    'تجهيز التفاسير...',
+    'التحضير شبه جاهز...',
+    'لحظات من فضلك...',
+    'قد يستغرق بعض الوقت...',
+    'جاري الاتصال بالخادم...'
+  ];
+  
+  let contentIndex = 0;
+  let statusIndex = 0;
+  let progress = 0;
+  
+  const iconEl = document.getElementById('nmSplashIcon');
+  const textEl = document.getElementById('nmSplashText');
+  const sourceEl = document.getElementById('nmSplashSource');
+  const statusEl = document.getElementById('nmSplashStatus');
+  const barEl = document.getElementById('nmSplashBar');
+  const skipBtn = document.getElementById('nmSplashSkip');
+  
+  // ═══════════════════════════════════════════════════
+  // تغيير المحتوى
+  // ═══════════════════════════════════════════════════
+  function changeContent() {
+    if (textEl) textEl.classList.add('nm-splash-fade');
+    if (sourceEl) sourceEl.classList.add('nm-splash-fade');
+    
+    setTimeout(() => {
+      contentIndex = (contentIndex + 1) % content.length;
+      const item = content[contentIndex];
+      
+      if (iconEl) iconEl.textContent = item.icon;
+      if (textEl) textEl.textContent = item.text;
+      if (sourceEl) sourceEl.textContent = item.source;
+      
+      if (textEl) textEl.classList.remove('nm-splash-fade');
+      if (sourceEl) sourceEl.classList.remove('nm-splash-fade');
+    }, 400);
+  }
+  
+  // ═══════════════════════════════════════════════════
+  // تغيير الحالة
+  // ═══════════════════════════════════════════════════
+  function changeStatus() {
+    statusIndex = (statusIndex + 1) % statusMessages.length;
+    if (statusEl) statusEl.textContent = statusMessages[statusIndex];
+  }
+  
+  // ═══════════════════════════════════════════════════
+  // زيادة التقدم
+  // ═══════════════════════════════════════════════════
+  function incrementProgress() {
+    if (progress < 90) {
+      progress += Math.random() * 5 + 2;
+      if (progress > 90) progress = 90;
+      if (barEl) barEl.style.width = progress + '%';
+    }
+  }
+  
+  // ═══════════════════════════════════════════════════
+  // إخفاء الـ Splash
+  // ═══════════════════════════════════════════════════
+  function hideSplash() {
+    const splash = document.getElementById('nmSplash');
+    if (!splash) return;
+    
+    progress = 100;
+    if (barEl) barEl.style.width = '100%';
+    if (statusEl) statusEl.textContent = '✅ جاهز!';
+    if (textEl) textEl.textContent = 'بارك الله فيك، تفضّل 🌙';
+    if (sourceEl) sourceEl.textContent = '';
+    
+    setTimeout(() => {
+      splash.classList.add('nm-splash-hide');
+      setTimeout(() => splash.remove(), 800);
+    }, 800);
+  }
+  
+  // ═══════════════════════════════════════════════════
+  // التشغيل
+  // ═══════════════════════════════════════════════════
+  
+  // المحتوى الأول
+  const first = content[0];
+  if (iconEl) iconEl.textContent = first.icon;
+  if (textEl) textEl.textContent = first.text;
+  if (sourceEl) sourceEl.textContent = first.source;
+  
+  // تغيير المحتوى كل 4.5 ثوانٍ
+  const speedFactor = (window.innerWidth <= 768 || navigator.hardwareConcurrency <= 4) ? 2000 : 4500;
+  const contentTimer = setInterval(changeContent, speedFactor);
+  
+  // تغيير الحالة كل 2.5 ثانية
+  const statusTimer = setInterval(changeStatus, 1500);
+  
+  // زيادة التقدم
+  const progressTimer = setInterval(incrementProgress, 500);
+  
+  // اخفاء تلقائي عند تحميل الموقع
+  function tryHide() {
+    if (document.readyState === 'complete') {
+      setTimeout(hideSplash, 1000);
+    }
+  }
+  
+  if (document.readyState === 'complete') {
+    tryHide();
+  } else {
+    window.addEventListener('load', () => setTimeout(hideSplash, 1000));
+  }
+  
+  // احتياطي — بعد 20 ثانية
+  setTimeout(hideSplash, (window.innerWidth <= 768 || navigator.hardwareConcurrency <= 4) ? 5000 : 20000);
+  
+  // زر التخطي
+  if (skipBtn) {
+    skipBtn.onclick = () => {
+      clearInterval(contentTimer);
+      clearInterval(statusTimer);
+      clearInterval(progressTimer);
+      hideSplash();
+    };
+  }
+  
+  console.log('[Splash] ✅ جاهز — محتوى ديني');
+})();
+</script>
+<script>
+(function() {
+  'use strict';
+  const NAME_KEY = 'noor_user_name';
+  const GENDER_KEY = 'noor_user_gender';
+  let selectedGender = null;
+  
+  // ═══════════════════════════════════════════════════
+  // تخزين
+  // ═══════════════════════════════════════════════════
+  function getName() {
+    try { return localStorage.getItem(NAME_KEY) || ''; } catch(e) { return ''; }
+  }
+  function getGender() {
+    try { return localStorage.getItem(GENDER_KEY) || 'male'; } catch(e) { return 'male'; }
+  }
+  function save(name, gender) {
+    try {
+      localStorage.setItem(NAME_KEY, name);
+      localStorage.setItem(GENDER_KEY, gender);
+    } catch(e) {}
+  }
+  
+  // ═══════════════════════════════════════════════════
+  // نصوص حسب الجنس
+  // ═══════════════════════════════════════════════════
+  function getGreeting(name, gender) {
+    if (gender === 'female') {
+      return 'حيّاكِ الله يا ' + name;
+    }
+    return 'حيّاك الله يا ' + name;
+  }
+  
+  function getChatGreeting(name, gender) {
+    if (gender === 'female') {
+      return 'حيّاكِ الله يا ' + name + ' في نور المعرفة';
+    }
+    return 'حيّاك الله يا ' + name + ' في نور المعرفة';
+  }
+  
+  function getBadgeIcon(gender) {
+    return gender === 'female' ? '🌸' : '🕌';
+  }
+  
+  // ═══════════════════════════════════════════════════
+  // إظهار/إخفاء
+  // ═══════════════════════════════════════════════════
+  function show() {
+    const o = document.getElementById('nmNameOverlay');
+    if (!o) return;
+    o.classList.add('nm-visible');
+    o.style.display = 'flex';
+    setTimeout(() => {
+      const i = document.getElementById('nmNameInput');
+      if (i) { i.focus(); try { i.select(); } catch(e) {} }
+    }, 400);
+  }
+  
+  function hide() {
+    const o = document.getElementById('nmNameOverlay');
+    if (!o) return;
+    o.classList.remove('nm-visible');
+    o.style.display = 'none';
+  }
+  
+  // ═══════════════════════════════════════════════════
+  // تطبيق النصوص حسب الجنس
+  // ═══════════════════════════════════════════════════
+  function applyName(name, gender) {
+    if (!name) return;
+    
+    // الصفحة الرئيسية
+    const h1 = document.querySelector('.welcome-section h1');
+    if (h1) h1.textContent = getGreeting(name, gender);
+    
+    // صفحة الشات
+    const chatH2 = document.querySelector('.welcome h2');
+    if (chatH2) chatH2.textContent = getChatGreeting(name, gender);
+    
+    // بادج الاسم
+    const header = document.querySelector('.header');
+    if (header && !document.getElementById('nmUserNameBadge')) {
+      const b = document.createElement('div');
+      b.id = 'nmUserNameBadge';
+      b.style.cssText = 'display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,#6C63FF,#5A4FCF);color:white;padding:8px 16px;border-radius:20px;font-weight:700;font-size:14px;font-family:Tajawal,system-ui,sans-serif;cursor:pointer;box-shadow:0 4px 15px rgba(108,99,255,.3);margin-inline-start:10px;flex-shrink:0;';
+      b.onclick = function() {
+        const x = prompt('✏️ تغيير الاسم:', getName());
+        if (x && x.trim()) {
+          save(x.trim(), getGender());
+          location.reload();
+        }
+      };
+      b.innerHTML = '<span>' + getBadgeIcon(gender) + '</span><span>' + name + '</span>';
+      
+      const target = header.querySelector('.header-left') 
+                  || header.querySelector('.header-right') 
+                  || header;
+      target.appendChild(b);
+    }
+  }
+  
+  // ═══════════════════════════════════════════════════
+  // تشغيل
+  // ═══════════════════════════════════════════════════
+  function init() {
+    console.log('[Name] init');
+    const name = getName();
+    const gender = getGender();
+    
+    if (name) {
+      console.log('[Name] محفوظ:', name, '/', gender);
+      applyName(name, gender);
+      hide();
+    } else {
+      console.log('[Name] لا يوجد — عرض النافذة');
+      show();
+    }
+    
+    const btn = document.getElementById('nmNameBtn');
+    const input = document.getElementById('nmNameInput');
+    const genderBtns = document.querySelectorAll('.nm-gender-btn');
+    
+    // اختيار الجنس
+    genderBtns.forEach(function(gb) {
+      gb.onclick = function() {
+        genderBtns.forEach(function(b) { b.classList.remove('nm-gender-active'); });
+        gb.classList.add('nm-gender-active');
+        selectedGender = gb.dataset.gender;
+        console.log('[Name] جنس:', selectedGender);
+        
+        // فعّل زر المتابعة إذا الاسم موجود
+        if (input && input.value.trim().length >= 2) {
+          btn.disabled = false;
+        }
+      };
+    });
+    
+    // زر المتابعة
+    if (btn && input) {
+      btn.onclick = function() {
+        const v = input.value.trim();
+        
+        if (!v || v.length < 2) {
+          input.style.borderColor = '#FF4757';
+          input.focus();
+          input.placeholder = '⚠️ اكتب اسمك (حرفان على الأقل)';
+          return;
+        }
+        
+        if (!selectedGender) {
+          alert('👤 الرجاء اختيار الجنس');
+          return;
+        }
+        
+        console.log('[Name] حفظ:', v, '/', selectedGender);
+        save(v, selectedGender);
+        hide();
+        applyName(v, selectedGender);
+      };
+      
+      // Enter
+      input.onkeydown = function(e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          btn.click();
+        }
+      };
+      
+      // تمكين الزر عند الكتابة + الجنس مختار
+      input.oninput = function() {
+        input.style.borderColor = '#e5e5f0';
+        if (input.value.trim().length >= 2 && selectedGender) {
+          btn.disabled = false;
+        } else {
+          btn.disabled = true;
+        }
+      };
+    } else {
+      console.warn('[Name] btn/input not found');
+    }
+  }
+  
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+  
+  window.addEventListener('load', function() {
+    const o = document.getElementById('nmNameOverlay');
+    if (o && o.style.display !== 'flex' && !getName()) {
+      show();
+    }
+  });
+  
+  window.NoorUserName = {
+    get: getName,
+    getGender: getGender,
+    set: save,
+    show: show,
+    hide: hide
+  };
+  console.log('[Name] ✅ جاهز');
+})();
+</script>
+<script>
+// ============================================================
+// نور المعرفة - سكربت الشات الكامل
+// ============================================================
+// إصلاح CSRF: كل طلبات POST من صفحة القرآن تحمل التوكن الموجود في cookie.
+(function installQuranCsrfFetch(){
+    if (window.__quranCsrfFetchInstalled) return;
+    window.__quranCsrfFetchInstalled = true;
+    const nativeFetch = window.fetch.bind(window);
+    function getCsrfToken(){
+        const match = document.cookie.match(/(?:^|;\s*)csrf_token=([^;]+)/);
+        return match ? decodeURIComponent(match[1]) : '';
+    }
+    window.fetch = function(input, init){
+        init = init || {};
+        const method = String(init.method || 'GET').toUpperCase();
+        if (['POST','PUT','PATCH','DELETE'].includes(method)) {
+            const headers = new Headers(init.headers || {});
+            const token = getCsrfToken();
+            if (token) headers.set('X-CSRF-Token', token);
+            headers.set('Accept', 'application/json');
+            init.headers = headers;
+            init.credentials = 'include';
+        }
+        return nativeFetch(input, init);
+    };
+})();
+
+
+// ═══════════════════════════════════════════════════
+
+// ═══════════════════════════════════════════════════
+// 📚 أسماء التفاسير الثابتة (بالعربي)
+// ═══════════════════════════════════════════════════
+window.TAFSIR_ARABIC_NAMES = {
+  'muyassar':    { name: 'التفسير الميسر',    icon: '📖' },
+  'jalalayn':    { name: 'تفسير الجلالين',    icon: '📕' },
+  'ibn_kathir':  { name: 'تفسير ابن كثير',    icon: '📗' },
+  'saadi':       { name: 'تفسير السعدي',      icon: '📘' },
+  'tabari':      { name: 'تفسير الطبري',      icon: '📙' },
+  'qurtubi':     { name: 'تفسير القرطبي',     icon: '📚' },
+  'baghawy':     { name: 'تفسير البغوي',      icon: '📓' }
+};
+
+// ✅ دالة الحصول على اسم عربي
+window.getTafsirArabicName = function(key, fallbackName) {
+  if (window.TAFSIR_ARABIC_NAMES[key]) {
+    return window.TAFSIR_ARABIC_NAMES[key].name;
+  }
+  return fallbackName || key;
+};
+
+window.getTafsirArabicIcon = function(key, fallbackIcon) {
+  if (window.TAFSIR_ARABIC_NAMES[key]) {
+    return window.TAFSIR_ARABIC_NAMES[key].icon;
+  }
+  return fallbackIcon || '📖';
+};
+
+// 💡 Tafsir Fallback Helpers
+// يعمل مع الإنترنت (fetch من data/) وبدونها (IndexedDB)
+// ═══════════════════════════════════════════════════
+window.__tafsirCache = window.__tafsirCache || {};
+
+// اجلب تفسير كامل من الخادم (أو من الكاش)
+window.fetchTafsirBook = async function(bookKey) {
+    // 1. من الذاكرة
+    if (window.__tafsirCache[bookKey]) {
+        return window.__tafsirCache[bookKey];
+    }
+    // 2. من IndexedDB
+    try {
+        var cached = await window.NoorDB.get('tafsirs', bookKey);
+        if (cached && cached.content) {
+            window.__tafsirCache[bookKey] = cached.content;
+            return cached.content;
+        }
+    } catch(e) {}
+    // 3. من الخادم
+    try {
+        var res = await fetch('./data/tafsirs/' + bookKey + '.json');
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        var content = await res.json();
+        window.__tafsirCache[bookKey] = content;
+        // خزّن في IndexedDB للاستخدام offline
+        try {
+            var db = await window.NoorDB.open();
+            var tx = db.transaction('tafsirs', 'readwrite');
+            tx.objectStore('tafsirs').put({ key: bookKey, content: content });
+            await new Promise(function(r) { tx.oncomplete = r; });
+        } catch(e) {}
+        return content;
+    } catch(e) {
+        console.warn('[Tafsir] فشل تحميل', bookKey, ':', e.message);
+        return null;
+    }
+};
+
+// اجلب نص تفسير لآية معينة (مع Fallback)
+window.getTafsirText = async function(bookKey, surahId, verseNumber) {
+    try {
+        // 1. من IndexedDB أولاً
+        var cached = await window.NoorDB.getTafsir(bookKey, surahId, verseNumber);
+        if (cached && !cached.startsWith('⚠️')) {
+            return cached;
+        }
+        // 2. Fallback: من الخادم
+        var content = await window.fetchTafsirBook(bookKey);
+        if (!content) return '⚠️ غير متوفر';
+        var surah = content[String(surahId)];
+        if (!surah) return '⚠️ غير متوفر';
+        var text = surah[String(verseNumber)];
+        return text || '⚠️ غير متوفر';
+    } catch(e) {
+        return '⚠️ غير متوفر';
+    }
+};
+
+// احصل على كل التفاسير لآية (مع Fallback)
+window.getAllTafsirsWithFallback = async function(surahId, verseNumber) {
+    // احصل على الفهرس
+    var books = [];
+    try {
+        books = await window.NoorDB.getTafsirBooks();
+    } catch(e) {}
+    
+    if (!books || books.length === 0) {
+        try {
+            var idx = await fetch('./data/tafsirs_index.json').then(function(r) { return r.json(); });
+            books = idx.books || [];
+        } catch(e) {
+            return [];
+        }
+    }
+    
+    // اجلب كل التفاسير بالتوازي
+    var results = await Promise.all(books.map(async function(book) {
+        var text = await window.getTafsirText(book.key, surahId, verseNumber);
+        return Object.assign({}, book, { text: text });
+    }));
+    
+    return results;
+};
+
+let isProcessing = false;
+let chatId = 'quran_' + Date.now();
+let currentVerseInfo = null;
+let selectedTafsirs = new Set();
+let currentLimit = 20;
+
+// ---------- الوضع الليلي ----------
+function toggleTheme() {
+    var body = document.body;
+    var btn = document.querySelector('.theme-toggle');
+    body.classList.toggle('dark-mode');
+    if (btn) btn.textContent = body.classList.contains('dark-mode') ? '☀️' : '🌙';
+    try { localStorage.setItem('theme', body.classList.contains('dark-mode') ? 'dark' : 'light'); } catch(e){}
+}
+
+function loadTheme() {
+    try {
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark-mode');
+            var btn = document.querySelector('.theme-toggle');
+            if (btn) btn.textContent = '☀️';
+        }
+    } catch(e){}
+}
+
+// ---------- الميزات ----------
+function toggleFeaturesModal() {
+    var overlay = document.getElementById('featuresModalOverlay');
+    if (!overlay) return;
+    var isActive = overlay.classList.contains('active');
+    overlay.classList.toggle('active');
+    document.body.style.overflow = isActive ? '' : 'hidden';
+}
+
+function sendExample(text) {
+    var inp = document.getElementById('input');
+    if (!inp) return;
+    inp.value = text;
+    sendMessage();
+}
+
+// ---------- إضافة رسالة ----------
+function escapeHtml(s) {
+    return String(s || '').replace(/[&<>"']/g, function(c) {
+        return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c];
+    });
+}
+
+function addMessage(text, type) {
+    var container = document.getElementById('messages');
+    var welcome = document.getElementById('welcome');
+    if (welcome) welcome.style.display = 'none';
+    if (!container) return;
+    var div = document.createElement('div');
+    div.className = 'message ' + type;
+    var time = new Date().toLocaleTimeString('ar-SA', {hour: '2-digit', minute: '2-digit'});
+    var pre = document.createElement('pre');
+    pre.textContent = String(text || '');
+    var timeEl = document.createElement('span');
+    timeEl.className = 'time';
+    timeEl.textContent = time;
+    div.appendChild(pre);
+    div.appendChild(timeEl);
+    container.appendChild(div);
+    container.scrollTop = container.scrollHeight;
+}
+
+function showTyping(show) {
+    var typing = document.getElementById('typing');
+    if (typing) typing.classList.toggle('active', !!show);
+}
+
+// ---------- القائمة المنبثقة للتفسير ----------
+async function openPopup(verseInfo, tafsirBooks) {
+    currentVerseInfo = verseInfo;
+    selectedTafsirs = new Set();
+    
+    var nameEl = document.getElementById('popupSurahName');
+    var textEl = document.getElementById('popupVerseText');
+    
+    if (nameEl) nameEl.textContent = 'سورة ' + (verseInfo.surah_name || '');
+    var verseCount = Array.isArray(verseInfo.verses) ? verseInfo.verses.length : 1;
+    if (textEl) textEl.textContent = verseCount > 1
+        ? ('تفسير ' + verseCount + ' آيات')
+        : ('﴿ ' + (verseInfo.verse_text || '') + ' ﴾');
+    
+    var list = document.getElementById('tafsirList');
+    if (!list) return;
+    list.innerHTML = '<div style="text-align:center;padding:20px;">⏳ جاري التحميل...</div>';
+    
+    var surahId = verseInfo.surah_id;
+    var verseNumber = verseInfo.verse_number;
+    
+    try {
+        var allTafsirs = await window.getAllTafsirsWithFallback(surahId, verseNumber);
+        
+        list.innerHTML = '';
+        
+        if (!allTafsirs || allTafsirs.length === 0) {
+            list.innerHTML = '<div style="text-align:center;padding:20px;color:#999;">⚠️ لا توجد تفاسير</div>';
+        } else {
+            allTafsirs.forEach(function(book) {
+                var div = document.createElement('div');
+                div.className = 'tafsir-option';
+                div.dataset.key = book.key;
+                
+                var color = book.color || '#6C63FF';
+                if (!/^#[0-9a-fA-F]{6}$/.test(color)) color = '#6C63FF';
+                
+                // ✅ الاسم العربي الثابت
+                var arabicName = window.getTafsirArabicName(book.key, book.name || book.short_name);
+                var arabicIcon = window.getTafsirArabicIcon(book.key, book.icon);
+                
+                var hasText = book.text && !book.text.startsWith('⚠️');
+                
+                div.innerHTML = '<span class="icon">' + arabicIcon + '</span>' +
+                    '<div class="info"><div class="name">' + arabicName + '</div>' +
+                    '<div class="desc">' + (hasText ? '✅ متوفر' : '⚠️ غير متوفر') + '</div></div>' +
+                    '<div class="check">✓</div>' +
+                    '<div class="color-bar" style="background:' + color + '"></div>';
+                
+                if (!hasText) {
+                    div.style.opacity = '0.5';
+                    div.style.cursor = 'not-allowed';
+                } else {
+                    div.addEventListener('click', function() { toggleTafsir(div.dataset.key); });
+                }
+                list.appendChild(div);
+            });
+        }
+    } catch (e) {
+        console.error('openPopup error:', e);
+        list.innerHTML = '<div style="text-align:center;padding:20px;color:#f44;">❌ ' + e.message + '</div>';
+    }
+    
+    var btn = document.getElementById('btnAllTafsirs');
+    if (btn) { btn.classList.remove('active'); btn.textContent = '📚 جميع التفاسير'; }
+    updateSelectedCount();
+    
+    var overlay = document.getElementById('tafsirOverlay');
+    if (overlay) overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closePopup() {
+    ['tafsirOverlay','surahOverlay','favoritesOverlay','statsOverlay','booksOverlay'].forEach(function(id){
+        var el = document.getElementById(id);
+        if (el) el.classList.remove('active');
+    });
+    document.body.style.overflow = '';
+    currentVerseInfo = null;
+    selectedTafsirs = new Set();
+}
+
+function toggleTafsir(key) {
+    if (selectedTafsirs.has(key)) selectedTafsirs.delete(key);
+    else selectedTafsirs.add(key);
+    updateUI();
+}
+
+function selectAllTafsirs() {
+    var allKeys = document.querySelectorAll('.tafsir-option:not([style*="opacity: 0.5"])');
+    var btn = document.getElementById('btnAllTafsirs');
+    if (selectedTafsirs.size === allKeys.length && allKeys.length > 0) {
+        selectedTafsirs = new Set();
+        if (btn) { btn.classList.remove('active'); btn.textContent = '📚 جميع التفاسير'; }
+    } else {
+        selectedTafsirs = new Set();
+        allKeys.forEach(function(el) { selectedTafsirs.add(el.dataset.key); });
+        if (btn) { btn.classList.add('active'); btn.textContent = '📚 إلغاء الكل'; }
+    }
+    updateUI();
+}
+
+function updateUI() {
+    document.querySelectorAll('.tafsir-option').forEach(function(el){
+        el.classList.toggle('selected', selectedTafsirs.has(el.dataset.key));
+    });
+    updateSelectedCount();
+}
+
+function updateSelectedCount() {
+    var el = document.getElementById('selectedCount');
+    if (el) el.textContent = selectedTafsirs.size;
+}
+
+async function showSelectedTafsirs() {
+    if (selectedTafsirs.size === 0) {
+        alert('⚠️ اختر تفسيراً واحداً على الأقل');
+        return;
+    }
+    
+    var btn = document.getElementById('btnShowTafsir');
+    if (btn) { btn.disabled = true; btn.textContent = '⏳ جاري التحميل...'; }
+    
+    try {
+        var selected = Array.from(selectedTafsirs);
+        var verses = (currentVerseInfo.verses && currentVerseInfo.verses.length)
+            ? currentVerseInfo.verses
+            : [currentVerseInfo];
+        
+        // ═══════════════════════════════════════════
+        // 🚀 1. عرض رسالة فورية
+        // ═══════════════════════════════════════════
+        var surahName = currentVerseInfo.surah_name || '';
+        var startVerse = verses[0].verse_number;
+        var endVerse = verses[verses.length - 1].verse_number;
+        
+        var headerText;
+        if (verses.length === 1) {
+            headerText = '📖 سورة ' + surahName + ' — الآية ' + startVerse;
+        } else {
+            headerText = '📖 سورة ' + surahName + ' — الآيات ' + startVerse + '-' + endVerse;
+        }
+        
+        // احذف النافذة فورًا
+        closePopup();
+        
+        // اعرض رسالة مؤقتة
+        var tempId = 'temp_' + Date.now();
+        var tempText = headerText + '\n\n⏳ جاري تحميل التفاسير... (' + selected.length + ' تفسير)';
+        addMessageWithId(tempText, 'ai', tempId);
+        
+        // ═══════════════════════════════════════════
+        // 🚀 2. حمّل كل التفاسير بالتوازي
+        // ═══════════════════════════════════════════
+        var loadedBooks = {};
+        await Promise.all(selected.map(async function(key) {
+            loadedBooks[key] = await window.fetchTafsirBook(key);
+        }));
+        
+        // ═══════════════════════════════════════════
+        // 🚀 3. بناء الرسالة النهائية
+        // ═══════════════════════════════════════════
+        var parts = [];
+        parts.push(headerText);
+        parts.push('');
+        parts.push('═══════════════════════════════');
+        parts.push('');
+        
+        for (var i = 0; i < verses.length; i++) {
+            var v = verses[i];
+            var sid = v.surah_id || currentVerseInfo.surah_id;
+            var vn = v.verse_number;
+            var sn = v.surah_name || currentVerseInfo.surah_name;
+            var vt = v.verse_text || '';
+            
+            if (verses.length > 1) {
+                parts.push('🔸 الآية ' + vn + ':');
+            }
+            parts.push('');
+            parts.push('﴿ ' + vt + ' ﴾');
+            parts.push('');
+            
+            for (var j = 0; j < selected.length; j++) {
+                var key = selected[j];
+                var book = await window.NoorDB.getTafsirBook(key);
+                
+                // ✅ استخدم الاسم العربي الثابت
+                var bookName = window.getTafsirArabicName(key, book ? (book.name || book.short_name) : null);
+                var bookIcon = window.getTafsirArabicIcon(key, book ? book.icon : null);
+                
+                var tafsirText = '⚠️ غير متوفر';
+                var content = loadedBooks[key];
+                if (content && content[String(sid)] && content[String(sid)][String(vn)]) {
+                    tafsirText = content[String(sid)][String(vn)];
+                }
+                
+                if (tafsirText && !tafsirText.startsWith('⚠️')) {
+                    parts.push('─────────────────');
+                    parts.push(bookIcon + ' ' + bookName + ':');
+                    parts.push('');
+                    parts.push(tafsirText);
+                    parts.push('');
+                } else {
+                    parts.push('─────────────────');
+                    parts.push(bookIcon + ' ' + bookName + ': ⚠️ غير متوفر');
+                    parts.push('');
+                }
+            }
+            
+            if (verses.length > 1 && i < verses.length - 1) {
+                parts.push('');
+                parts.push('═══════════════════════════════');
+                parts.push('');
+            }
+        }
+        
+        parts.push('');
+        parts.push('─────────────────────────────');
+        parts.push('📚 المصدر: كتب التفسير المعتمدة عند أهل السنة والجماعة');
+        
+        var finalMessage = parts.join('\n');
+        
+        // ═══════════════════════════════════════════
+        // 🚀 4. استبدل الرسالة المؤقتة
+        // ═══════════════════════════════════════════
+        replaceMessage(tempId, finalMessage);
+        
+    } catch(err) {
+        console.error('showSelectedTafsirs error:', err);
+        alert('❌ خطأ: ' + err.message);
+    } finally {
+        if (btn) { btn.disabled = false; btn.textContent = '✅ عرض التفسير'; }
+    }
+}// ✅ إضافة رسالة مع ID (للاستبدال)
+function addMessageWithId(text, type, id) {
+    var container = document.getElementById('messages');
+    var welcome = document.getElementById('welcome');
+    if (welcome) welcome.style.display = 'none';
+    if (!container) return;
+    
+    var div = document.createElement('div');
+    div.className = 'message ' + type;
+    div.id = id;
+    
+    var time = new Date().toLocaleTimeString('ar-SA', {hour: '2-digit', minute: '2-digit'});
+    var pre = document.createElement('pre');
+    pre.textContent = String(text || '');
+    var timeEl = document.createElement('span');
+    timeEl.className = 'time';
+    timeEl.textContent = time;
+    div.appendChild(pre);
+    div.appendChild(timeEl);
+    container.appendChild(div);
+    container.scrollTop = container.scrollHeight;
+}
+
+// ✅ استبدال رسالة موجودة
+function replaceMessage(id, newText) {
+    var existing = document.getElementById(id);
+    if (!existing) {
+        // إذا لم توجد، أضف رسالة جديدة
+        addMessage(newText, 'ai');
+        return;
+    }
+    var pre = existing.querySelector('pre');
+    if (pre) pre.textContent = newText;
+    
+    // تمرير لأسفل
+    var container = document.getElementById('messages');
+    if (container) container.scrollTop = container.scrollHeight;
+}// ---------- إرسال الرسائل ----------
+async function sendMessage() {
+    var input = document.getElementById('input');
+    if (!input) return;
+    var text = input.value.trim();
+    if (!text || isProcessing) return;
+    
+    addMessage(text, 'user');
+    input.value = '';
+    isProcessing = true;
+    
+    var btn = document.getElementById('sendBtn');
+    if (btn) { btn.disabled = true; btn.textContent = '⏳'; }
+    showTyping(true);
+
+    try {
+        if (!window.QuranSearchEngine) {
+            throw new Error('محرك البحث غير جاهز');
+        }
+        
+        var result = await window.QuranSearchEngine.search(text, window.NoorDB);
+        
+        showTyping(false);
+        
+        if (!result) {
+            addMessage('❌ لم أجد نتيجة', 'ai');
+            return;
+        }
+        
+        // ═══ آية محددة → افتح النافذة فقط (بدون رسالة) ═══
+        if (result.success && result.type === 'verse') {
+            try { localStorage.setItem('lastRead', JSON.stringify(result.data)); } catch(e){}
+            try {
+                await openPopup(result.data, result.data.tafsir_books || []);
+            } catch(popupErr) {
+                console.warn('openPopup error:', popupErr);
+                addMessage('⚠️ تعذر فتح نافذة التفسير: ' + popupErr.message, 'ai');
+            }
+        }
+        // ═══ سورة كاملة → اعرض السورة فقط ═══
+        else if (result.success && result.type === 'surah') {
+            var verses = result.data.verses || [];
+            var msg = '📖 سورة ' + result.data.surah_name + '\n';
+            msg += '📊 عدد الآيات: ' + result.data.verse_count + '\n';
+            msg += '─────────────────────\n\n';
+            verses.slice(0, 20).forEach(function(v) {
+                msg += v.verse_number + '. ﴿ ' + v.verse_text + ' ﴾\n\n';
+            });
+            if (verses.length > 20) msg += '\n... و ' + (verses.length - 20) + ' آية أخرى';
+            addMessage(msg, 'ai');
+            
+            if (verses.length > 0) {
+                try {
+                    await openPopup(result.data, result.data.tafsir_books || []);
+                } catch(e) {}
+            }
+        }
+        // ═══ نطاق آيات ═══
+        else if (result.success && result.type === 'range') {
+            var verses2 = result.data.verses || [];
+            var msg2 = '📖 سورة ' + result.data.surah_name + '\n';
+            msg2 += '📊 الآيات: ' + result.data.start_verse + ' - ' + result.data.end_verse + '\n';
+            msg2 += '─────────────────────\n\n';
+            verses2.forEach(function(v){ msg2 += v.verse_number + '. ﴿ ' + v.verse_text + ' ﴾\n\n'; });
+            addMessage(msg2, 'ai');
+            
+            if (verses2.length > 0) {
+                try {
+                    await openPopup(result.data, result.data.tafsir_books || []);
+                } catch(e) {}
+            }
+        }
+        // ═══ بحث ═══
+        else if (result.success && result.type === 'search') {
+            var results = result.data && result.data.results ? result.data.results : [];
+            var msg3 = '🔍 نتائج البحث (' + results.length + '):\n';
+            msg3 += '─────────────────────\n\n';
+            results.slice(0, 10).forEach(function(r, i) {
+                msg3 += (i+1) + '. ' + (r.surah_name || '') + ' ' + (r.verse_number || '') + ': ﴿ ' + (r.verse_text || '').substring(0, 100) + '... ﴾\n\n';
+            });
+            addMessage(msg3, 'ai');
+        }
+        // ═══ رد عام ═══
+        else {
+            addMessage(result.reply || '❌ لم أجد نتيجة', 'ai');
+        }
+        
+    } catch(err) {
+        showTyping(false);
+        console.error('[Chat] خطأ:', err);
+        addMessage('❌ ' + err.message, 'ai');
+    } finally {
+        if (btn) { btn.disabled = false; btn.textContent = 'إرسال ➤'; }
+        if (input) input.focus();
+        isProcessing = false;
+    }
+}// ---------- الميزات الأخرى ----------
+async function openSurahIndex() {
+    var overlay = document.getElementById('surahOverlay');
+    if (overlay) overlay.classList.add('active');
+    var grid = document.getElementById('surahGrid');
+    if (!grid || grid.dataset.loaded === '1') return;
+    grid.innerHTML = '<p>⏳ جاري التحميل...</p>';
+    try {
+        var r = await fetch('./data/surahs.json');
+        var d = await r.json();
+        if (!d.success) throw new Error(d.error);
+        grid.innerHTML = d.surahs.map(function(s){
+            return '<button onclick="openSurahById(' + s.id + ')" style="border:1px solid var(--border-color);background:var(--bg-input);padding:12px;border-radius:14px;cursor:pointer;text-align:right;color:var(--text-primary);width:100%;"><strong>' + s.id + '. ' + s.name_ar + '</strong><br><small style="color:var(--text-secondary);font-size:11px;">' + s.verses_count + ' آية</small></button>';
+        }).join('');
+        grid.dataset.loaded = '1';
+    } catch(e) {
+        grid.innerHTML = '<p>❌ تعذر التحميل</p>';
+    }
+}
+
+function filterSurahs() {
+    var q = (document.getElementById('surahFilter') || {}).value || '';
+    q = q.trim().toLowerCase();
+    document.querySelectorAll('#surahGrid .surah-card, #surahGrid button').forEach(function(el){
+        var name = (el.dataset.name || el.textContent || '').toLowerCase();
+        el.style.display = name.includes(q) ? 'block' : 'none';
+    });
+}
+
+function openSurahById(id) {
+    var overlay = document.getElementById('surahOverlay');
+    if (overlay) overlay.classList.remove('active');
+    var inp = document.getElementById('input');
+    if (inp) inp.value = String(id);
+    sendMessage();
+}
+
+function openQuranSearch(){
+    var inp = document.getElementById('input');
+    if (!inp) return;
+    inp.value = '';
+    inp.placeholder = 'اكتب اسم السورة أو رقم الآية أو كلمة للبحث...';
+    inp.focus();
+    try { inp.scrollIntoView({behavior:'smooth', block:'center'}); } catch(e){}
+}
+
+async function loadRandomVerse(daily) {
+    try {
+        var r = await fetch('/api/verse/random?daily=' + (daily ? 1 : 0));
+        var d = await r.json();
+        if (!d.success) throw new Error(d.error);
+        showVerseFeature(d.verse);
+    } catch(e) {
+        addMessage('❌ تعذر تحميل الآية', 'ai');
+    }
+}
+
+async function showVerseFeature(v) {
+    try { localStorage.setItem('lastRead', JSON.stringify(v)); } catch(e){}
+    currentVerseInfo = {surah_name: v.surah_name, surah_id: v.surah_id, verse_number: v.verse_number, verse_text: v.verse_text};
+    addMessage('📖 سورة ' + v.surah_name + ' — الآية ' + v.verse_number + '\n\n﴿ ' + v.verse_text + ' ﴾', 'ai');
+    
+    try {
+        var r = await fetch('./data/tafsirs_index.json');
+        var d = await r.json();
+        openPopup(currentVerseInfo, d.books || []);
+    } catch(e) {
+        console.warn('showVerseFeature error:', e);
+    }
+}
+
+function saveCurrentVerse() {
+    if (!currentVerseInfo) return;
+    var arr = [];
+    try { arr = JSON.parse(localStorage.getItem('quranFavorites') || '[]'); } catch(e){}
+    var item = {surah_id: currentVerseInfo.surah_id, surah_name: currentVerseInfo.surah_name, verse_number: currentVerseInfo.verse_number, verse_text: currentVerseInfo.verse_text};
+    var exists = arr.some(function(x){ return x.surah_id === item.surah_id && x.verse_number === item.verse_number; });
+    if (!exists) {
+        arr.unshift(item);
+        arr = arr.slice(0, 100);
+        try { localStorage.setItem('quranFavorites', JSON.stringify(arr)); } catch(e){}
+        alert('⭐ تم حفظ الآية');
+    } else {
+        alert('⭐ محفوظة مسبقاً');
+    }
+}
+
+function openFavorites() {
+    var list = document.getElementById('favoritesList');
+    if (!list) return;
+    var arr = [];
+    try { arr = JSON.parse(localStorage.getItem('quranFavorites') || '[]'); } catch(e){}
+    if (arr.length === 0) {
+        list.innerHTML = '<p>لا توجد آيات محفوظة.</p>';
+    } else {
+        list.innerHTML = arr.map(function(v, i){
+            return '<div style="padding:16px;border:1px solid var(--border-color);border-radius:16px;background:var(--bg-input);margin-bottom:9px;"><strong style="display:block;margin-bottom:7px;color:var(--primary);">📖 سورة ' + v.surah_name + ' — ' + v.verse_number + '</strong><div style="line-height:2;font-size:15px;">﴿ ' + v.verse_text + ' ﴾</div><button onclick="openFavorite(' + i + ')" style="margin-top:10px;margin-left:6px;border:1px solid var(--border-color);background:rgba(108,99,255,.08);color:var(--text-primary);border-radius:10px;padding:7px 12px;cursor:pointer;">عرض</button><button onclick="removeFavorite(' + i + ')" style="margin-top:10px;margin-left:6px;border:1px solid var(--border-color);background:rgba(108,99,255,.08);color:var(--text-primary);border-radius:10px;padding:7px 12px;cursor:pointer;">حذف</button></div>';
+        }).join('');
+    }
+    var overlay = document.getElementById('favoritesOverlay');
+    if (overlay) overlay.classList.add('active');
+}
+
+function openFavorite(i) {
+    var arr = [];
+    try { arr = JSON.parse(localStorage.getItem('quranFavorites') || '[]'); } catch(e){}
+    var v = arr[i];
+    if (!v) return;
+    var overlay = document.getElementById('favoritesOverlay');
+    if (overlay) overlay.classList.remove('active');
+    showVerseFeature(v);
+}
+
+function removeFavorite(i) {
+    var arr = [];
+    try { arr = JSON.parse(localStorage.getItem('quranFavorites') || '[]'); } catch(e){}
+    arr.splice(i, 1);
+    try { localStorage.setItem('quranFavorites', JSON.stringify(arr)); } catch(e){}
+    openFavorites();
+}
+
+function resumeLastRead() {
+    var v = null;
+    try { v = JSON.parse(localStorage.getItem('lastRead') || 'null'); } catch(e){}
+    if (v) showVerseFeature(v);
+    else alert('ℹ️ لا توجد قراءة سابقة');
+}
+
+function changeFontSize(dir) {
+    document.body.classList.remove('font-large', 'font-xl');
+    var n = parseInt(localStorage.getItem('quranFont') || '0') + dir;
+    n = Math.max(0, Math.min(2, n));
+    if (n === 1) document.body.classList.add('font-large');
+    if (n === 2) document.body.classList.add('font-xl');
+    try { localStorage.setItem('quranFont', String(n)); } catch(e){}
+}
+
+function loadFontSize() {
+    var n = parseInt(localStorage.getItem('quranFont') || '0');
+    if (n === 1) document.body.classList.add('font-large');
+    if (n === 2) document.body.classList.add('font-xl');
+}
+
+async function copyCurrentVerse() {
+    if (!currentVerseInfo) return;
+    try {
+        await navigator.clipboard.writeText('سورة ' + currentVerseInfo.surah_name + ' — الآية ' + currentVerseInfo.verse_number + '\n﴿ ' + currentVerseInfo.verse_text + ' ﴾');
+        alert('📋 تم النسخ');
+    } catch(e) { alert('❌ تعذر النسخ'); }
+}
+
+async function shareCurrentVerse() {
+    if (!currentVerseInfo) return;
+    var text = 'سورة ' + currentVerseInfo.surah_name + ' — الآية ' + currentVerseInfo.verse_number + '\n﴿ ' + currentVerseInfo.verse_text + ' ﴾';
+    try {
+        if (navigator.share) await navigator.share({title: 'آية', text: text});
+        else { await navigator.clipboard.writeText(text); alert('📋 تم نسخ النص'); }
+    } catch(e){}
+}
+
+function showCurrentSurah() {
+    if (!currentVerseInfo) return;
+    var name = currentVerseInfo.surah_name;
+    closePopup();
+    var inp = document.getElementById('input');
+    if (inp) inp.value = name;
+    sendMessage();
+}
+
+async function showSurahStats() {
+    if (!currentVerseInfo) return;
+    try {
+        var r = await fetch('/api/surah/' + currentVerseInfo.surah_id + '/stats');
+        var d = await r.json();
+        if (!d.success) throw new Error(d.error);
+        var el = document.getElementById('statsContent');
+        if (el) el.innerHTML = '<h3>سورة ' + d.surah_name + '</h3><p>🔢 رقم: ' + d.surah_id + '</p><p>📖 عدد الآيات: ' + d.verses_count + '</p>';
+        var overlay = document.getElementById('statsOverlay');
+        if (overlay) overlay.classList.add('active');
+    } catch(e) { alert('❌ تعذر التحميل'); }
+}
+
+async function navigateVerse(delta) {
+    if (!currentVerseInfo) return;
+    var n = Number(currentVerseInfo.verse_number) + delta;
+    try {
+        var r = await fetch('/api/verse/' + currentVerseInfo.surah_id + '/' + n);
+        var d = await r.json();
+        if (!d.success) { alert(delta < 0 ? 'هذه أول آية' : 'هذه آخر آية'); return; }
+        showVerseFeature(d.verse);
+    } catch(e) { alert('❌ تعذر الانتقال'); }
+}
+
+function toggleReadingMode() {
+    document.body.classList.toggle('reading-mode');
+    try { localStorage.setItem('readingMode', document.body.classList.contains('reading-mode') ? '1' : '0'); } catch(e){}
+}
+
+async function openTafsirLibrary() {
+    var overlay = document.getElementById('booksOverlay');
+    if (overlay) overlay.classList.add('active');
+    var grid = document.getElementById('booksGrid');
+    if (!grid || grid.dataset.loaded === '1') return;
+    try {
+        var r = await fetch('./data/tafsirs_index.json');
+        var d = await r.json();
+        var books = d.books || [];
+        if (books.length === 0) { grid.innerHTML = '<p>لا توجد كتب.</p>'; return; }
+        grid.innerHTML = books.map(function(b){
+            return '<div style="padding:16px;border:1px solid var(--border-color);border-radius:16px;background:var(--bg-input);"><strong>' + (b.icon || '📖') + ' ' + (b.name || b.short_name || 'تفسير') + '</strong><p style="color:var(--text-secondary);font-size:11px;line-height:1.7;margin:0;">' + (b.desc || '') + '</p></div>';
+        }).join('');
+        grid.dataset.loaded = '1';
+    } catch(e) { grid.innerHTML = '<p>❌ تعذر التحميل</p>'; }
+}
+
+function clearChat() {
+    if (!confirm('مسح المحادثة؟')) return;
+    location.reload();
+}
+
+// ---------- التشغيل ----------
+document.addEventListener('DOMContentLoaded', function() {
+    var input = document.getElementById('input');
+    var sendBtn = document.getElementById('sendBtn');
+    loadTheme();
+    loadFontSize();
+    try { if (localStorage.getItem('readingMode') === '1') document.body.classList.add('reading-mode'); } catch(e){}
+    
+    if (sendBtn) sendBtn.addEventListener('click', sendMessage);
+    if (input) {
+        input.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+        input.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 130) + 'px';
+        });
+        input.focus();
+    }
+    
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closePopup();
+            var overlay = document.getElementById('featuresModalOverlay');
+            if (overlay && overlay.classList.contains('active')) {
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+    });
+});
+
+// ═══════════════════════════════════════════════════════
+// 🔧 FIX: جعل كل الدوال متاحة للـ inline onclick
+// ═══════════════════════════════════════════════════════
+(function exposeGlobals() {
+    [
+        'toggleTheme','loadTheme','sendExample','toggleFeaturesModal','openPopup','closePopup',
+        'openSurahIndex','openSurahById','filterSurahs','openQuranSearch','loadRandomVerse','showVerseFeature',
+        'saveCurrentVerse','openFavorites','openFavorite','removeFavorite','resumeLastRead','changeFontSize',
+        'loadFontSize','copyCurrentVerse','shareCurrentVerse','showCurrentSurah','showSurahStats','navigateVerse',
+        'toggleReadingMode','openTafsirLibrary','clearChat','selectAllTafsirs','showSelectedTafsirs',
+        'toggleTafsir','updateUI','updateSelectedCount','sendMessage','addMessage','showTyping','escapeHtml'
+    ].forEach(function(name){
+        if (typeof window[name] !== 'function' && typeof globalThis[name] === 'function') {
+            window[name] = globalThis[name];
+        }
+    });
+})();
+
+// ═══════════════════════════════════════════════════════
+// 🔧 FIX: ربط الأزرار بـ addEventListener كحل احتياطي
+// ═══════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', function() {
+    // ربط أزرار الأمثلة
+    document.querySelectorAll('.examples button').forEach(function(btn) {
+        if (btn.dataset.bound === '1') return;
+        btn.dataset.bound = '1';
+        var onclickAttr = btn.getAttribute('onclick') || '';
+        var match = onclickAttr.match(/sendExample\(['"](.+?)['"]\)/);
+        if (match) {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                sendExample(match[1]);
+            });
+        }
+    });
+
+    // أزرار الميزات تستخدم onclick مع الدوال المكشوفة عالمياً.
+
+    // ربط أزرار إغلاق المودالات
+    document.querySelectorAll('.popup-close, .features-modal-close').forEach(function(btn) {
+        if (btn.dataset.bound === '1') return;
+        btn.dataset.bound = '1';
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (typeof closePopup === 'function') closePopup();
+            var fm = document.getElementById('featuresModalOverlay');
+            if (fm) {
+                fm.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+    });
+
+    console.log('✅ تم ربط كل الأزرار بنجاح');
+});
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+        navigator.serviceWorker.register('./sw.js?v=5', { scope: '/' })
+            .then(function(reg) {
+                console.log('✅ Service Worker مسجل:', reg.scope);
+            })
+            .catch(function(err) {
+                console.warn('⚠️ فشل تسجيل Service Worker:', err);
+            });
+    });
+}
+
+// زر تحميل البيانات للعمل offline (اختياري)
+window.downloadOfflineData = async function() {
+    if (window.OfflineManager && window.OfflineManager.downloadAll) {
+        await window.OfflineManager.downloadAll();
+        alert('✅ تم تحميل كل البيانات للعمل offline');
+    } else {
+        alert('⚠️ مدير offline غير جاهز');
+    }
+};
+</script>
+<script>
+  if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+    eruda.init({
+      tool: ['console', 'elements', 'network', 'resources', 'info'],
+      useShadowDom: true,
+      autoScale: true,
+      defaults: {
+        displaySize: 50,
+        transparency: 0.9,
+        theme: 'Dark'
+      }
+    });
+    console.log('✅ Eruda جاهز');
+  }
+</script>
+<script>
+window.__staticMode = true;
+(function() {
+  const origFetch = window.fetch;
+  window.fetch = function(input, init) {
+    const url = typeof input === 'string' ? input : (input && input.url) || '';
+    if (url.includes('/api/auth/me')) {
+      return Promise.resolve(new Response(
+        JSON.stringify({authenticated: true, user: {email: 'user@noor', id: 1}}),
+        {status: 200, headers: {'Content-Type': 'application/json'}}
+      ));
+    }
+    return origFetch.apply(this, arguments);
+  };
+  console.log('✅ Static Mode');
+})();
+</script>
+
+
+<script>
+// ═══════════════════════════════════════════════════
+// 💥 إصلاح قسري — يعدّل <pre> مباشرة
+// يعمل مهما كانت أولويات CSS
+// ═══════════════════════════════════════════════════
+(function() {
+  'use strict';
+  
+  function fixPreElements() {
+    var pres = document.querySelectorAll('.message pre, .bubble pre, #messages pre');
+    console.log('🔧 إصلاح', pres.length, 'عنصر pre');
+    
+    pres.forEach(function(pre) {
+      // استخدم setProperty مع important
+      pre.style.setProperty('white-space', 'pre-wrap', 'important');
+      pre.style.setProperty('word-wrap', 'break-word', 'important');
+      pre.style.setProperty('overflow-wrap', 'anywhere', 'important');
+      pre.style.setProperty('word-break', 'break-word', 'important');
+      pre.style.setProperty('width', '100%', 'important');
+      pre.style.setProperty('max-width', '100%', 'important');
+      pre.style.setProperty('min-width', '0', 'important');
+      pre.style.setProperty('overflow', 'hidden', 'important');
+      pre.style.setProperty('font-family', 'inherit', 'important');
+      pre.style.setProperty('font-size', '16px', 'important');
+      pre.style.setProperty('line-height', '2', 'important');
+      pre.style.setProperty('direction', 'rtl', 'important');
+      pre.style.setProperty('text-align', 'right', 'important');
+      pre.style.setProperty('margin', '0', 'important');
+      pre.style.setProperty('padding', '0', 'important');
+      pre.style.setProperty('box-sizing', 'border-box', 'important');
+    });
+    
+    // إصلاح .bubble أيضاً
+    var bubbles = document.querySelectorAll('.message .bubble');
+    bubbles.forEach(function(b) {
+      b.style.setProperty('max-width', 'calc(100% - 50px)', 'important');
+      b.style.setProperty('overflow', 'hidden', 'important');
+      b.style.setProperty('width', 'auto', 'important');
+      b.style.setProperty('box-sizing', 'border-box', 'important');
+    });
+  }
+  
+  // 1. عند تحميل الصفحة
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', fixPreElements);
+  } else {
+    fixPreElements();
+  }
+  
+  // 2. بعد إضافة أي رسالة جديدة — راقب #messages
+  var messagesContainer = document.getElementById('messages');
+  if (messagesContainer) {
+    var observer = new MutationObserver(function(mutations) {
+      fixPreElements();
+    });
+    observer.observe(messagesContainer, {
+      childList: true,
+      subtree: true
+    });
+    console.log('✅ MutationObserver جاهز');
+  }
+  
+  // 3. إصلاح دوري كل ثانية (احتياطي)
+  setInterval(fixPreElements, 1000);
+  
+  console.log('💥 إصلاح pre جاهز');
+})();
+</script>
 
 </body>
 </html>
