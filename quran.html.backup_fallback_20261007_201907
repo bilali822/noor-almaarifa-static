@@ -1404,93 +1404,6 @@ pre,code{max-width:100%;overflow-x:auto;overflow-wrap:anywhere}
     };
 })();
 
-
-// ═══════════════════════════════════════════════════
-// 💡 Tafsir Fallback Helpers
-// يعمل مع الإنترنت (fetch من data/) وبدونها (IndexedDB)
-// ═══════════════════════════════════════════════════
-window.__tafsirCache = window.__tafsirCache || {};
-
-// اجلب تفسير كامل من الخادم (أو من الكاش)
-window.fetchTafsirBook = async function(bookKey) {
-    // 1. من الذاكرة
-    if (window.__tafsirCache[bookKey]) {
-        return window.__tafsirCache[bookKey];
-    }
-    // 2. من IndexedDB
-    try {
-        var cached = await window.NoorDB.get('tafsirs', bookKey);
-        if (cached && cached.content) {
-            window.__tafsirCache[bookKey] = cached.content;
-            return cached.content;
-        }
-    } catch(e) {}
-    // 3. من الخادم
-    try {
-        var res = await fetch('./data/tafsirs/' + bookKey + '.json');
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        var content = await res.json();
-        window.__tafsirCache[bookKey] = content;
-        // خزّن في IndexedDB للاستخدام offline
-        try {
-            var db = await window.NoorDB.open();
-            var tx = db.transaction('tafsirs', 'readwrite');
-            tx.objectStore('tafsirs').put({ key: bookKey, content: content });
-            await new Promise(function(r) { tx.oncomplete = r; });
-        } catch(e) {}
-        return content;
-    } catch(e) {
-        console.warn('[Tafsir] فشل تحميل', bookKey, ':', e.message);
-        return null;
-    }
-};
-
-// اجلب نص تفسير لآية معينة (مع Fallback)
-window.getTafsirText = async function(bookKey, surahId, verseNumber) {
-    try {
-        // 1. من IndexedDB أولاً
-        var cached = await window.NoorDB.getTafsir(bookKey, surahId, verseNumber);
-        if (cached && !cached.startsWith('⚠️')) {
-            return cached;
-        }
-        // 2. Fallback: من الخادم
-        var content = await window.fetchTafsirBook(bookKey);
-        if (!content) return '⚠️ غير متوفر';
-        var surah = content[String(surahId)];
-        if (!surah) return '⚠️ غير متوفر';
-        var text = surah[String(verseNumber)];
-        return text || '⚠️ غير متوفر';
-    } catch(e) {
-        return '⚠️ غير متوفر';
-    }
-};
-
-// احصل على كل التفاسير لآية (مع Fallback)
-window.getAllTafsirsWithFallback = async function(surahId, verseNumber) {
-    // احصل على الفهرس
-    var books = [];
-    try {
-        books = await window.NoorDB.getTafsirBooks();
-    } catch(e) {}
-    
-    if (!books || books.length === 0) {
-        try {
-            var idx = await fetch('./data/tafsirs_index.json').then(function(r) { return r.json(); });
-            books = idx.books || [];
-        } catch(e) {
-            return [];
-        }
-    }
-    
-    // اجلب كل التفاسير بالتوازي
-    var results = await Promise.all(books.map(async function(book) {
-        var text = await window.getTafsirText(book.key, surahId, verseNumber);
-        return Object.assign({}, book, { text: text });
-    }));
-    
-    return results;
-};
-
 let isProcessing = false;
 let chatId = 'quran_' + Date.now();
 let currentVerseInfo = null;
@@ -1581,17 +1494,18 @@ async function openPopup(verseInfo, tafsirBooks) {
     if (!list) return;
     list.innerHTML = '<div style="text-align:center;padding:20px;">⏳ جاري التحميل...</div>';
     
+    // ═══ اقرأ من NoorDB مباشرة ═══
     var surahId = verseInfo.surah_id;
     var verseNumber = verseInfo.verse_number;
     
     try {
-        // ✅ استخدم الـ Fallback: IndexedDB ← أو ← الخادم
-        var allTafsirs = await window.getAllTafsirsWithFallback(surahId, verseNumber);
+        // احصل على كل التفاسير للآية
+        var allTafsirs = await window.NoorDB.getAllTafsirs(surahId, verseNumber);
         
         list.innerHTML = '';
         
-        if (!allTafsirs || allTafsirs.length === 0) {
-            list.innerHTML = '<div style="text-align:center;padding:20px;color:#999;">⚠️ لا توجد تفاسير</div>';
+        if (allTafsirs.length === 0) {
+            list.innerHTML = '<div style="text-align:center;padding:20px;color:#999;">⚠️ لا توجد تفاسير محمّلة</div>';
         } else {
             allTafsirs.forEach(function(book) {
                 var div = document.createElement('div');
@@ -1620,7 +1534,7 @@ async function openPopup(verseInfo, tafsirBooks) {
         }
     } catch (e) {
         console.error('openPopup error:', e);
-        list.innerHTML = '<div style="text-align:center;padding:20px;color:#f44;">❌ ' + e.message + '</div>';
+        list.innerHTML = '<div style="text-align:center;padding:20px;color:#f44;">❌ خطأ: ' + e.message + '</div>';
     }
     
     var btn = document.getElementById('btnAllTafsirs');
@@ -1685,8 +1599,8 @@ async function showSelectedTafsirs() {
     
     try {
         var selected = Array.from(selectedTafsirs);
-        var verses = (currentVerseInfo.verses && currentVerseInfo.verses.length)
-            ? currentVerseInfo.verses
+        var verses = (currentVerseInfo.verses && currentVerseInfo.verses.length) 
+            ? currentVerseInfo.verses 
             : [currentVerseInfo];
         
         var responseParts = [];
@@ -1705,18 +1619,12 @@ async function showSelectedTafsirs() {
             for (var j = 0; j < selected.length; j++) {
                 var key = selected[j];
                 try {
-                    // ✅ مع Fallback
-                    var tafsirText = await window.getTafsirText(key, sid, vn);
+                    var tafsirText = await window.NoorDB.getTafsir(key, sid, vn);
                     var book = await window.NoorDB.getTafsirBook(key);
                     
                     if (tafsirText && !tafsirText.startsWith('⚠️')) {
-                        var bookName = book && book.short_name ? book.short_name : key;
-                        var bookIcon = book && book.icon ? book.icon : '📖';
-                        responseParts.push(bookIcon + ' تفسير ' + bookName + ':');
+                        responseParts.push((book && book.icon ? book.icon : '📖') + ' تفسير ' + (book && book.short_name ? book.short_name : key) + ':');
                         responseParts.push(tafsirText);
-                        responseParts.push('');
-                    } else {
-                        responseParts.push('⚠️ تفسير ' + key + ': غير متوفر');
                         responseParts.push('');
                     }
                 } catch (e) {
