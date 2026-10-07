@@ -5,13 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
 <title>نور المعرفة - القرآن الكريم</title>
 <meta name="theme-color" content="#0A0A1A">
+<meta name="color-scheme" content="dark">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="نور المعرفة">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icons/icon-192.png">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800;900&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800;900&display=swap"></noscript>
 
 <style>
 /* ═══════════════════════════════════════════════════
@@ -1831,6 +1835,107 @@ button, a, .quick-btn, .tafsir-option, .feature-card {
 /* 8) منع overscroll على الصفحة كاملة */
 html, body { overscroll-behavior: none; }
 </style>
+
+<style id="perf-ultra">
+/* ═══════════════════════════════════════════════════
+   ⚡⚡ ULTRA PERF — أقصى سلاسة، نفس المظهر تقريبًا
+   ═══════════════════════════════════════════════════ */
+
+/* 1) إزالة backdrop-filter من كل مكان — الأثقل بكثير على الأجهزة الضعيفة */
+.header,
+.input-wrapper,
+.message .bubble,
+.typing .bubble,
+.feature-card,
+.quick-btn,
+.tafsir-option,
+.tafsir-popup,
+.overlay,
+.input-area,
+.tafsir-option.selected,
+.btn-all,
+.btn-primary {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* ألوان بديلة شبه مطابقة */
+.header            { background: rgba(18, 18, 46, 0.94) !important; }
+.input-wrapper     { background: rgba(18, 18, 46, 0.98) !important; }
+.tafsir-popup      { background: rgba(18, 18, 46, 0.99) !important; }
+.overlay           { background: rgba(10, 10, 26, 0.96) !important; }
+.message.ai .bubble{ background: rgba(255, 255, 255, 0.06) !important; }
+.typing .bubble    { background: rgba(255, 255, 255, 0.06) !important; }
+.feature-card      { background: rgba(255, 255, 255, 0.05) !important; }
+.quick-btn         { background: rgba(255, 255, 255, 0.05) !important; }
+.tafsir-option     { background: rgba(255, 255, 255, 0.05) !important; }
+
+/* 2) إلغاء كل أنيميشن الرسائل */
+.message { animation: none !important; }
+.welcome { animation: none !important; }
+.typing .dot { animation: none !important; opacity: 1 !important; }
+
+/* 3) كرات الخلفية — ثابتة، blur أقل */
+.bg-orb {
+  animation: none !important;
+  filter: blur(50px) !important;
+  opacity: 0.35 !important;
+}
+.welcome .hero { animation: none !important; }
+.welcome .hero::before { display: none !important; }
+.header .brand .icon-wrapper::after { display: none !important; }
+.header .brand .info .status::before { animation: none !important; }
+
+/* 4) تحسين التمرير */
+.messages {
+  scroll-behavior: auto !important;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  contain: layout paint;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+.message {
+  contain: content;
+  will-change: auto !important;
+}
+
+/* 5) إلغاء transition من العناصر الثقيلة */
+.feature-card, .quick-btn, .tafsir-option,
+.header-actions button, .header .brand .back-btn,
+.tafsir-popup, .overlay,
+.btn-all, .btn-primary {
+  transition: none !important;
+}
+
+/* 6) منع تأخير النقر 300ms */
+button, a, .quick-btn, .tafsir-option, .feature-card,
+.message .bubble {
+  touch-action: manipulation;
+}
+
+/* 7) إزالة will-change الزائد — يحفظ ذاكرة كبيرة */
+* { will-change: auto !important; }
+.input-area .send-btn { will-change: transform !important; }
+
+/* 8) منع التمرير المطاطي حول الصفحة */
+html, body { overscroll-behavior: none; }
+
+/* 9) ضغط النص العربي — أقل تكلفة shaping */
+.message .bubble pre,
+.message pre {
+  text-rendering: optimizeSpeed;
+  overflow-wrap: break-word !important;
+  word-break: normal !important;
+}
+
+/* 10) حالة disabled لخيار التفسير (بديل selector بطيء) */
+.tafsir-option.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+</style>
 </head>
 <body>
 
@@ -2380,7 +2485,9 @@ function addMessage(text, type) {
     div.appendChild(pre);
     div.appendChild(timeEl);
     container.appendChild(div);
-    container.scrollTop = container.scrollHeight;
+    requestAnimationFrame(function() {
+        container.scrollTop = container.scrollHeight;
+    });
 }
 
 function showTyping(show) {
@@ -2438,8 +2545,7 @@ async function openPopup(verseInfo, tafsirBooks) {
                     '<div class="color-bar" style="background:' + color + '"></div>';
                 
                 if (!hasText) {
-                    div.style.opacity = '0.5';
-                    div.style.cursor = 'not-allowed';
+                    div.classList.add('disabled');
                 } else {
                     div.addEventListener('click', function() { toggleTafsir(div.dataset.key); });
                 }
@@ -2477,7 +2583,7 @@ function toggleTafsir(key) {
 }
 
 function selectAllTafsirs() {
-    var allKeys = document.querySelectorAll('.tafsir-option:not([style*="opacity: 0.5"])');
+    var allKeys = document.querySelectorAll('.tafsir-option:not(.disabled)');
     var btn = document.getElementById('btnAllTafsirs');
     if (selectedTafsirs.size === allKeys.length && allKeys.length > 0) {
         selectedTafsirs = new Set();
@@ -2641,7 +2747,9 @@ function addMessageWithId(text, type, id) {
     div.appendChild(pre);
     div.appendChild(timeEl);
     container.appendChild(div);
-    container.scrollTop = container.scrollHeight;
+    requestAnimationFrame(function() {
+        container.scrollTop = container.scrollHeight;
+    });
 }
 
 // ✅ استبدال رسالة موجودة
@@ -2989,10 +3097,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 sendMessage();
             }
         });
+        var __rafH = 0;
         input.addEventListener('input', function() {
-            this.style.height = 'auto';
-            this.style.height = Math.min(this.scrollHeight, 130) + 'px';
-        });
+            var el = this;
+            cancelAnimationFrame(__rafH);
+            __rafH = requestAnimationFrame(function() {
+                el.style.height = 'auto';
+                el.style.height = Math.min(el.scrollHeight, 130) + 'px';
+            });
+        }, { passive: true });
     }
     
     document.addEventListener('keydown', function(e) {

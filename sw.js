@@ -1,5 +1,5 @@
 // نور المعرفة — Service Worker v5.0 (Clean)
-const CACHE_VERSION = 'noor-v5.1.0-PERF';
+const CACHE_VERSION = 'noor-v5.2.0-ULTRA';
 const STATIC_CACHE = CACHE_VERSION + '-static';
 const DATA_CACHE = CACHE_VERSION + '-data';
 
