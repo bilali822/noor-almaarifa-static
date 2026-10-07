@@ -1301,8 +1301,121 @@ pre {
 }
 </style>
 
+
+<style id="hide-old-splash">
+#nmSplash, #nmSplash.nm-splash-hide {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+</style>
+
 </head>
 <body>
+
+<!-- 💨 Splash خفيف جدًا -->
+<div id="nmSplashLight">
+  <div class="spl-box">
+    <div class="spl-icon">🌙</div>
+    <div class="spl-title">نور المعرفة</div>
+    <div class="spl-sub">القرآن الكريم</div>
+    <div class="spl-spinner"></div>
+  </div>
+</div>
+
+<style>
+#nmSplashLight {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(135deg, #5A4FCF, #6C63FF);
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: -apple-system, BlinkMacSystemFont, 'Tajawal', system-ui, sans-serif;
+  direction: rtl;
+  transition: opacity 0.15s ease;
+  will-change: opacity;
+  contain: strict;
+}
+#nmSplashLight.hide {
+  opacity: 0;
+  pointer-events: none;
+}
+#nmSplashLight .spl-box {
+  text-align: center;
+  color: white;
+  padding: 20px;
+  transform: translateZ(0);
+}
+#nmSplashLight .spl-icon {
+  font-size: 72px;
+  line-height: 1;
+  margin-bottom: 20px;
+  display: block;
+}
+#nmSplashLight .spl-title {
+  font-size: 28px;
+  font-weight: 800;
+  margin-bottom: 8px;
+  letter-spacing: -0.5px;
+}
+#nmSplashLight .spl-sub {
+  font-size: 15px;
+  opacity: 0.85;
+  margin-bottom: 30px;
+}
+#nmSplashLight .spl-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid rgba(255,255,255,0.25);
+  border-top-color: white;
+  border-radius: 50%;
+  margin: 0 auto;
+  animation: splSpin 0.9s linear infinite;
+}
+@keyframes splSpin {
+  to { transform: rotate(360deg); }
+}
+@media (max-width: 480px) {
+  #nmSplashLight .spl-icon { font-size: 56px; }
+  #nmSplashLight .spl-title { font-size: 22px; }
+  #nmSplashLight .spl-sub { font-size: 13px; }
+}
+</style>
+
+<script>
+(function() {
+  'use strict';
+  var splash = document.getElementById('nmSplashLight');
+  if (!splash) return;
+  
+  var startTime = Date.now();
+  var MIN_DISPLAY = 400;  // 0.4 ثانية فقط
+  
+  function hide() {
+    var elapsed = Date.now() - startTime;
+    var wait = Math.max(0, MIN_DISPLAY - elapsed);
+    setTimeout(function() {
+      splash.classList.add('hide');
+      setTimeout(function() {
+        if (splash.parentNode) splash.parentNode.removeChild(splash);
+      }, 200);
+    }, wait);
+  }
+  
+  // اخفِ فورًا عند تحميل الصفحة
+  if (document.readyState === 'complete') {
+    hide();
+  } else {
+    window.addEventListener('load', hide);
+  }
+  
+  // حماية قصوى: اخفِ بعد 2 ثانية كحد أقصى
+  setTimeout(hide, 2000);
+})();
+</script>
+
 
 
 <div class="bg-scene">
