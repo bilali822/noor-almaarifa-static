@@ -1394,6 +1394,156 @@ div:focus {
 }
 </style>
 
+
+<style id="smooth-perf">
+/* ═══════════════════════════════════════════════════
+   ⚡ أداء سلس — نفس المظهر تمامًا
+   ═══════════════════════════════════════════════════ */
+
+/* 1. تسريع كل العناصر الأساسية */
+*,
+*::before,
+*::after {
+    -webkit-tap-highlight-color: transparent !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeSpeed;
+}
+
+/* 2. تحسين خلفية الشات */
+.bg-animation {
+    contain: strict;
+    will-change: auto;
+}
+
+.bg-animation .orb {
+    animation-duration: 40s !important;
+    filter: blur(60px) !important;
+    opacity: 0.12 !important;
+}
+
+/* 3. chat-wrapper — تسريع */
+.chat-wrapper {
+    contain: layout style;
+    will-change: auto;
+}
+
+/* 4. messages — تسريع التمرير */
+.messages {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    contain: layout style paint;
+    will-change: scroll-position;
+}
+
+/* 5. رسائل — تسريع العرض */
+.message {
+    contain: content;
+    will-change: auto;
+    animation-duration: 0.2s !important;
+}
+
+.message .bubble {
+    contain: content;
+    will-change: auto;
+}
+
+/* 6. header — ثابت بدون animation */
+.header {
+    contain: layout style paint;
+    will-change: auto;
+}
+
+.header .brand .icon-wrapper {
+    animation: none !important;
+    box-shadow: 0 4px 16px rgba(108, 99, 255, 0.3) !important;
+}
+
+/* 7. avatar — بدون animation */
+.message .avatar {
+    will-change: auto;
+}
+
+/* 8. input-area — تسريع */
+.input-area {
+    contain: layout style paint;
+}
+
+.input-area textarea {
+    will-change: auto;
+}
+
+/* 9. overlay — تحسين */
+.overlay {
+    contain: strict;
+}
+
+/* 10. تعطيل الحركات الثقيلة على الأجهزة الضعيفة فقط */
+@media (max-width: 768px), (prefers-reduced-motion: reduce) {
+    .bg-animation .orb {
+        animation: none !important;
+    }
+    
+    .message {
+        animation: none !important;
+    }
+    
+    /* إزالة blur الثقيل */
+    .header {
+        backdrop-filter: blur(12px) !important;
+        -webkit-backdrop-filter: blur(12px) !important;
+    }
+}
+
+/* 11. إزالة الحركات عند انخفاض البطارية */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.05ms !important;
+    }
+}
+
+/* 12. تحسين نص الرسائل */
+.message pre,
+.message .bubble pre {
+    will-change: auto;
+    contain: content;
+}
+
+/* 13. زر الإرسال — سريع */
+.send-btn {
+    will-change: transform;
+    contain: layout style;
+}
+
+.send-btn:active {
+    transform: scale(0.94) !important;
+    transition: transform 0.1s !important;
+}
+
+/* 14. header-actions — مبسّط بدون زر الوضع */
+.header-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+/* إذا لم يبقَ أزرار — أخفِ الحاوية */
+.header-actions:empty {
+    display: none !important;
+}
+
+/* 15. تحسين الـ scrollbar */
+.messages::-webkit-scrollbar {
+    width: 4px;
+}
+
+.messages::-webkit-scrollbar-thumb {
+    background: rgba(108, 99, 255, 0.2);
+}
+</style>
+
 </head>
 <body>
 
@@ -1412,8 +1562,7 @@ div:focus {
         </div>
     </div>
     <div class="header-actions">
-        <button class="theme-toggle" onclick="toggleTheme()" title="تبديل الوضع">☀️</button>
-    </div>
+        </div>
 </div>
 
 <div class="chat-wrapper">
@@ -1901,23 +2050,9 @@ let selectedTafsirs = new Set();
 let currentLimit = 20;
 
 // ---------- الوضع الليلي ----------
-function toggleTheme() {
-    var body = document.body;
-    var btn = document.querySelector('.theme-toggle');
-    body.classList.toggle('dark-mode');
-    if (btn) btn.textContent = body.classList.contains('dark-mode') ? '☀️' : '🌙';
-    try { localStorage.setItem('theme', body.classList.contains('dark-mode') ? 'dark' : 'light'); } catch(e){}
-}
 
-function loadTheme() {
-    try {
-        if (localStorage.getItem('theme') === 'dark') {
-            document.body.classList.add('dark-mode');
-            var btn = document.querySelector('.theme-toggle');
-            if (btn) btn.textContent = '☀️';
-        }
-    } catch(e){}
-}
+
+
 
 // ---------- الميزات ----------
 function toggleFeaturesModal() {
@@ -2556,7 +2691,6 @@ function clearChat() {
 document.addEventListener('DOMContentLoaded', function() {
     var input = document.getElementById('input');
     var sendBtn = document.getElementById('sendBtn');
-    loadTheme();
     loadFontSize();
     try { if (localStorage.getItem('readingMode') === '1') document.body.classList.add('reading-mode'); } catch(e){}
     
