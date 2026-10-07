@@ -1,400 +1,1385 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>القرآن الكريم - نور المعرفة</title>
-     <!-- خط محلي (بدون إنترنت) -->
-<style>
-@font-face {
-    font-family: 'Tajawal';
-    font-style: normal;
-    font-weight: 400;
-    font-display: swap;
-    src: url('./fonts/Tajawal-Regular.woff2') format('woff2');
-}
-@font-face {
-    font-family: 'Tajawal';
-    font-style: normal;
-    font-weight: 700;
-    font-display: swap;
-    src: url('./fonts/Tajawal-Bold.woff2') format('woff2');
-}
-@font-face {
-    font-family: 'Tajawal';
-    font-style: normal;
-    font-weight: 800;
-    font-display: swap;
-    src: url('./fonts/Tajawal-ExtraBold.woff2') format('woff2');
-}
-@font-face {
-    font-family: 'Tajawal';
-    font-style: normal;
-    font-weight: 900;
-    font-display: swap;
-    src: url('./fonts/Tajawal-Black.woff2') format('woff2');
-}
-</style>
-
-<!-- PWA Manifest -->
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#6C63FF">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>نور المعرفة - القرآن الكريم</title>
+<meta name="theme-color" content="#0A0A1A">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="نور المعرفة">
-<link rel="apple-touch-icon" href="./icons/icon-192.png">
-    <style>
-        :root{--primary:#6C63FF;--primary-dark:#5A4FCF;--primary-light:#8B83FF;--primary-glow:rgba(108,99,255,.3);--bg-body:#f0f2f8;--bg-header:rgba(255,255,255,.85);--bg-chat:rgba(255,255,255,.7);--bg-message-user:linear-gradient(135deg,#6C63FF,#5A4FCF);--bg-message-ai:rgba(255,255,255,.9);--text-primary:#1a1a2e;--text-secondary:#6B6B8A;--text-muted:#999;--shadow:0 8px 32px rgba(0,0,0,.08);--shadow-hover:0 16px 48px rgba(108,99,255,.15);--border-color:rgba(108,99,255,.12);--radius:20px;--transition:.4s cubic-bezier(.34,1.56,.64,1);--bg-input:rgba(255,255,255,.8)}
-        body.dark-mode{--bg-body:#0a0a1a;--bg-header:rgba(21,21,47,.9);--bg-chat:rgba(21,21,47,.7);--bg-message-ai:rgba(30,30,60,.9);--text-primary:#EEEEFF;--text-secondary:#A8A8C8;--text-muted:#777;--shadow:0 8px 32px rgba(0,0,0,.4);--border-color:rgba(45,45,74,.5);--bg-input:rgba(30,30,60,.8)}
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:'Tajawal',sans-serif;background:var(--bg-body);color:var(--text-primary);height:100vh;display:flex;flex-direction:column;padding:16px;overflow:hidden;transition:all var(--transition)}
-        .bg-animation{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
-        .bg-animation .orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:.15;animation:orbFloat 20s infinite alternate ease-in-out}
-        .bg-animation .orb:nth-child(1){width:400px;height:400px;top:-100px;right:-100px;background:#6C63FF;animation-duration:25s}
-        .bg-animation .orb:nth-child(2){width:300px;height:300px;bottom:-80px;left:-80px;background:#FF6B6B;animation-duration:20s;animation-delay:-5s}
-        .bg-animation .orb:nth-child(3){width:250px;height:250px;top:50%;left:50%;transform:translate(-50%,-50%);background:#00D2FF;animation-duration:30s;animation-delay:-10s}
-        @keyframes orbFloat{0%{transform:translate(0,0) scale(1)}33%{transform:translate(60px,-40px) scale(1.1)}66%{transform:translate(-40px,60px) scale(.9)}100%{transform:translate(30px,-30px) scale(1.05)}}
-        .header{position:relative;z-index:1;background:var(--bg-header);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding:12px 24px;border-radius:var(--radius);display:flex;justify-content:space-between;align-items:center;border:1px solid var(--border-color);box-shadow:var(--shadow);flex-shrink:0;min-height:68px}
-        .header .brand{display:flex;align-items:center;gap:14px;flex:0 0 auto}
-        .header .brand .back-btn{background:rgba(108,99,255,.1);border:1px solid var(--border-color);width:42px;height:42px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-primary);transition:all var(--transition)}
-        .header .brand .back-btn:hover{background:var(--primary);color:#fff;transform:rotate(180deg) scale(1.05);box-shadow:0 4px 20px var(--primary-glow)}
-        .header .brand .icon-wrapper{width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;box-shadow:0 4px 20px var(--primary-glow);animation:iconPulse 3s infinite}
-        @keyframes iconPulse{0%,100%{box-shadow:0 4px 20px var(--primary-glow)}50%{box-shadow:0 4px 40px rgba(108,99,255,.5)}}
-        .header .brand .info h2{font-size:20px;font-weight:800;background:linear-gradient(135deg,var(--primary),var(--primary-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-        .header .brand .info span{font-size:11px;color:var(--text-secondary);display:block}
-        .header-actions{display:flex;gap:12px;align-items:center;justify-content:center;flex:1;margin:0 10px}
-        .header-actions .theme-toggle{background:rgba(108,99,255,.08);border:1px solid var(--border-color);width:42px;height:42px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-primary);transition:all var(--transition)}
-        .header-actions .theme-toggle:hover{background:var(--primary);color:#fff;transform:scale(1.08);box-shadow:0 4px 20px var(--primary-glow)}
-        .btn-features-premium{position:relative;background:rgba(108,99,255,.08);color:var(--primary);border:1px solid var(--border-color);border-radius:12px;padding:10px 24px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Tajawal',sans-serif;display:flex;align-items:center;gap:10px;min-height:42px;justify-content:center;letter-spacing:.3px;transition:all var(--transition)}
-        .btn-features-premium:hover{background:var(--primary);color:#fff;transform:translateY(-2px);box-shadow:0 4px 25px var(--primary-glow);border-color:var(--primary)}
-        .btn-features-premium:active{transform:scale(.96)}
-        .btn-features-premium .premium-icon{font-size:18px;display:inline-block}
-        .btn-features-premium .premium-badge{background:#FF6B6B;color:#fff;font-size:9px;font-weight:900;padding:1px 8px;border-radius:0;margin-right:2px}
-        .btn-features-premium .premium-text{display:flex;align-items:center;gap:6px;font-size:15px}
-        body.dark-mode .btn-features-premium{background:rgba(108,99,255,.12);color:var(--primary-light)}
-        body.dark-mode .btn-features-premium:hover{background:var(--primary);color:#fff}
-        .chat-wrapper{position:relative;z-index:1;flex:1;background:var(--bg-chat);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-radius:var(--radius);display:flex;flex-direction:column;overflow:hidden;margin-top:16px;border:1px solid var(--border-color);box-shadow:var(--shadow);height:calc(100vh - 92px);min-height:680px}
-        .messages{flex:1;overflow-y:auto;padding:24px 28px;display:flex;flex-direction:column;gap:12px;min-height:0}
-        .messages::-webkit-scrollbar{width:5px}
-        .messages::-webkit-scrollbar-track{background:transparent}
-        .messages::-webkit-scrollbar-thumb{background:var(--primary);border-radius:10px}
-        .welcome{text-align:center;padding:10px 10px 20px;animation:fadeInUp .8s ease}
-        @keyframes fadeInUp{from{opacity:0;transform:translateY(30px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
-        .welcome .main-icon{font-size:64px;display:block;margin-bottom:12px;animation:floatIcon 4s infinite ease-in-out}
-        @keyframes floatIcon{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-12px) rotate(3deg)}}
-        .welcome h2{font-size:28px;font-weight:900;background:linear-gradient(135deg,var(--primary),#FF6B6B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin:6px 0}
-        .welcome p{color:var(--text-secondary);font-size:16px;line-height:1.8}
-        .welcome p strong{color:var(--primary)}
-        .usage-box{background:rgba(108,99,255,.06);border-radius:18px;padding:20px 24px;margin:16px 0 20px;text-align:right;border:1px solid var(--border-color)}
-        .usage-title{font-weight:700;font-size:17px;color:var(--text-primary);margin-bottom:12px;display:flex;align-items:center;gap:10px;justify-content:center}
-        .usage-section{margin:6px 0}
-        .usage-label{font-weight:600;font-size:14px;color:var(--primary);margin-bottom:4px;display:flex;align-items:center;gap:6px}
-        .usage-item{font-size:13px;color:var(--text-secondary);padding:2px 18px 2px 0;position:relative}
-        .usage-item::before{content:"✦";color:var(--primary);position:absolute;right:0;font-size:10px}
-        .tafsir-list-welcome{margin:14px 0 18px}
-        .tafsir-books-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
-        .tafsir-book-card{background:rgba(255,255,255,.05);border-radius:16px;overflow:hidden;border:1px solid var(--border-color);transition:all var(--transition)}
-        .tafsir-book-card:hover{transform:translateY(-4px);border-color:var(--primary);box-shadow:0 8px 30px rgba(0,0,0,.1)}
-        .tafsir-book-header{padding:10px 16px;display:flex;align-items:center;gap:10px}
-        .tafsir-book-header .icon{font-size:18px}
-        .tafsir-book-header .name{font-weight:700;font-size:14px;color:#fff}
-        .tafsir-book-desc{padding:10px 16px 14px;font-size:12px;color:var(--text-secondary);line-height:1.7;background:rgba(0,0,0,.05)}
-        body.dark-mode .tafsir-book-desc{background:rgba(0,0,0,.2)}
-        .examples{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:16px}
-        .examples button{background:rgba(108,99,255,.08);border:1px solid var(--border-color);padding:8px 20px;border-radius:50px;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:13px;transition:all var(--transition);color:var(--text-primary)}
-        .examples button:hover{background:var(--primary);color:#fff;transform:scale(1.05) translateY(-2px);box-shadow:0 4px 20px var(--primary-glow)}
-        .message{padding:16px 24px;border-radius:20px;max-width:min(96%,1100px);word-wrap:break-word;animation:messageSlide .5s cubic-bezier(.34,1.56,.64,1);border:1px solid transparent;box-shadow:0 2px 10px rgba(0,0,0,.04);line-height:1.9;font-size:17px}
-        @keyframes messageSlide{from{opacity:0;transform:translateY(15px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
-        .message pre{white-space:pre-wrap;font-family:'Tajawal',sans-serif;margin:0;padding:0;direction:rtl;text-align:right;font-size:17px;line-height:2;overflow-wrap:anywhere}
-        .message .time{font-size:10px;opacity:.5;display:block;margin-top:8px}
-        .message.user{background:var(--bg-message-user);color:#fff;align-self:flex-end;border-bottom-left-radius:6px}
-        .message.user pre{color:#fff}
-        .message.user .time{color:rgba(255,255,255,.6)}
-        .message.ai{background:var(--bg-message-ai);color:var(--text-primary);align-self:flex-start;border-bottom-right-radius:6px;border-color:var(--border-color)}
-        .typing{display:none;padding:10px 18px;background:var(--bg-message-ai);border-radius:18px;align-self:flex-start;gap:6px;border:1px solid var(--border-color);border-bottom-right-radius:6px}
-        .typing.active{display:flex}
-        .typing span{color:var(--text-secondary);font-size:13px}
-        .typing .dot{width:8px;height:8px;background:var(--primary);border-radius:50%;animation:typingBounce 1.4s infinite}
-        .typing .dot:nth-child(2){animation-delay:.2s}
-        .typing .dot:nth-child(3){animation-delay:.4s}
-        @keyframes typingBounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-8px)}}
-        .input-area{display:flex;gap:10px;padding:14px 20px;border-top:1px solid var(--border-color);flex-shrink:0;background:rgba(0,0,0,.02);align-items:center}
-        body.dark-mode .input-area{background:rgba(0,0,0,.15)}
-        .input-area textarea{flex:1;padding:12px 18px;border:2px solid var(--border-color);border-radius:16px;font-size:15px;font-family:'Tajawal',sans-serif;resize:none;min-height:48px;max-height:130px;background:var(--bg-input);color:var(--text-primary);line-height:1.6;transition:all var(--transition)}
-        .input-area textarea::placeholder{color:var(--text-muted)}
-        .input-area textarea:focus{border-color:var(--primary);outline:none;box-shadow:0 0 0 4px var(--primary-glow)}
-        .input-area .send-btn{padding:0 28px;border:none;border-radius:16px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;font-weight:700;font-size:16px;cursor:pointer;height:48px;font-family:'Tajawal',sans-serif;flex-shrink:0;display:flex;align-items:center;gap:8px;transition:all var(--transition)}
-        .input-area .send-btn:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 4px 25px var(--primary-glow)}
-        .input-area .send-btn:disabled{opacity:.5;cursor:not-allowed}
-        .footer-info{display:flex;justify-content:space-between;padding:8px 20px;font-size:11px;color:var(--text-secondary);border-top:1px solid var(--border-color);flex-shrink:0;background:rgba(0,0,0,.02)}
-        body.dark-mode .footer-info{background:rgba(0,0,0,.1)}
-        .footer-info .badge{background:rgba(108,99,255,.1);color:var(--primary);padding:2px 14px;border-radius:20px;font-weight:600}
-        .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:1000;justify-content:center;align-items:center;animation:fadeInOverlay .4s ease}
-        .overlay.active{display:flex}
-        @keyframes fadeInOverlay{from{opacity:0}to{opacity:1}}
-        .tafsir-popup{background:var(--bg-chat);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);border-radius:32px;max-width:620px;width:95%;max-height:85vh;padding:32px 28px 28px;box-shadow:0 30px 80px rgba(0,0,0,.5);animation:slideUp .5s cubic-bezier(.34,1.56,.64,1);overflow-y:auto;border:1px solid var(--border-color)}
-        @keyframes slideUp{from{transform:translateY(60px) scale(.95);opacity:0}to{transform:translateY(0) scale(1);opacity:1}}
-        .tafsir-popup::-webkit-scrollbar{width:5px}
-        .tafsir-popup::-webkit-scrollbar-thumb{background:var(--primary);border-radius:10px}
-        .popup-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:15px;border-bottom:2px solid var(--border-color)}
-        .popup-header h3{font-size:22px;font-weight:800;color:var(--text-primary);display:flex;align-items:center;gap:12px}
-        .popup-close{background:rgba(108,99,255,.08);border:1px solid var(--border-color);width:42px;height:42px;border-radius:50%;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-primary);transition:all var(--transition)}
-        .popup-close:hover{background:#ff4757;color:#fff;transform:rotate(90deg) scale(1.05)}
-        .popup-verse{background:linear-gradient(135deg,rgba(108,99,255,.08),rgba(108,99,255,.03));border-radius:18px;padding:18px 24px;margin-bottom:20px;text-align:center;font-size:20px;line-height:1.9;color:var(--text-primary);border-right:4px solid var(--primary)}
-        .popup-verse .surah-name{display:block;font-size:14px;color:var(--text-secondary);margin-bottom:6px;font-weight:500}
-        .popup-verse .verse-text{font-weight:600}
-        .popup-subtitle{font-size:15px;color:var(--text-secondary);margin-bottom:16px;display:flex;align-items:center;gap:10px}
-        .popup-subtitle .count{background:var(--primary);color:#fff;border-radius:20px;padding:0 14px;font-size:12px;line-height:26px;font-weight:700}
-        .tafsir-list{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
-        .tafsir-option{display:flex;align-items:center;gap:14px;padding:14px 18px;border:2px solid var(--border-color);border-radius:16px;cursor:pointer;background:var(--bg-input);position:relative;transition:all var(--transition)}
-        .tafsir-option:hover{border-color:var(--primary);transform:translateX(-4px);box-shadow:0 4px 20px rgba(108,99,255,.1)}
-        .tafsir-option.selected{border-color:var(--primary);background:rgba(108,99,255,.06);box-shadow:0 4px 25px rgba(108,99,255,.12)}
-        .tafsir-option .icon{font-size:28px;flex-shrink:0}
-        .tafsir-option .info{flex:1}
-        .tafsir-option .info .name{font-weight:600;font-size:16px;color:var(--text-primary)}
-        .tafsir-option .info .desc{font-size:12px;color:var(--text-secondary);margin-top:2px}
-        .tafsir-option .check{width:26px;height:26px;border-radius:50%;border:2px solid var(--border-color);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px;color:#fff;transition:all var(--transition)}
-        .tafsir-option.selected .check{background:var(--primary);border-color:var(--primary)}
-        .tafsir-option .color-bar{position:absolute;right:0;top:0;bottom:0;width:5px;border-radius:0 16px 16px 0}
-        .popup-actions{display:flex;gap:12px;margin-top:6px;flex-wrap:wrap}
-        .popup-actions .btn-primary{flex:1;padding:14px 20px;border:none;border-radius:16px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;font-weight:700;font-size:16px;cursor:pointer;font-family:'Tajawal',sans-serif;min-width:120px;transition:all var(--transition)}
-        .popup-actions .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px var(--primary-glow)}
-        .popup-actions .btn-primary:disabled{opacity:.5;cursor:not-allowed}
-        .popup-actions .btn-all{flex:1;padding:14px 20px;border:2px solid var(--primary);border-radius:16px;background:transparent;color:var(--primary);font-weight:700;font-size:16px;cursor:pointer;font-family:'Tajawal',sans-serif;min-width:120px;transition:all var(--transition)}
-        .popup-actions .btn-all:hover{background:var(--primary);color:#fff;transform:translateY(-2px);box-shadow:0 8px 30px var(--primary-glow)}
-        .popup-actions .btn-all.active{background:var(--primary);color:#fff}
-        .features-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);z-index:9999;align-items:center;justify-content:center;padding:20px;animation:fadeInOverlay .4s ease}
-        .features-modal-overlay.active{display:flex}
-        .features-modal-container{width:min(940px,96vw);max-height:88vh;background:var(--bg-chat);backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);border:1px solid var(--border-color);border-radius:40px;box-shadow:0 50px 120px rgba(0,0,0,.5);overflow:hidden;animation:slideUp .5s cubic-bezier(.34,1.56,.64,1)}
-        .features-modal-header{display:flex;justify-content:space-between;align-items:center;padding:24px 32px;border-bottom:1px solid var(--border-color);background:linear-gradient(135deg,rgba(108,99,255,.06),rgba(255,107,107,.03))}
-        .features-modal-title{display:flex;align-items:center;gap:16px}
-        .features-modal-icon{font-size:34px;animation:iconPulse 2s infinite}
-        .features-modal-title h2{font-size:26px;font-weight:900;background:linear-gradient(135deg,var(--primary),#FF6B6B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin:0}
-        .features-modal-version{font-size:12px;font-weight:700;color:var(--text-secondary);background:rgba(108,99,255,.1);padding:4px 16px;border-radius:20px;border:1px solid var(--border-color)}
-        .features-modal-close{width:48px;height:48px;border-radius:50%;border:1px solid var(--border-color);background:var(--bg-input);color:var(--text-primary);font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all var(--transition)}
-        .features-modal-close:hover{background:#FF6B6B;color:#fff;border-color:#FF6B6B;transform:rotate(90deg) scale(1.05)}
-        .features-modal-body{padding:28px 32px;overflow-y:auto;max-height:calc(88vh - 90px)}
-        .features-modal-body::-webkit-scrollbar{width:5px}
-        .features-modal-body::-webkit-scrollbar-thumb{background:var(--primary);border-radius:10px}
-        .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-        .feature-item{display:flex;align-items:center;gap:14px;padding:16px 20px;border:1px solid var(--border-color);border-radius:20px;background:var(--bg-input);cursor:pointer;position:relative;overflow:hidden;transition:all var(--transition)}
-        .feature-item::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(108,99,255,.06),transparent 70%);opacity:0;transition:opacity .4s ease}
-        .feature-item:hover::before{opacity:1}
-        .feature-item:hover{transform:translateY(-4px) scale(1.02);border-color:var(--primary);box-shadow:0 12px 40px rgba(108,99,255,.12)}
-        .feature-item:active{transform:scale(.97)}
-        .feature-item-icon{width:50px;height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;color:#fff;flex-shrink:0;box-shadow:0 4px 16px rgba(0,0,0,.1);position:relative;z-index:1}
-        .feature-item-content{flex:1;position:relative;z-index:1}
-        .feature-item-content h4{font-size:15px;font-weight:700;margin:0 0 2px;color:var(--text-primary)}
-        .feature-item-content p{font-size:12px;color:var(--text-secondary);margin:0;line-height:1.4}
-        .feature-tag{display:inline-block;font-size:9px;font-weight:700;padding:1px 10px;border-radius:12px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;margin-top:4px;position:absolute;top:8px;left:8px}
-        .features-modal-footer{display:flex;align-items:center;justify-content:space-between;margin-top:20px;padding-top:18px;border-top:1px solid var(--border-color);flex-wrap:wrap;gap:12px}
-        .features-stats{display:flex;gap:18px;flex-wrap:wrap}
-        .features-stats span{font-size:13px;font-weight:600;color:var(--text-secondary);background:rgba(108,99,255,.06);padding:4px 16px;border-radius:20px;border:1px solid var(--border-color)}
-        .features-start-btn{padding:12px 32px;border:none;border-radius:16px;background:linear-gradient(135deg,var(--primary),#FF6B6B);color:#fff;font-weight:800;font-size:16px;cursor:pointer;font-family:'Tajawal',sans-serif;box-shadow:0 4px 20px rgba(108,99,255,.3);transition:all var(--transition)}
-        .features-start-btn:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 8px 35px rgba(108,99,255,.4)}
-        body.dark-mode .features-modal-container{background:rgba(21,21,47,.95)}
-        body.dark-mode .feature-item{background:rgba(30,30,60,.6)}
-        @media(max-width:900px){.features-grid{grid-template-columns:repeat(2,1fr);gap:10px}.features-modal-title h2{font-size:20px}.features-modal-header{padding:18px 22px}.features-modal-body{padding:18px 20px}}
-        @media(max-width:768px){body{padding:10px}.header{padding:10px 16px;flex-wrap:wrap;gap:8px}.header .brand .info h2{font-size:17px}.header-actions button{width:36px;height:36px;font-size:14px}.btn-features-premium{padding:8px 16px;font-size:13px;min-height:36px}.messages{padding:14px 16px}.tafsir-popup{padding:20px 16px}.popup-header h3{font-size:18px}.tafsir-option{padding:12px 14px}.popup-actions{flex-direction:column}.welcome h2{font-size:22px}.welcome .main-icon{font-size:50px}.usage-box{padding:14px 16px}.input-area{padding:10px 12px;gap:8px}.input-area textarea{font-size:14px;min-height:40px;padding:10px 14px}.input-area .send-btn{padding:0 16px;font-size:14px;height:42px}.tafsir-books-grid{grid-template-columns:1fr}.message{max-width:97%;padding:12px 16px;font-size:16px}.message pre{font-size:16px}.chat-wrapper{height:calc(100vh - 78px);min-height:560px}}
-        @media(max-width:600px){.features-grid{grid-template-columns:1fr 1fr}.feature-item{padding:12px 14px}.feature-item-icon{width:42px;height:42px;font-size:20px}.features-modal-container{width:100%;border-radius:24px}.features-modal-title h2{font-size:17px}.features-modal-footer{flex-direction:column;align-items:stretch}.features-start-btn{width:100%;text-align:center}}
-        @media(max-width:400px){.features-grid{grid-template-columns:1fr}.header-actions{gap:6px}.btn-features-premium{padding:6px 12px;font-size:12px;min-height:32px}.btn-features-premium .premium-text{font-size:12px}.btn-features-premium .premium-icon{font-size:14px}}
-        @media(max-width:480px){.header .brand .back-btn{width:36px;height:36px;font-size:16px}.header .brand .icon-wrapper{width:38px;height:38px;font-size:18px}.header .brand .info h2{font-size:15px}.welcome h2{font-size:20px}.examples button{font-size:12px;padding:6px 14px}}
-    </style>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
 
-<style id="nm-mobile-performance">
-html{width:100%;min-width:0;overflow-x:hidden;-webkit-text-size-adjust:100%;text-size-adjust:100%}
-*,*::before,*::after{box-sizing:border-box}
-body{width:100%;min-width:0;max-width:100vw}
-img,svg,video,canvas{max-width:100%;height:auto}
-button,input,textarea,select{max-width:100%;font:inherit}
-input,textarea,select{font-size:16px}
-pre,code{max-width:100%;overflow-x:auto;overflow-wrap:anywhere}
-@media(max-width:768px){
- body{min-height:100dvh}
- .header,.chat-wrapper,.container,.main-container,.main-content,.content,.app{min-width:0;max-width:100%}
- .header{flex-wrap:wrap}
- .messages{min-width:0;max-width:100%;overflow-y:auto;-webkit-overflow-scrolling:touch}
- .bg-animation .orb{animation:none!important;filter:blur(30px)!important}
- .header,.chat-wrapper,.overlay,.tafsir-popup,.features-modal-overlay,.features-modal-container{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
-}
-@media(max-width:480px){
- body{padding:6px!important;overflow-x:hidden}
- .header{padding:8px 10px!important;gap:6px!important;border-radius:16px!important}
- .header-actions{gap:5px!important;margin:0!important}
- .chat-wrapper{margin-top:8px!important;height:calc(100dvh - 82px)!important;min-height:0!important;border-radius:16px!important}
- .messages{padding:10px 9px!important;gap:8px!important}
- .welcome{padding:6px 4px 12px!important}
- .welcome .main-icon{font-size:44px!important;animation:none!important}
- .welcome h2{font-size:19px!important}.welcome p{font-size:13px!important;line-height:1.65!important}
- .usage-box{padding:11px 12px!important;margin:10px 0 12px!important}
- .tafsir-books-grid{grid-template-columns:1fr!important}
- .message{max-width:100%!important;padding:10px 12px!important;font-size:15px!important;line-height:1.75!important;animation:none!important}
- .examples{justify-content:flex-start!important;flex-wrap:nowrap!important;overflow-x:auto!important;scrollbar-width:none}
- .examples::-webkit-scrollbar{display:none}.examples button{flex:0 0 auto!important;padding:7px 12px!important}
- .input-area{padding:7px 8px!important;gap:6px!important}.input-area textarea{min-width:0!important;max-width:100%!important;font-size:16px!important}
- .input-area .send-btn{flex:0 0 auto!important;padding-inline:16px!important}
- .features-modal-overlay,.overlay{padding:8px!important}
- .features-modal-container,.tafsir-popup{width:calc(100vw - 16px)!important;max-width:calc(100vw - 16px)!important;max-height:calc(100dvh - 16px)!important}
- .features-modal-body{max-height:calc(100dvh - 150px)!important;overflow-y:auto!important}
- .features-grid{grid-template-columns:1fr 1fr!important}
-}
-@media(max-width:360px){.features-grid{grid-template-columns:1fr!important}.btn-features-premium .premium-text{display:none!important}}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
-</style>
+<style>
+/* ═══════════════════════════════════════════════════
+   ✨ نور المعرفة — تصميم عصري 2025
+   ═══════════════════════════════════════════════════ */
 
-<style id="nm-performance-css">
-/* ⚡ تحسينات الأداء — للأجهزة الضعيفة */
-
-/* 1. تحسين الخطوط */
-* {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeSpeed;
-}
-
-/* 2. تعطيل الحركات الثقيلة */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-
-/* 3. تحسين الأداء في الأجهزة الضعيفة */
-@media (max-width: 768px) {
-  /* إزالة blur الثقيل */
-  .header, .chat-wrapper, .bg-animation .orb, 
-  .tafsir-popup, .features-modal-container {
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-  }
+:root {
+  --primary: #6C63FF;
+  --primary-dark: #5A4FCF;
+  --primary-light: #8B83FF;
+  --accent: #FF6B9D;
+  --accent-2: #FFD93D;
+  --accent-3: #00D2FF;
   
-  /* إزالة الظلال الثقيلة */
-  * {
-    box-shadow: none !important;
-    text-shadow: none !important;
-  }
+  --bg-deep: #0A0A1A;
+  --bg-mid: #12122E;
+  --bg-soft: #1A1A3E;
+  --surface: rgba(255, 255, 255, 0.04);
+  --surface-hover: rgba(255, 255, 255, 0.08);
+  --surface-active: rgba(108, 99, 255, 0.15);
   
-  /* استخدم ألوان بسيطة بدل التدرجات */
-  .header, .card, .chat-wrapper, 
-  .tafsir-popup, .features-modal-container {
-    background: var(--bg-card) !important;
-  }
+  --text: #FFFFFF;
+  --text-soft: rgba(255, 255, 255, 0.75);
+  --text-muted: rgba(255, 255, 255, 0.45);
   
-  /* إزالة الأنيميشن */
-  .bg-animation, #particles, .dev-btn-container {
-    display: none !important;
-  }
+  --border: rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(108, 99, 255, 0.4);
   
-  /* تحسين الخطوط */
-  body, * {
-    font-family: 'Tajawal', system-ui, -apple-system, sans-serif !important;
-  }
+  --shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --shadow-glow: 0 0 40px rgba(108, 99, 255, 0.3);
+  
+  --radius-sm: 12px;
+  --radius-md: 18px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  
+  --font: 'Tajawal', system-ui, -apple-system, sans-serif;
 }
 
-/* 4. منع إعادة التخطيط */
-.card, .message, .tafsir-option, .feature-item {
-  contain: layout style paint;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-/* 5. تقليل عدد الطبقات */
-.message, .card {
-  will-change: auto !important;
-}
+html, body { height: 100%; overflow: hidden; }
 
-/* 6. GPU acceleration للعناصر الضرورية فقط */
-.nm-name-overlay, #nmSplash {
-  transform: translateZ(0);
-}
-</style>
-
-
-<style id="speed-boost">
-/* ⚡ تسريع الأداء على الأجهزة الضعيفة */
-
-/* 1. تعطيل الحركات على الهواتف */
-@media (max-width: 768px), (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.05ms !important;
-    transition-delay: 0ms !important;
-  }
-  
-  /* 2. إزالة blur (بطيء جدًا) */
-  * {
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    filter: none !important;
-  }
-  
-  /* 3. إزالة الظلال الثقيلة */
-  * {
-    box-shadow: none !important;
-    text-shadow: none !important;
-  }
-  
-  /* 4. إخفاء orbs و particles */
-  .bg-animation,
-  #particles,
-  .orb,
-  .dot {
-    display: none !important;
-  }
-  
-  /* 5. GPU acceleration */
-  .message,
-  .tafsir-option,
-  .popup-verse {
-    transform: translateZ(0);
-    -webkit-transform: translateZ(0);
-  }
-  
-  /* 6. تقليل reflows */
-  .messages,
-  .chat-wrapper {
-    contain: layout style paint;
-  }
-}
-
-/* 7. تقليل الأداء للشاشات الصغيرة */
-@media (max-width: 480px) {
-  /* إزالة كل الحركات */
-  * {
-    animation: none !important;
-    transition: none !important;
-  }
-  
-  /* تجنب transform و opacity animations */
-  .message,
-  .tafsir-option {
-    animation: none !important;
-  }
-}
-
-/* 8. تحميل ذكي للصور */
-img {
-  content-visibility: auto;
-  loading: lazy;
-}
-
-/* 9. منع إعادة حساب layout */
-.chat-wrapper,
-.messages {
-  contain: content;
-}
-
-/* 10. تحسين الخطوط */
 body {
+  font-family: var(--font);
+  background: var(--bg-deep);
+  color: var(--text);
+  direction: rtl;
+  font-size: 16px;
+  line-height: 1.7;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeSpeed;
-  font-display: swap;
+}
+
+/* ═══════════════════════════════════════════════════
+   🌌 خلفية متحركة فاخرة
+   ═══════════════════════════════════════════════════ */
+.bg-scene {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: 
+    radial-gradient(ellipse 80% 60% at 20% 0%, rgba(108, 99, 255, 0.25), transparent 60%),
+    radial-gradient(ellipse 80% 60% at 80% 100%, rgba(255, 107, 157, 0.15), transparent 60%),
+    radial-gradient(ellipse 60% 40% at 50% 50%, rgba(0, 210, 255, 0.08), transparent 60%),
+    linear-gradient(180deg, var(--bg-deep), var(--bg-mid));
+}
+
+.bg-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.5;
+  animation: orbFloat 20s infinite ease-in-out;
+}
+
+.bg-orb:nth-child(1) {
+  width: 400px;
+  height: 400px;
+  background: var(--primary);
+  top: -100px;
+  left: -100px;
+  animation-duration: 25s;
+}
+
+.bg-orb:nth-child(2) {
+  width: 350px;
+  height: 350px;
+  background: var(--accent);
+  bottom: -80px;
+  right: -80px;
+  animation-duration: 22s;
+  animation-delay: -5s;
+}
+
+@keyframes orbFloat {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(50px, -40px) scale(1.1); }
+  66% { transform: translate(-40px, 50px) scale(0.9); }
+}
+
+/* ═══════════════════════════════════════════════════
+   🏛️ الهيدر
+   ═══════════════════════════════════════════════════ */
+.header {
+  position: relative;
+  z-index: 10;
+  background: rgba(18, 18, 46, 0.6);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.header .brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header .brand .back-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+  backdrop-filter: blur(10px);
+}
+
+.header .brand .back-btn:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+  transform: scale(1.08) rotate(180deg);
+  box-shadow: var(--shadow-glow);
+}
+
+.header .brand .icon-wrapper {
+  width: 46px;
+  height: 46px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  box-shadow: 0 6px 24px rgba(108, 99, 255, 0.4);
+  position: relative;
+}
+
+.header .brand .icon-wrapper::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  z-index: -1;
+  opacity: 0.5;
+  filter: blur(8px);
+}
+
+.header .brand .info h2 {
+  font-size: 17px;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--text), var(--primary-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.2;
+}
+
+.header .brand .info .status {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 2px;
+}
+
+.header .brand .info .status::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #4ADE80;
+  box-shadow: 0 0 8px #4ADE80;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.header-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.header-actions button {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+  backdrop-filter: blur(10px);
+}
+
+.header-actions button:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+  transform: scale(1.08);
+  box-shadow: var(--shadow-glow);
+}
+
+/* ═══════════════════════════════════════════════════
+   💬 حاوية الشات
+   ═══════════════════════════════════════════════════ */
+.chat-wrapper {
+  position: relative;
+  z-index: 1;
+  height: calc(100vh - 75px);
+  display: flex;
+  flex-direction: column;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* ═══════════════════════════════════════════════════
+   📜 منطقة الرسائل
+   ═══════════════════════════════════════════════════ */
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  scroll-behavior: smooth;
+}
+
+.messages::-webkit-scrollbar { width: 6px; }
+.messages::-webkit-scrollbar-track { background: transparent; }
+.messages::-webkit-scrollbar-thumb {
+  background: rgba(108, 99, 255, 0.3);
+  border-radius: 10px;
+}
+.messages::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
+/* ═══════════════════════════════════════════════════
+   🌟 شاشة الترحيب
+   ═══════════════════════════════════════════════════ */
+.welcome {
+  text-align: center;
+  padding: 30px 10px;
+  max-width: 720px;
+  margin: 0 auto;
+  animation: welcomeIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes welcomeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.welcome .hero {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 20px;
+  border-radius: 30px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  box-shadow: 
+    0 20px 60px rgba(108, 99, 255, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  position: relative;
+  animation: heroGlow 3s infinite ease-in-out;
+}
+
+.welcome .hero::before {
+  content: '';
+  position: absolute;
+  inset: -20px;
+  border-radius: 50px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  filter: blur(30px);
+  opacity: 0.5;
+  z-index: -1;
+}
+
+@keyframes heroGlow {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-6px) scale(1.03); }
+}
+
+.welcome h2 {
+  font-size: 28px;
+  font-weight: 900;
+  margin-bottom: 10px;
+  background: linear-gradient(135deg, #FFFFFF, var(--primary-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.welcome .subtitle {
+  font-size: 15px;
+  color: var(--text-soft);
+  margin-bottom: 30px;
+  line-height: 1.8;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.welcome .subtitle strong {
+  color: var(--accent-2);
+  font-weight: 700;
+}
+
+/* ═══ بطاقات الميزات ═══ */
+.feature-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.feature-card {
+  padding: 16px 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  text-align: center;
+  transition: all 0.3s;
+  cursor: default;
+}
+
+.feature-card:hover {
+  background: var(--surface-hover);
+  border-color: var(--border-hover);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-glow);
+}
+
+.feature-card .icon {
+  font-size: 26px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.feature-card .title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+
+.feature-card .desc {
+  font-size: 10.5px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+/* ═══ Quick Actions ═══ */
+.quick-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-soft);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: center;
+}
+
+.quick-title::before,
+.quick-title::after {
+  content: '';
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  flex: 1;
+  max-width: 60px;
+}
+
+.quick-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.quick-btn {
+  padding: 10px 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 50px;
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  backdrop-filter: blur(20px);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.quick-btn:hover {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  border-color: var(--primary);
+  color: var(--white);
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 10px 30px rgba(108, 99, 255, 0.4);
+}
+
+.quick-btn:active {
+  transform: translateY(-1px) scale(0.98);
+}
+
+/* ═══════════════════════════════════════════════════
+   💌 الرسائل
+   ═══════════════════════════════════════════════════ */
+.message {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  max-width: 85%;
+  animation: msgIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes msgIn {
+  from { opacity: 0; transform: translateY(15px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.message.user {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+}
+
+.message .avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-sm);
+}
+
+.message.user .avatar {
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: var(--white);
+}
+
+.message.ai .avatar {
+  background: linear-gradient(135deg, var(--accent-2), #FF8A65);
+  color: #1a1a2e;
+}
+
+.message .bubble {
+  padding: 14px 18px;
+  border-radius: var(--radius-lg);
+  line-height: 1.9;
+  font-size: 15px;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+  position: relative;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: var(--shadow-sm);
+}
+
+.message.user .bubble {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: var(--white);
+  border-bottom-right-radius: 6px;
+}
+
+.message.ai .bubble {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-bottom-left-radius: 6px;
+}
+
+.message .bubble pre {
+  white-space: pre-wrap;
+  font-family: var(--font);
+  margin: 0;
+  padding: 0;
+}
+
+.message .meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  opacity: 0.6;
+  margin-top: 8px;
+  justify-content: flex-end;
+}
+
+.message.ai .meta {
+  justify-content: flex-start;
+}
+
+.message .copy-btn {
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 6px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.message:hover .copy-btn {
+  opacity: 1;
+}
+
+.message .copy-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* ═══════════════════════════════════════════════════
+   ✍️ مؤشر الكتابة
+   ═══════════════════════════════════════════════════ */
+.typing {
+  display: none;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 0 20px;
+  align-self: flex-start;
+  max-width: 85%;
+}
+
+.typing.active { display: flex; }
+
+.typing .avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-2), #FF8A65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.typing .bubble {
+  padding: 14px 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  border-bottom-left-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  backdrop-filter: blur(20px);
+}
+
+.typing .bubble span {
+  font-size: 13px;
+  color: var(--text-soft);
+  font-weight: 600;
+}
+
+.typing .dot {
+  width: 7px;
+  height: 7px;
+  background: var(--primary-light);
+  border-radius: 50%;
+  animation: bounce 1.4s infinite;
+}
+
+.typing .dot:nth-child(2) { animation-delay: 0.2s; }
+.typing .dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes bounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+  30% { transform: translateY(-8px); opacity: 1; }
+}
+
+/* ═══════════════════════════════════════════════════
+   📝 مربع الكتابة
+   ═══════════════════════════════════════════════════ */
+.input-area {
+  display: flex;
+  gap: 10px;
+  padding: 16px 20px 20px;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+
+.input-wrapper {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  background: rgba(18, 18, 46, 0.8);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 4px;
+  transition: all 0.3s;
+}
+
+.input-wrapper:focus-within {
+  border-color: var(--primary);
+  box-shadow: 
+    0 0 0 4px rgba(108, 99, 255, 0.15),
+    0 8px 32px rgba(108, 99, 255, 0.2);
+}
+
+.input-area textarea {
+  flex: 1;
+  padding: 14px 16px;
+  border: 0;
+  background: transparent;
+  font-family: var(--font);
+  font-size: 16px;
+  resize: none;
+  min-height: 48px;
+  max-height: 140px;
+  color: var(--text);
+  line-height: 1.6;
+  outline: none;
+}
+
+.input-area textarea::placeholder {
+  color: var(--text-muted);
+}
+
+.input-area .send-btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: var(--white);
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 6px 24px rgba(108, 99, 255, 0.4);
+}
+
+.input-area .send-btn:hover {
+  transform: scale(1.08) rotate(15deg);
+  box-shadow: 0 10px 40px rgba(108, 99, 255, 0.6);
+}
+
+.input-area .send-btn:active {
+  transform: scale(0.95);
+}
+
+.input-area .send-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ═══════════════════════════════════════════════════
+   📱 Responsive
+   ═══════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .header { padding: 12px 16px; }
+  .header .brand .info h2 { font-size: 15px; }
+  .messages { padding: 18px 14px; gap: 14px; }
+  .welcome { padding: 20px 6px; }
+  .welcome .hero { width: 80px; height: 80px; font-size: 38px; }
+  .welcome h2 { font-size: 22px; }
+  .feature-cards { grid-template-columns: repeat(3, 1fr); }
+  .message { max-width: 92%; }
+  .message .bubble { padding: 12px 15px; font-size: 14.5px; }
+  .message .avatar { width: 34px; height: 34px; font-size: 16px; }
+  .input-area { padding: 12px 14px 16px; }
+  .input-area .send-btn { width: 48px; height: 48px; }
+}
+
+@media (max-width: 480px) {
+  .header .brand .info h2 { font-size: 14px; }
+  .header .brand .icon-wrapper { width: 40px; height: 40px; font-size: 18px; }
+  .header .brand .back-btn { width: 38px; height: 38px; }
+  .header-actions button { width: 38px; height: 38px; }
+  
+  .feature-cards { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .feature-card { padding: 12px 8px; }
+  .feature-card .icon { font-size: 22px; }
+  .feature-card .title { font-size: 11px; }
+  .feature-card .desc { display: none; }
+  
+  .quick-btn { padding: 8px 14px; font-size: 12px; }
+  .message .bubble { font-size: 14px; }
+}
+
+/* ═══ توفير الأداء */
+@media (max-width: 1024px), (prefers-reduced-motion: reduce) {
+  .bg-orb { animation: none; }
+  .welcome .hero { animation: none; }
+  .welcome .hero::before { display: none; }
 }
 </style>
 
+<style>
+.overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 10, 26, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+    animation: fadeIn 0.3s ease;
+}
+
+.overlay.active { display: flex; }
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.tafsir-popup {
+    background: rgba(18, 18, 46, 0.95);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    max-width: 640px;
+    width: 100%;
+    max-height: 85vh;
+    padding: 26px;
+    box-shadow: 0 30px 90px rgba(0, 0, 0, 0.6);
+    overflow-y: auto;
+    animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes slideUp {
+    from { transform: translateY(40px) scale(0.95); opacity: 0; }
+    to { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+.popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 16px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+}
+
+.popup-header h3 {
+    font-size: 19px;
+    font-weight: 800;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.popup-close {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+}
+
+.popup-close:hover {
+    background: #FF4757;
+    border-color: #FF4757;
+    color: var(--white);
+    transform: rotate(90deg);
+}
+
+.popup-verse {
+    background: linear-gradient(135deg, rgba(108, 99, 255, 0.1), rgba(255, 107, 157, 0.05));
+    border: 1px solid rgba(108, 99, 255, 0.2);
+    border-right: 4px solid var(--primary);
+    border-radius: var(--radius-md);
+    padding: 18px 22px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 18px;
+    line-height: 2;
+    color: var(--text);
+}
+
+.popup-verse .surah-name {
+    display: block;
+    font-size: 13px;
+    color: var(--primary-light);
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.popup-verse .verse-text {
+    font-weight: 600;
+}
+
+.popup-subtitle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--text-soft);
+    margin-bottom: 14px;
+    font-weight: 600;
+}
+
+.popup-subtitle .count {
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: var(--white);
+    border-radius: 20px;
+    padding: 3px 14px;
+    font-size: 12px;
+    font-weight: 800;
+    margin-right: auto;
+}
+
+.tafsir-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.tafsir-option {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s;
+    backdrop-filter: blur(20px);
+}
+
+.tafsir-option:hover {
+    border-color: var(--primary);
+    background: var(--surface-hover);
+    transform: translateX(-4px);
+    box-shadow: var(--shadow-glow);
+}
+
+.tafsir-option.selected {
+    border-color: var(--primary);
+    background: var(--surface-active);
+    box-shadow: 0 0 30px rgba(108, 99, 255, 0.3);
+}
+
+.tafsir-option .icon {
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+.tafsir-option .info { flex: 1; }
+
+.tafsir-option .info .name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.tafsir-option .info .desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 3px;
+}
+
+.tafsir-option .check {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: transparent;
+    font-size: 13px;
+    font-weight: 900;
+    transition: all 0.3s;
+    flex-shrink: 0;
+}
+
+.tafsir-option.selected .check {
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border-color: transparent;
+    color: var(--white);
+    transform: scale(1.1);
+}
+
+.tafsir-option .color-bar {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+.popup-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.popup-actions button {
+    flex: 1;
+    min-width: 120px;
+    padding: 14px 18px;
+    border-radius: var(--radius-md);
+    font-family: var(--font);
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-all {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    color: var(--text);
+    backdrop-filter: blur(20px);
+}
+
+.btn-all:hover,
+.btn-all.active {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    border-color: var(--primary);
+    color: var(--white);
+    box-shadow: var(--shadow-glow);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border: none;
+    color: var(--white);
+    box-shadow: 0 8px 30px rgba(108, 99, 255, 0.4);
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(108, 99, 255, 0.6);
+}
+
+.btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+@media (max-width: 480px) {
+    .tafsir-popup { padding: 20px 16px; border-radius: var(--radius-lg); }
+    .popup-header h3 { font-size: 17px; }
+    .popup-verse { font-size: 16px; padding: 14px 16px; }
+    .popup-actions { flex-direction: column; }
+    .popup-actions button { width: 100%; }
+}
+</style>
+
+
+<style id="fix-layout">
+/* ═══════════════════════════════════════════════════
+   🔧 إصلاحات ضرورية
+   ═══════════════════════════════════════════════════ */
+
+/* 1. زر الإرسال — دائرة نظيفة بدون نص */
+.input-area .send-btn {
+    width: 54px !important;
+    min-width: 54px !important;
+    max-width: 54px !important;
+    height: 54px !important;
+    padding: 0 !important;
+    border-radius: 50% !important;
+    font-size: 22px !important;
+    font-weight: 900 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+    line-height: 1 !important;
+    text-indent: 0 !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+}
+
+.input-area .send-btn span {
+    display: none !important;
+}
+
+/* 2. حاوية الإدخال — تنسيق أفقي صحيح */
+.input-area {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: flex-end !important;
+    gap: 10px !important;
+    padding: 14px 18px 18px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.input-wrapper {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    display: flex !important;
+    flex-direction: row !important;
+    background: rgba(18, 18, 46, 0.85) !important;
+    border: 1.5px solid var(--border) !important;
+    border-radius: 24px !important;
+    padding: 4px 6px !important;
+    box-sizing: border-box !important;
+}
+
+.input-area textarea {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    padding: 14px 16px !important;
+    background: transparent !important;
+    border: 0 !important;
+    color: var(--text) !important;
+    font-family: var(--font) !important;
+    font-size: 16px !important;
+    line-height: 1.6 !important;
+    resize: none !important;
+    outline: none !important;
+    box-sizing: border-box !important;
+    overflow-y: auto !important;
+}
+
+/* 3. فقاعة الرسالة — تحتوي النص بشكل كامل */
+.message {
+    max-width: 88% !important;
+    width: fit-content !important;
+    display: flex !important;
+    gap: 10px !important;
+    align-items: flex-start !important;
+}
+
+.message .bubble {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    padding: 16px 20px !important;
+    border-radius: 22px !important;
+    line-height: 2 !important;
+    font-size: 16px !important;
+    word-wrap: break-word !important;
+    word-break: break-word !important;
+    overflow-wrap: anywhere !important;
+    white-space: normal !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+}
+
+/* 4. النص داخل الرسالة — يلتف بشكل صحيح */
+.message .bubble pre {
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
+    word-break: break-word !important;
+    overflow-wrap: anywhere !important;
+    font-family: var(--font) !important;
+    font-size: 16px !important;
+    line-height: 2.1 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    color: inherit !important;
+    direction: rtl !important;
+    text-align: right !important;
+    max-width: 100% !important;
+    overflow: visible !important;
+}
+
+/* 5. الآية داخل النص — خط أكبر وأوضح */
+.message .bubble .verse {
+    display: block !important;
+    font-size: 18px !important;
+    line-height: 2.2 !important;
+    padding: 12px 16px !important;
+    margin: 10px 0 !important;
+    background: rgba(108, 99, 255, 0.08) !important;
+    border-right: 3px solid var(--primary) !important;
+    border-radius: 12px !important;
+    color: var(--text) !important;
+    text-align: right !important;
+    direction: rtl !important;
+}
+
+/* 6. الرسالة AI — خط واضح */
+.message.ai .bubble {
+    color: var(--text) !important;
+    font-weight: 500 !important;
+}
+
+/* 7. الـ container الرئيسي — لا تجاوز الحدود */
+.messages {
+    padding: 20px 18px !important;
+    gap: 16px !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+}
+
+.chat-wrapper {
+    max-width: 100% !important;
+    width: 100% !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+}
+
+body {
+    overflow-x: hidden !important;
+}
+
+/* 8. على الهاتف */
+@media (max-width: 768px) {
+    .message {
+        max-width: 95% !important;
+    }
+    .message .bubble {
+        padding: 12px 15px !important;
+        font-size: 15px !important;
+        line-height: 2 !important;
+    }
+    .message .bubble pre {
+        font-size: 15px !important;
+        line-height: 2 !important;
+    }
+    .message .avatar {
+        width: 34px !important;
+        height: 34px !important;
+        font-size: 16px !important;
+    }
+    .input-area {
+        padding: 10px 12px 14px !important;
+        gap: 8px !important;
+    }
+    .input-area .send-btn {
+        width: 48px !important;
+        min-width: 48px !important;
+        max-width: 48px !important;
+        height: 48px !important;
+        font-size: 20px !important;
+    }
+    .input-area textarea {
+        font-size: 16px !important;
+        padding: 12px 14px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .messages {
+        padding: 14px 12px !important;
+    }
+    .message {
+        max-width: 98% !important;
+    }
+    .message .bubble {
+        padding: 11px 14px !important;
+        font-size: 14.5px !important;
+    }
+    .message .bubble pre {
+        font-size: 14.5px !important;
+        line-height: 1.95 !important;
+    }
+    .input-area .send-btn {
+        width: 46px !important;
+        min-width: 46px !important;
+        max-width: 46px !important;
+        height: 46px !important;
+    }
+}
+</style>
+
+
+<style id="fix-avatar">
+/* إصلاح avatar المستخدم */
+.message.user .avatar {
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    max-width: 38px !important;
+    border-radius: 50% !important;
+    font-size: 13px !important;
+    font-weight: 800 !important;
+    overflow: hidden !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    line-height: 1 !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+}
+
+@media (max-width: 480px) {
+    .message.user .avatar {
+        width: 32px !important;
+        height: 32px !important;
+        min-width: 32px !important;
+        max-width: 32px !important;
+        font-size: 11px !important;
+    }
+}
+</style>
+
+</head>
+<body>
+
+
+<div class="bg-scene">
+    <div class="bg-orb"></div>
+    <div class="bg-orb"></div>
+</div>
+
+<div class="header">
+    <div class="brand">
+        <button class="back-btn" onclick="window.location.href='index.html'" title="رجوع">➤</button>
+        <div class="icon-wrapper">📖</div>
+        <div class="info">
+            <h2>نور المعرفة</h2>
+            <span class="status">متصل · 6 تفاسير جاهزة</span>
+        </div>
+    </div>
+    <div class="header-actions">
+        <button class="theme-toggle" onclick="toggleTheme()" title="تبديل الوضع">☀️</button>
+    </div>
+</div>
+
+<div class="chat-wrapper">
+    <div class="messages" id="messages">
+        <div class="welcome" id="welcome">
+            <div class="hero">📖</div>
+            <h2>السلام عليكم ورحمة الله</h2>
+            <p class="subtitle">
+                اسأل عن أي <strong>سورة</strong> أو <strong>آية</strong> من القرآن الكريم<br>
+                وسأعرض لك <strong>6 كتب تفسير</strong> معتمدة
+            </p>
+            
+            <div class="feature-cards">
+                <div class="feature-card">
+                    <span class="icon">📖</span>
+                    <div class="title">114 سورة</div>
+                    <div class="desc">قرآن كامل</div>
+                </div>
+                <div class="feature-card">
+                    <span class="icon">📚</span>
+                    <div class="title">6 تفاسير</div>
+                    <div class="desc">معتمدة</div>
+                </div>
+                <div class="feature-card">
+                    <span class="icon">⚡</span>
+                    <div class="title">فوري</div>
+                    <div class="desc">بدون إنترنت</div>
+                </div>
+            </div>
+            
+            <div class="quick-title">جرّب هذه الأمثلة</div>
+            <div class="quick-actions">
+                <button class="quick-btn" onclick="sendExample('البقرة')">📖 سورة البقرة</button>
+                <button class="quick-btn" onclick="sendExample('آية الكرسي')">📖 آية الكرسي</button>
+                <button class="quick-btn" onclick="sendExample('الإخلاص')">📖 الإخلاص</button>
+                <button class="quick-btn" onclick="sendExample('يس')">📖 سورة يس</button>
+                <button class="quick-btn" onclick="sendExample('البقرة ١-٥')">📖 البقرة ١-٥</button>
+                <button class="quick-btn" onclick="sendExample('2:255')">🔍 2:255</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="typing" id="typing">
+        <div class="avatar">🤖</div>
+        <div class="bubble">
+            <span>نور يفكر</span>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+    </div>
+
+    <div class="input-area">
+        <div class="input-wrapper">
+            <textarea id="input" rows="1" placeholder="اكتب اسم سورة، أو آية (مثل: 2:255)، أو كلمة..."></textarea>
+        </div>
+        <button class="send-btn" id="sendBtn" title="إرسال" aria-label="إرسال">➤</button>
+    </div>
+</div>
+
+<div class="overlay" id="tafsirOverlay">
+    <div class="tafsir-popup">
+        <div class="popup-header">
+            <h3><span class="icon">📚</span> اختر التفسير</h3>
+            <button class="popup-close" onclick="closePopup()">✕</button>
+        </div>
+        <div class="popup-verse" id="popupVerse">
+            <span class="surah-name" id="popupSurahName">سورة البقرة</span>
+            <span class="verse-text" id="popupVerseText">﴿ ... ﴾</span>
+        </div>
+        <div class="popup-subtitle">
+            <span>📖 اختر التفسير</span>
+            <span class="count" id="selectedCount">0</span>
+        </div>
+        <div class="tafsir-list" id="tafsirList"></div>
+        <div class="popup-actions">
+            <button class="btn-all" id="btnAllTafsirs" onclick="selectAllTafsirs()">📚 جميع التفاسير</button>
+            <button class="btn-primary" id="btnShowTafsir" onclick="showSelectedTafsirs()">✅ عرض التفسير</button>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+<script src="./db-offline.js"></script>
+<script src="./search_engine.js"></script>
+<script src="./download-progress.js" defer></script>
+<script src="./offline.js"></script>
 
 <script>
 // ⚡ كشف الجهاز الضعيف
@@ -439,410 +1424,6 @@ body {
   }
 })();
 </script>
-
-
-<style>
-/* ⚡ تسريع Splash */
-body.weak-device #nmSplash {
-  transition: opacity 0.2s ease !important;
-}
-body.weak-device #nmSplash .splash-icon,
-body.weak-device #nmSplash .splash-loader,
-body.weak-device #nmSplash .nm-splash-top-icon {
-  animation: none !important;
-}
-body.weak-device #nmSplash .splash-box {
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
-</style>
-
-
-<style id="splash-speedup">
-/* ⚡ Splash خفيف جدًا على الأجهزة الضعيفة */
-
-/* على الهاتف — إزالة كل الحركات المكلفة */
-@media (max-width: 1024px), (prefers-reduced-motion: reduce) {
-  
-  /* 1. خلفية سادة بدل متدرجة متحركة */
-  #nmSplash {
-    background: linear-gradient(135deg, #2d2d5f, #6C63FF) !important;
-    animation: none !important;
-    transition: opacity 0.15s ease !important;
-  }
-  
-  #nmSplash::before {
-    display: none !important;
-    animation: none !important;
-  }
-  
-  /* 2. إزالة نبض الأيقونة */
-  .nm-splash-top-icon,
-  .nm-splash-icon,
-  #nmSplash .splash-icon {
-    animation: none !important;
-    filter: none !important;
-    transform: none !important;
-  }
-  
-  /* 3. إزالة دوران اللودر */
-  .nm-splash-spinner,
-  #nmSplash .splash-loader {
-    animation: nmSplashSpin 1.5s linear infinite !important;
-  }
-  
-  /* 4. إزالة blur من الصندوق */
-  .nm-splash-box,
-  #nmSplash .splash-box {
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    background: rgba(255, 255, 255, 0.12) !important;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  }
-  
-  /* 5. إزالة حدود متحركة */
-  .nm-splash-box::before {
-    display: none !important;
-    animation: none !important;
-  }
-  
-  /* 6. شريط تقدم بسيط */
-  .nm-splash-progress-bar,
-  #nmSplash .splash-bar {
-    animation: none !important;
-    background: #FFD93D !important;
-    transition: width 0.3s ease !important;
-  }
-  
-  /* 7. إخفاء النقاط المتحركة */
-  .nm-splash-dots {
-    display: none !important;
-  }
-  
-  /* 8. تقليل حجم الأيقونة */
-  .nm-splash-top-icon {
-    font-size: 48px !important;
-  }
-  
-  .nm-splash-app-name {
-    font-size: 26px !important;
-  }
-  
-  .nm-splash-basmala {
-    font-size: 14px !important;
-  }
-  
-  /* 9. GPU acceleration */
-  #nmSplash {
-    transform: translateZ(0);
-    will-change: opacity;
-  }
-  
-  /* 10. إخفاء الأسطر المتوهجة */
-  .nm-splash-box::before {
-    display: none !important;
-  }
-}
-
-/* للشاشات الصغيرة جدًا */
-@media (max-width: 480px) {
-  /* إزالة كل الحركات */
-  #nmSplash * {
-    animation: none !important;
-    transition: none !important;
-  }
-  
-  #nmSplash {
-    transition: opacity 0.1s ease !important;
-  }
-  
-  /* اللودر فقط يعمل */
-  #nmSplash .splash-loader,
-  .nm-splash-spinner {
-    animation: nmSplashSpin 2s linear infinite !important;
-  }
-  
-  /* خلفية سادة تمامًا */
-  #nmSplash {
-    background: #5A4FCF !important;
-  }
-  
-  /* تبسيط المربع */
-  .nm-splash-box,
-  #nmSplash .splash-box {
-    background: rgba(0, 0, 0, 0.15) !important;
-    padding: 18px 14px !important;
-    min-height: 120px !important;
-  }
-  
-  /* نص أوضح */
-  .nm-splash-text,
-  #nmSplash .splash-text {
-    font-size: 15px !important;
-    line-height: 1.6 !important;
-  }
-  
-  /* إخفاء الكتب المصغرة */
-  .tafsir-books-grid {
-    grid-template-columns: 1fr !important;
-  }
-}
-</style>
-
-</head>
-<body>
-
-<!-- 🎨 Splash Screen — ترحيب + مواعظ + آيات -->
-<style id="nm-splash-css">
-#nmSplash {
-  position: fixed;
-  inset: 0;
-  background: linear-gradient(135deg, #1a1a3e 0%, #2d2d5f 30%, #6C63FF 100%);
-  z-index: 2147483646;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  font-family: 'Tajawal', system-ui, sans-serif;
-  direction: rtl;
-  padding: 30px;
-  text-align: center;
-  transition: opacity 0.8s ease;
-  opacity: 1;
-  overflow: hidden;
-}
-#nmSplash.nm-splash-hide {
-  opacity: 0;
-  pointer-events: none;
-}
-#nmSplash::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: 
-    radial-gradient(circle at 20% 30%, rgba(108, 99, 255, 0.3) 0%, transparent 40%),
-    radial-gradient(circle at 80% 70%, rgba(255, 107, 107, 0.15) 0%, transparent 40%),
-    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.05) 0%, transparent 60%);
-  animation: nmSplashBg 15s ease-in-out infinite alternate;
-}
-@keyframes nmSplashBg {
-  0% { transform: scale(1) rotate(0deg); }
-  100% { transform: scale(1.2) rotate(5deg); }
-}
-
-.nm-splash-content {
-  position: relative;
-  z-index: 1;
-  max-width: 500px;
-  width: 100%;
-}
-
-.nm-splash-top-icon {
-  font-size: 64px;
-  margin-bottom: 16px;
-  display: block;
-  animation: nmSplashGlow 3s ease-in-out infinite;
-  filter: drop-shadow(0 0 30px rgba(255, 255, 255, 0.5));
-}
-@keyframes nmSplashGlow {
-  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 30px rgba(255, 255, 255, 0.5)); }
-  50% { transform: scale(1.08); filter: drop-shadow(0 0 50px rgba(255, 255, 255, 0.8)); }
-}
-
-.nm-splash-app-name {
-  font-size: 34px;
-  font-weight: 900;
-  color: #ffffff;
-  margin: 0 0 8px 0;
-  letter-spacing: -0.5px;
-  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-}
-
-.nm-splash-basmala {
-  font-size: 16px;
-  color: rgba(255, 255, 255, 0.85);
-  margin: 0 0 30px 0;
-  font-weight: 500;
-  line-height: 1.7;
-  font-family: 'Tajawal', serif;
-}
-
-/* صندوق الموعظة */
-.nm-splash-box {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 24px;
-  padding: 28px 24px;
-  margin-bottom: 24px;
-  min-height: 180px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  transition: all 0.5s ease;
-  position: relative;
-  overflow: hidden;
-}
-.nm-splash-box::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, transparent, #FFD93D, transparent);
-  animation: nmSplashTopBorder 3s linear infinite;
-}
-@keyframes nmSplashTopBorder {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
-}
-
-.nm-splash-icon {
-  font-size: 36px;
-  margin-bottom: 14px;
-  display: block;
-  animation: nmSplashIconFloat 3s ease-in-out infinite;
-}
-@keyframes nmSplashIconFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
-}
-
-.nm-splash-text {
-  font-size: 19px;
-  color: #ffffff;
-  line-height: 1.9;
-  margin: 0 0 12px 0;
-  font-weight: 700;
-  font-family: 'Tajawal', serif;
-  transition: opacity 0.5s ease;
-}
-.nm-splash-text.nm-splash-fade {
-  opacity: 0;
-}
-
-.nm-splash-source {
-  font-size: 13px;
-  color: rgba(255, 217, 61, 0.9);
-  font-weight: 600;
-  margin: 0;
-  transition: opacity 0.5s ease;
-}
-.nm-splash-source.nm-splash-fade {
-  opacity: 0;
-}
-
-/* شريط التقدم */
-.nm-splash-progress-track {
-  width: 100%;
-  height: 6px;
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 10px;
-  overflow: hidden;
-  margin-bottom: 16px;
-}
-.nm-splash-progress-bar {
-  height: 100%;
-  background: linear-gradient(90deg, #FFD93D, #FF6B6B, #6C63FF);
-  background-size: 200% 100%;
-  border-radius: 10px;
-  transition: width 0.4s ease;
-  animation: nmSplashProgressShine 2s linear infinite;
-}
-@keyframes nmSplashProgressShine {
-  0% { background-position: 0% 50%; }
-  100% { background-position: 200% 50%; }
-}
-
-.nm-splash-status {
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.85);
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-}
-
-.nm-splash-spinner {
-  width: 18px;
-  height: 18px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-top-color: #FFD93D;
-  border-radius: 50%;
-  animation: nmSplashSpin 0.8s linear infinite;
-  display: inline-block;
-}
-@keyframes nmSplashSpin {
-  to { transform: rotate(360deg); }
-}
-
-/* زر التخطي */
-.nm-splash-skip {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: #ffffff;
-  padding: 8px 18px;
-  border-radius: 20px;
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-  font-family: 'Tajawal', system-ui, sans-serif;
-  transition: all 0.2s;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  z-index: 2;
-}
-.nm-splash-skip:hover {
-  background: rgba(255, 255, 255, 0.25);
-  transform: scale(1.05);
-}
-
-@media (max-width: 480px) {
-  .nm-splash-top-icon { font-size: 52px; }
-  .nm-splash-app-name { font-size: 26px; }
-  .nm-splash-basmala { font-size: 14px; margin-bottom: 22px; }
-  .nm-splash-box { padding: 22px 18px; min-height: 150px; }
-  .nm-splash-text { font-size: 16px; line-height: 1.8; }
-  .nm-splash-source { font-size: 12px; }
-  .nm-splash-status { font-size: 13px; }
-  .nm-splash-skip { top: 12px; left: 12px; padding: 6px 14px; font-size: 12px; }
-}
-</style>
-
-<div id="nmSplash">
-  <button class="nm-splash-skip" id="nmSplashSkip" type="button">تخطي ←</button>
-  
-  <div class="nm-splash-content">
-    
-    <span class="nm-splash-top-icon">🕌</span>
-    <h1 class="nm-splash-app-name">نور المعرفة</h1>
-    <p class="nm-splash-basmala">بسم الله الرحمن الرحيم</p>
-    
-    <div class="nm-splash-box">
-      <span class="nm-splash-icon" id="nmSplashIcon">✨</span>
-      <p class="nm-splash-text" id="nmSplashText">جاري التحضير...</p>
-      <p class="nm-splash-source" id="nmSplashSource"></p>
-    </div>
-    
-    <div class="nm-splash-progress-track">
-      <div class="nm-splash-progress-bar" id="nmSplashBar" style="width: 0%;"></div>
-    </div>
-    
-    <div class="nm-splash-status">
-      <span class="nm-splash-spinner"></span>
-      <span id="nmSplashStatus">جاري تجهيز التطبيق...</span>
-    </div>
-    
-  </div>
-</div>
-
 <script>
 (function() {
   'use strict';
@@ -1032,208 +1613,6 @@ body.weak-device #nmSplash .splash-box {
   console.log('[Splash] ✅ جاهز — محتوى ديني');
 })();
 </script>
-
-
-<!-- ═══════════════════════════════════════════ -->
-<!-- 🎯 نافذة الاسم + اختيار الجنس -->
-<!-- ═══════════════════════════════════════════ -->
-<style id="nm-name-css">
-#nmNameOverlay {
-  position: fixed !important;
-  inset: 0 !important;
-  background: linear-gradient(135deg, #6C63FF 0%, #5A4FCF 50%, #4A3FB8 100%) !important;
-  z-index: 2147483647 !important;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  font-family: 'Tajawal', system-ui, sans-serif !important;
-  direction: rtl;
-  overflow-y: auto;
-}
-#nmNameOverlay.nm-visible {
-  display: flex !important;
-  animation: nmFadeIn 0.4s ease;
-}
-#nmNameOverlay * { box-sizing: border-box; }
-.nm-name-card {
-  background: #ffffff !important;
-  border-radius: 28px !important;
-  padding: 40px 32px !important;
-  max-width: 440px !important;
-  width: 100% !important;
-  text-align: center !important;
-  box-shadow: 0 30px 80px rgba(0,0,0,0.35) !important;
-  animation: nmSlideUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-  margin: auto;
-}
-.nm-name-icon {
-  font-size: 64px !important;
-  display: block !important;
-  margin-bottom: 12px !important;
-  animation: nmBounce 2s ease-in-out infinite;
-}
-.nm-name-title {
-  font-size: 24px !important;
-  font-weight: 900 !important;
-  color: #2D2D3F !important;
-  margin: 0 0 6px 0 !important;
-  line-height: 1.3 !important;
-  font-family: 'Tajawal', system-ui, sans-serif !important;
-}
-.nm-name-title .nm-name-title-sub {
-  font-size: 17px !important;
-  color: #6C63FF !important;
-  display: block !important;
-  margin-top: 6px !important;
-  font-weight: 700 !important;
-}
-.nm-name-subtitle {
-  font-size: 14px !important;
-  color: #6B6B8A !important;
-  margin: 0 0 20px 0 !important;
-  line-height: 1.6 !important;
-  font-family: 'Tajawal', system-ui, sans-serif !important;
-}
-.nm-name-label {
-  display: block !important;
-  text-align: right !important;
-  font-size: 13px !important;
-  font-weight: 700 !important;
-  color: #2D2D3F !important;
-  margin-bottom: 8px !important;
-  font-family: 'Tajawal', system-ui, sans-serif !important;
-}
-.nm-name-input {
-  width: 100% !important;
-  padding: 16px 20px !important;
-  border: 2px solid #e5e5f0 !important;
-  border-radius: 16px !important;
-  font-size: 18px !important;
-  font-family: 'Tajawal', system-ui, sans-serif !important;
-  text-align: center !important;
-  color: #2D2D3F !important;
-  background: #fafaff !important;
-  outline: none !important;
-  font-weight: 700 !important;
-  transition: all 0.2s ease;
-  display: block !important;
-  margin: 0 0 20px 0 !important;
-}
-.nm-name-input:focus {
-  border-color: #6C63FF !important;
-  background: #ffffff !important;
-  box-shadow: 0 0 0 4px rgba(108,99,255,0.15) !important;
-}
-/* اختيار الجنس */
-.nm-gender-group {
-  display: grid !important;
-  grid-template-columns: 1fr 1fr !important;
-  gap: 10px !important;
-  margin-bottom: 22px !important;
-}
-.nm-gender-btn {
-  padding: 20px 12px !important; font-size: 18px !important;
-  border: 2px solid #e5e5f0 !important;
-  border-radius: 16px !important;
-  background: #fafaff !important;
-  color: #6B6B8A !important;
-  font-size: 16px !important;
-  font-weight: 700 !important;
-  font-family: 'Tajawal', system-ui, sans-serif !important;
-  cursor: pointer !important;
-  transition: all 0.2s ease;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  gap: 6px !important;
-}
-.nm-gender-btn .nm-gender-icon {
-  font-size: 28px !important;
-  line-height: 1 !important;
-}
-.nm-gender-btn:hover {
-  border-color: #6C63FF !important;
-  transform: translateY(-2px);
-}
-.nm-gender-btn.nm-gender-active {
-  border-color: #6C63FF !important;
-  background: linear-gradient(135deg, #6C63FF 0%, #5A4FCF 100%) !important;
-  color: #ffffff !important;
-  box-shadow: 0 8px 25px rgba(108,99,255,0.35) !important;
-}
-.nm-name-btn {
-  width: 100% !important;
-  padding: 18px 24px !important;
-  border: 0 !important;
-  border-radius: 16px !important;
-  background: linear-gradient(135deg, #6C63FF 0%, #5A4FCF 100%) !important;
-  color: #ffffff !important;
-  font-size: 18px !important;
-  font-weight: 800 !important;
-  font-family: 'Tajawal', system-ui, sans-serif !important;
-  cursor: pointer !important;
-  transition: all 0.2s ease;
-  box-shadow: 0 8px 25px rgba(108,99,255,0.4) !important;
-}
-.nm-name-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 35px rgba(108,99,255,0.55) !important; }
-.nm-name-btn:active { transform: scale(0.97); }
-.nm-name-btn:disabled { opacity: 0.5 !important; cursor: not-allowed !important; }
-.nm-name-hint {
-  font-size: 12px !important;
-  color: #999 !important;
-  margin-top: 14px !important;
-  line-height: 1.5 !important;
-  font-family: 'Tajawal', system-ui, sans-serif !important;
-}
-@keyframes nmFadeIn { from { opacity: 0; } to { opacity: 1; } }
-@keyframes nmSlideUp {
-  from { transform: translateY(50px) scale(0.92); opacity: 0; }
-  to { transform: translateY(0) scale(1); opacity: 1; }
-}
-@keyframes nmBounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-@media (max-width: 480px) {
-  .nm-name-card { padding: 30px 22px !important; border-radius: 22px !important; }
-  .nm-name-icon { font-size: 52px !important; }
-  .nm-name-title { font-size: 20px !important; }
-  .nm-name-title .nm-name-title-sub { font-size: 15px !important; }
-  .nm-name-input { font-size: 16px !important; padding: 14px 18px !important; }
-  .nm-gender-btn { padding: 14px 10px !important; font-size: 14px !important; }
-  .nm-gender-btn .nm-gender-icon { font-size: 24px !important; }
-  .nm-name-btn { font-size: 16px !important; padding: 15px 20px !important; }
-}
-</style>
-
-<div id="nmNameOverlay">
-  <div class="nm-name-card">
-    <span class="nm-name-icon">🌙</span>
-    <h2 class="nm-name-title">
-      أهلاً وسهلاً بك
-      <span class="nm-name-title-sub">في رحاب نور المعرفة</span>
-    </h2>
-    <p class="nm-name-subtitle">ما اسمك؟ حتى نرحّب بك كما تستحق 🌸</p>
-    
-    <label class="nm-name-label">📝 اسمك الكامل</label>
-    <input type="text" id="nmNameInput" class="nm-name-input" placeholder="اكتب اسمك هنا..." maxlength="30" autocomplete="off">
-    
-    <label class="nm-name-label">✨ الجنس</label>
-    <div class="nm-gender-group">
-      <button type="button" class="nm-gender-btn" data-gender="male">
-        <span>ذكر</span>
-      </button>
-      <button type="button" class="nm-gender-btn" data-gender="female">
-        <span>أنثى</span>
-      </button>
-    </div>
-    
-    <button class="nm-name-btn" id="nmNameBtn" type="button" disabled>متابعة ✨</button>
-    <div class="nm-name-hint">💡 يمكنك تغيير الاسم لاحقًا من أيقونتك في الأعلى</div>
-  </div>
-</div>
-
 <script>
 (function() {
   'use strict';
@@ -1439,223 +1818,6 @@ body.weak-device #nmSplash .splash-box {
   console.log('[Name] ✅ جاهز');
 })();
 </script>
-<!-- ═══════════════════════════════════════════ -->
-
-
-
-
-
-
-<div class="bg-animation"><div class="orb"></div><div class="orb"></div><div class="orb"></div></div>
-
-<div class="header">
-    <div class="brand">
-        <button class="back-btn" onclick="window.location.href='index.html'">➤</button>
-        <div class="icon-wrapper">📖</div>
-        <div class="info">
-            <h2>نور المعرفة</h2>
-            <span>🤖 مع الذكاء الاصطناعي "نور"</span>
-        </div>
-    </div>
-    <div class="header-actions">
-            <span class="premium-icon">✦</span>
-        </button>
-        <button class="theme-toggle" onclick="toggleTheme()" title="تبديل الوضع">🌙</button>
-    </div>
-    <div style="flex:0 0 auto;width:44px;"></div>
-</div>
-
-<div class="chat-wrapper">
-    <div class="messages" id="messages">
-        <div class="welcome" id="welcome">
-            <span class="main-icon">📖</span>
-            <h2>مرحباً بك في نور المعرفة</h2>
-            <p>🤖 أنا <strong>نور</strong>، مساعدك الذكي للقرآن الكريم مع <strong>7 كتب تفسير</strong></p>
-            <p style="font-size:13px;color:var(--text-muted);">جميع السور والآيات (6236 آية) - 30+ ميزة متطورة</p>
-            <div class="usage-box">
-                <div class="usage-title">📝 طريقة الاستخدام</div>
-                <div class="usage-section">
-                    <div class="usage-label">📖 لعرض سورة كاملة:</div>
-                    <div class="usage-item">اسم السورة (مثال: البقرة، الإخلاص)</div>
-                    <div class="usage-item">سورة + اسم السورة (مثال: سورة البقرة)</div>
-                    <div class="usage-item">رقم السورة (مثال: 2، 112)</div>
-                </div>
-                <div class="usage-section">
-                    <div class="usage-label">📖 لعرض آية محددة:</div>
-                    <div class="usage-item">سورة:آية (مثال: 2:255، 4:5)</div>
-                    <div class="usage-item">اسم السورة آية/اية/الأية/الاية/أية رقم</div>
-                    <div class="usage-item">نطاق آيات (مثال: البقرة 1-5)</div>
-                </div>
-            </div>
-            <div class="tafsir-list-welcome">
-                <div class="usage-title">📚 كتب التفسير المتوفرة</div>
-                <div class="tafsir-books-grid">
-                    <div class="tafsir-book-card"><div class="tafsir-book-header" style="background:#4CAF50;"><span class="icon">📖</span><span class="name">التفسير الميسر</span></div><div class="tafsir-book-desc">تفسير ميسر وسهل الفهم، مناسب للمبتدئين.</div></div>
-                    <div class="tafsir-book-card"><div class="tafsir-book-header" style="background:#2196F3;"><span class="icon">📕</span><span class="name">تفسير الجلالين</span></div><div class="tafsir-book-desc">تفسير مختصر للإمامين المحلي والسيوطي.</div></div>
-                    <div class="tafsir-book-card"><div class="tafsir-book-header" style="background:#FF9800;"><span class="icon">📗</span><span class="name">تفسير ابن كثير</span></div><div class="tafsir-book-desc">أشهر التفاسير بالمأثور.</div></div>
-                    <div class="tafsir-book-card"><div class="tafsir-book-header" style="background:#9C27B0;"><span class="icon">📘</span><span class="name">تفسير السعدي</span></div><div class="tafsir-book-desc">تفسير ميسر مع المعاني الإيمانية.</div></div>
-                    <div class="tafsir-book-card"><div class="tafsir-book-header" style="background:#F44336;"><span class="icon">📙</span><span class="name">تفسير الطبري</span></div><div class="tafsir-book-desc">أقدم وأهم التفاسير جامع لأقوال السلف.</div></div>
-                    <div class="tafsir-book-card"><div class="tafsir-book-header" style="background:#009688;"><span class="icon">📚</span><span class="name">تفسير القرطبي</span></div><div class="tafsir-book-desc">الجامع لأحكام القرآن.</div></div>
-                </div>
-            </div>
-            <div class="examples">
-                <button onclick="sendExample('البقرة')">📖 سورة البقرة</button>
-                <button onclick="sendExample('البقرة آية 6')">📖 البقرة آية 6</button>
-                <button onclick="sendExample('2:255')">📖 آية الكرسي</button>
-                <button onclick="sendExample('الإخلاص')">📖 سورة الإخلاص</button>
-                <button onclick="sendExample('البقرة 1-5')">📖 البقرة 1-5</button>
-
-            </div>
-        </div>
-    </div>
-
-    <div class="typing" id="typing">
-        <span>🤖 نور يفكر</span>
-        <div class="dot"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
-    </div>
-
-    <div class="input-area">
-        <textarea id="input" rows="1" placeholder="اسأل نور عن أي آية أو سورة..."></textarea>
-        <button class="send-btn" id="sendBtn">إرسال ➤</button>
-    </div>
-
-    <div class="footer-info">
-        <span>🤖 نور - مساعدك الذكي للقرآن الكريم</span>
-        <span class="badge">📖 114 سورة - 7 تفاسير - 30+ ميزة</span>
-    </div>
-</div>
-
-<div class="overlay" id="tafsirOverlay">
-    <div class="tafsir-popup">
-        <div class="popup-header">
-            <h3><span class="icon">📚</span> اختر التفسير</h3>
-            <button class="popup-close" onclick="closePopup()">✕</button>
-        </div>
-        <div class="popup-verse" id="popupVerse">
-            <span class="surah-name" id="popupSurahName">سورة البقرة</span>
-            <span class="verse-text" id="popupVerseText">﴿ ... ﴾</span>
-        </div>
-        <div class="popup-subtitle">
-            <span>📖 اختر التفسير الذي تريد عرضه</span>
-            <span class="count" id="selectedCount">0</span>
-        </div>
-        <div class="tafsir-list" id="tafsirList"></div>
-        <div class="popup-actions">
-            <button class="btn-all" id="btnAllTafsirs" onclick="selectAllTafsirs()">📚 جميع التفاسير</button>
-            <button class="btn-primary" id="btnShowTafsir" onclick="showSelectedTafsirs()">✅ عرض التفسير</button>
-        </div>
-    </div>
-</div>
-
-<div class="features-modal-overlay" id="featuresModalOverlay">
-    <div class="features-modal-container">
-        <div class="features-modal-header">
-            <div class="features-modal-title">
-                <span class="features-modal-icon">✦</span>
-                <h2>الميزات المتطورة</h2>
-                <span class="features-modal-version">v30.0</span>
-            </div>
-            <button class="features-modal-close" onclick="toggleFeaturesModal()">✕</button>
-        </div>
-        <div class="features-modal-body">
-            <div class="features-grid">
-                <div class="feature-item" onclick="openSurahIndex();toggleFeaturesModal()">
-                    <div class="feature-item-icon" style="background:linear-gradient(135deg,#6C63FF,#3F3D9E);">📚</div>
-                    <div class="feature-item-content"><h4>فهرس السور</h4><p>تصفح 114 سورة</p><span class="feature-tag">متقدم</span></div>
-                </div>
-                <div class="feature-item" onclick="openQuranSearch();toggleFeaturesModal()">
-                    <div class="feature-item-icon" style="background:linear-gradient(135deg,#00BCD4,#00838F);">🔎</div>
-                    <div class="feature-item-content"><h4>البحث عن آية أو كلمة</h4><p>ابحث داخل القرآن</p><span class="feature-tag">بحث</span></div>
-                </div>
-                <div class="feature-item" onclick="loadRandomVerse(false);toggleFeaturesModal()">
-                    <div class="feature-item-icon" style="background:linear-gradient(135deg,#FF9800,#E67E22);">🎲</div>
-                    <div class="feature-item-content"><h4>آية عشوائية</h4><p>اكتشف آية جديدة</p><span class="feature-tag">ممتع</span></div>
-                </div>
-                <div class="feature-item" onclick="loadRandomVerse(true);toggleFeaturesModal()">
-                    <div class="feature-item-icon" style="background:linear-gradient(135deg,#2ECC71,#27AE60);">🌅</div>
-                    <div class="feature-item-content"><h4>آية اليوم</h4><p>آية وتفسير يومي</p><span class="feature-tag">يومي</span></div>
-                </div>
-                <div class="feature-item" onclick="openFavorites();toggleFeaturesModal()">
-                    <div class="feature-item-icon" style="background:linear-gradient(135deg,#E91E63,#C2185B);">⭐</div>
-                    <div class="feature-item-content"><h4>المفضلة</h4><p>آياتك المحفوظة</p><span class="feature-tag">سهل</span></div>
-                </div>
-                <div class="feature-item" onclick="resumeLastRead();toggleFeaturesModal()">
-                    <div class="feature-item-icon" style="background:linear-gradient(135deg,#795548,#4E342E);">↩️</div>
-                    <div class="feature-item-content"><h4>متابعة القراءة</h4><p>ارجع لآخر موضع</p><span class="feature-tag">مفيد</span></div>
-                </div>
-                <div class="feature-item" onclick="openTafsirLibrary();toggleFeaturesModal()">
-                    <div class="feature-item-icon" style="background:linear-gradient(135deg,#F44336,#C62828);">📖</div>
-                    <div class="feature-item-content"><h4>مكتبة التفاسير</h4><p>تعرف على التفاسير</p><span class="feature-tag">تعليمي</span></div>
-                </div>
-                <div class="feature-item" onclick="toggleReadingMode();toggleFeaturesModal()">
-                    <div class="feature-item-icon" style="background:linear-gradient(135deg,#1ABC9C,#0E6655);">🕯️</div>
-                    <div class="feature-item-content"><h4>وضع القراءة</h4><p>واجهة هادئة</p><span class="feature-tag">مريح</span></div>
-                </div>
-                <div class="feature-item" onclick="changeFontSize(1);toggleFeaturesModal()">
-                    <div class="feature-item-icon" style="background:linear-gradient(135deg,#9C27B0,#6A1B9A);">🔤</div>
-                    <div class="feature-item-content"><h4>تكبير الخط</h4><p>نص أكبر</p><span class="feature-tag">إمكانية</span></div>
-                </div>
-                <div class="feature-item" onclick="changeFontSize(-1);toggleFeaturesModal()">
-                    <div class="feature-item-icon" style="background:linear-gradient(135deg,#00BCD4,#00838F);">🔤</div>
-                    <div class="feature-item-content"><h4>تصغير الخط</h4><p>نص أصغر</p><span class="feature-tag">إمكانية</span></div>
-                </div>
-                <div class="feature-item" onclick="showSurahStats();toggleFeaturesModal()">
-                    <div class="feature-item-icon" style="background:linear-gradient(135deg,#D32F2F,#B71C1C);">📊</div>
-                    <div class="feature-item-content"><h4>إحصائيات السورة</h4><p>تحليل السورة</p><span class="feature-tag">احترافي</span></div>
-                </div>
-                <div class="feature-item" onclick="clearChat();toggleFeaturesModal()">
-                    <div class="feature-item-icon" style="background:linear-gradient(135deg,#607D8B,#37474F);">🗑️</div>
-                    <div class="feature-item-content"><h4>مسح المحادثة</h4><p>تصفية الشات</p><span class="feature-tag">مفيد</span></div>
-                </div>
-                <div class="feature-item" onclick="toggleTheme();toggleFeaturesModal()">
-                    <div class="feature-item-icon" style="background:linear-gradient(135deg,#FF6B6B,#ee5a24);">🌙</div>
-                    <div class="feature-item-content"><h4>الوضع الليلي</h4><p>تبديل الوضع</p><span class="feature-tag">جمالي</span></div>
-                </div>
-            </div>
-            <div class="features-modal-footer">
-                <div class="features-stats">
-                    <span>📚 7 كتب تفسير</span>
-                    <span>📖 114 سورة</span>
-                    <span>🔢 6236 آية</span>
-                    <span>✨ 30+ ميزة</span>
-                </div>
-                <button class="features-start-btn" onclick="document.getElementById('input').focus();toggleFeaturesModal()">🚀 استكشف الآن</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="overlay" id="surahOverlay" onclick="if(event.target===this)closePopup()">
-    <div class="tafsir-popup" style="max-width:700px;">
-        <div class="popup-header"><h3>📚 فهرس السور</h3><button class="popup-close" onclick="closePopup()">✕</button></div>
-        <input type="text" id="surahFilter" placeholder="🔎 ابحث باسم السورة..." style="width:100%;padding:10px 14px;border:1px solid var(--border-color);border-radius:12px;background:var(--bg-input);color:var(--text-primary);font-family:Tajawal,sans-serif;margin-bottom:12px;outline:none;" oninput="filterSurahs()">
-        <div id="surahGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;"></div>
-    </div>
-</div>
-
-<div class="overlay" id="favoritesOverlay" onclick="if(event.target===this)closePopup()">
-    <div class="tafsir-popup" style="max-width:700px;">
-        <div class="popup-header"><h3>⭐ الآيات المحفوظة</h3><button class="popup-close" onclick="closePopup()">✕</button></div>
-        <div id="favoritesList"></div>
-    </div>
-</div>
-
-<div class="overlay" id="statsOverlay" onclick="if(event.target===this)closePopup()">
-    <div class="tafsir-popup" style="max-width:500px;">
-        <div class="popup-header"><h3>📊 إحصائيات السورة</h3><button class="popup-close" onclick="closePopup()">✕</button></div>
-        <div id="statsContent"></div>
-    </div>
-</div>
-
-<div class="overlay" id="booksOverlay" onclick="if(event.target===this)closePopup()">
-    <div class="tafsir-popup" style="max-width:700px;">
-        <div class="popup-header"><h3>📚 مكتبة التفاسير</h3><button class="popup-close" onclick="closePopup()">✕</button></div>
-        <div id="booksGrid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;"><p>⏳ جاري التحميل...</p></div>
-    </div>
-</div>
-
 <script>
 // ============================================================
 // نور المعرفة - سكربت الشات الكامل
@@ -2549,8 +2711,6 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('✅ تم ربط كل الأزرار بنجاح');
 });
 </script>
-<!-- تحميل سكربتات PWA -->
-<!-- تسجيل Service Worker -->
 <script>
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
@@ -2574,9 +2734,6 @@ window.downloadOfflineData = async function() {
     }
 };
 </script>
-
-<!-- 🔧 Eruda Console للمطورين -->
-<script src="https://cdn.jsdelivr.net/npm/eruda"></script>
 <script>
   if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
     eruda.init({
@@ -2592,12 +2749,6 @@ window.downloadOfflineData = async function() {
     console.log('✅ Eruda جاهز');
   }
 </script>
-<script src="./db-offline.js"></script>
-<script src="./search_engine.js"></script>
-<script src="./download-progress.js" defer></script>
-<script src="./offline.js"></script>
-
-
 <script>
 window.__staticMode = true;
 (function() {
