@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
 <title>نور المعرفة - القرآن الكريم</title>
-<meta name="theme-color" content="#0A0A1A">
+<meta name="theme-color" content="#B8935A">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="نور المعرفة">
@@ -15,51 +15,47 @@
 
 <style>
 /* ═══════════════════════════════════════════════════
-   ✨ نور المعرفة — تصميم عصري 2025
+   🎨 نور المعرفة — تصميم راقي وهادي
    ═══════════════════════════════════════════════════ */
 
 :root {
-  --primary: #6C63FF;
-  --primary-dark: #5A4FCF;
-  --primary-light: #8B83FF;
-  --accent: #FF6B9D;
-  --accent-2: #FFD93D;
-  --accent-3: #00D2FF;
+  --cream: #FAF7F0;
+  --cream-dark: #F2EDE2;
+  --cream-deep: #E8DFD0;
+  --gold: #B8935A;
+  --gold-dark: #8B6F47;
+  --gold-light: #D4B896;
+  --ink: #2D2416;
+  --ink-soft: #5C4E3A;
+  --ink-muted: #8B7E6A;
+  --white: #FFFFFF;
+  --border: #E0D5C0;
+  --border-dark: #C9B99A;
+  --success: #6B8E5A;
+  --accent-red: #C25A3F;
   
-  --bg-deep: #0A0A1A;
-  --bg-mid: #12122E;
-  --bg-soft: #1A1A3E;
-  --surface: rgba(255, 255, 255, 0.04);
-  --surface-hover: rgba(255, 255, 255, 0.08);
-  --surface-active: rgba(108, 99, 255, 0.15);
+  --shadow-sm: 0 2px 8px rgba(139, 111, 71, 0.06);
+  --shadow-md: 0 4px 20px rgba(139, 111, 71, 0.10);
+  --shadow-lg: 0 12px 40px rgba(139, 111, 71, 0.15);
   
-  --text: #FFFFFF;
-  --text-soft: rgba(255, 255, 255, 0.75);
-  --text-muted: rgba(255, 255, 255, 0.45);
-  
-  --border: rgba(255, 255, 255, 0.08);
-  --border-hover: rgba(108, 99, 255, 0.4);
-  
-  --shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.2);
-  --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.3);
-  --shadow-glow: 0 0 40px rgba(108, 99, 255, 0.3);
-  
-  --radius-sm: 12px;
-  --radius-md: 18px;
-  --radius-lg: 24px;
-  --radius-xl: 32px;
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
   
   --font: 'Tajawal', system-ui, -apple-system, sans-serif;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
-html, body { height: 100%; overflow: hidden; }
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
 
 body {
   font-family: var(--font);
-  background: var(--bg-deep);
-  color: var(--text);
+  background: var(--cream);
+  color: var(--ink);
   direction: rtl;
   font-size: 16px;
   line-height: 1.7;
@@ -68,51 +64,17 @@ body {
 }
 
 /* ═══════════════════════════════════════════════════
-   🌌 خلفية متحركة فاخرة
+   ✨ خلفية هادئة
    ═══════════════════════════════════════════════════ */
-.bg-scene {
+body::before {
+  content: '';
   position: fixed;
   inset: 0;
-  z-index: 0;
-  overflow: hidden;
   background: 
-    radial-gradient(ellipse 80% 60% at 20% 0%, rgba(108, 99, 255, 0.25), transparent 60%),
-    radial-gradient(ellipse 80% 60% at 80% 100%, rgba(255, 107, 157, 0.15), transparent 60%),
-    radial-gradient(ellipse 60% 40% at 50% 50%, rgba(0, 210, 255, 0.08), transparent 60%),
-    linear-gradient(180deg, var(--bg-deep), var(--bg-mid));
-}
-
-.bg-orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.5;
-  animation: orbFloat 20s infinite ease-in-out;
-}
-
-.bg-orb:nth-child(1) {
-  width: 400px;
-  height: 400px;
-  background: var(--primary);
-  top: -100px;
-  left: -100px;
-  animation-duration: 25s;
-}
-
-.bg-orb:nth-child(2) {
-  width: 350px;
-  height: 350px;
-  background: var(--accent);
-  bottom: -80px;
-  right: -80px;
-  animation-duration: 22s;
-  animation-delay: -5s;
-}
-
-@keyframes orbFloat {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(50px, -40px) scale(1.1); }
-  66% { transform: translate(-40px, 50px) scale(0.9); }
+    radial-gradient(ellipse at 20% 0%, rgba(184, 147, 90, 0.08), transparent 50%),
+    radial-gradient(ellipse at 80% 100%, rgba(139, 111, 71, 0.05), transparent 50%);
+  pointer-events: none;
+  z-index: 0;
 }
 
 /* ═══════════════════════════════════════════════════
@@ -121,16 +83,14 @@ body {
 .header {
   position: relative;
   z-index: 10;
-  background: rgba(18, 18, 46, 0.6);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+  background: var(--white);
   border-bottom: 1px solid var(--border);
   padding: 14px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-shrink: 0;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--shadow-sm);
 }
 
 .header .brand {
@@ -140,113 +100,77 @@ body {
 }
 
 .header .brand .back-btn {
-  width: 42px;
-  height: 42px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   border: 1px solid var(--border);
-  background: var(--surface);
-  color: var(--text);
-  font-size: 16px;
+  background: var(--cream);
+  color: var(--gold-dark);
+  font-size: 18px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s;
-  backdrop-filter: blur(10px);
+  transition: all 0.2s;
 }
 
 .header .brand .back-btn:hover {
-  background: var(--primary);
-  border-color: var(--primary);
-  transform: scale(1.08) rotate(180deg);
-  box-shadow: var(--shadow-glow);
+  background: var(--gold);
+  color: var(--white);
+  border-color: var(--gold);
 }
 
 .header .brand .icon-wrapper {
-  width: 46px;
-  height: 46px;
-  border-radius: var(--radius-md);
-  background: linear-gradient(135deg, var(--primary), var(--accent));
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
   color: var(--white);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 22px;
-  box-shadow: 0 6px 24px rgba(108, 99, 255, 0.4);
-  position: relative;
-}
-
-.header .brand .icon-wrapper::after {
-  content: '';
-  position: absolute;
-  inset: -2px;
-  border-radius: var(--radius-md);
-  background: linear-gradient(135deg, var(--primary), var(--accent));
-  z-index: -1;
-  opacity: 0.5;
-  filter: blur(8px);
+  box-shadow: var(--shadow-sm);
 }
 
 .header .brand .info h2 {
-  font-size: 17px;
+  font-size: 18px;
   font-weight: 800;
-  background: linear-gradient(135deg, var(--text), var(--primary-light));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--ink);
   line-height: 1.2;
 }
 
-.header .brand .info .status {
-  font-size: 11.5px;
-  color: var(--text-muted);
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  margin-top: 2px;
-}
-
-.header .brand .info .status::before {
-  content: '';
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #4ADE80;
-  box-shadow: 0 0 8px #4ADE80;
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
+.header .brand .info span {
+  font-size: 12px;
+  color: var(--ink-muted);
+  display: block;
 }
 
 .header-actions {
   display: flex;
   gap: 8px;
+  align-items: center;
 }
 
 .header-actions button {
-  width: 42px;
-  height: 42px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   border: 1px solid var(--border);
-  background: var(--surface);
-  color: var(--text);
+  background: var(--cream);
+  color: var(--gold-dark);
   font-size: 16px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s;
-  backdrop-filter: blur(10px);
+  transition: all 0.2s;
 }
 
 .header-actions button:hover {
-  background: var(--primary);
-  border-color: var(--primary);
-  transform: scale(1.08);
-  box-shadow: var(--shadow-glow);
+  background: var(--gold);
+  color: var(--white);
+  border-color: var(--gold);
 }
 
 /* ═══════════════════════════════════════════════════
@@ -255,15 +179,17 @@ body {
 .chat-wrapper {
   position: relative;
   z-index: 1;
-  height: calc(100vh - 75px);
+  height: calc(100vh - 70px);
   display: flex;
   flex-direction: column;
   max-width: 900px;
   margin: 0 auto;
+  background: var(--white);
+  box-shadow: var(--shadow-md);
 }
 
 /* ═══════════════════════════════════════════════════
-   📜 منطقة الرسائل
+   📜 الرسائل
    ═══════════════════════════════════════════════════ */
 .messages {
   flex: 1;
@@ -271,18 +197,21 @@ body {
   padding: 24px 20px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 14px;
   scroll-behavior: smooth;
 }
 
-.messages::-webkit-scrollbar { width: 6px; }
-.messages::-webkit-scrollbar-track { background: transparent; }
+.messages::-webkit-scrollbar {
+  width: 6px;
+}
+
 .messages::-webkit-scrollbar-thumb {
-  background: rgba(108, 99, 255, 0.3);
+  background: var(--gold-light);
   border-radius: 10px;
 }
+
 .messages::-webkit-scrollbar-thumb:hover {
-  background: var(--primary);
+  background: var(--gold);
 }
 
 /* ═══════════════════════════════════════════════════
@@ -291,335 +220,199 @@ body {
 .welcome {
   text-align: center;
   padding: 30px 10px;
-  max-width: 720px;
+  max-width: 700px;
   margin: 0 auto;
-  animation: welcomeIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-@keyframes welcomeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.welcome .hero {
-  width: 100px;
-  height: 100px;
-  margin: 0 auto 20px;
-  border-radius: 30px;
-  background: linear-gradient(135deg, var(--primary), var(--accent));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 48px;
-  box-shadow: 
-    0 20px 60px rgba(108, 99, 255, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  position: relative;
-  animation: heroGlow 3s infinite ease-in-out;
-}
-
-.welcome .hero::before {
-  content: '';
-  position: absolute;
-  inset: -20px;
-  border-radius: 50px;
-  background: linear-gradient(135deg, var(--primary), var(--accent));
-  filter: blur(30px);
-  opacity: 0.5;
-  z-index: -1;
-}
-
-@keyframes heroGlow {
-  0%, 100% { transform: translateY(0) scale(1); }
-  50% { transform: translateY(-6px) scale(1.03); }
+.welcome .main-icon {
+  font-size: 60px;
+  display: block;
+  margin-bottom: 16px;
+  opacity: 0.9;
 }
 
 .welcome h2 {
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 900;
-  margin-bottom: 10px;
-  background: linear-gradient(135deg, #FFFFFF, var(--primary-light));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--ink);
+  margin-bottom: 8px;
 }
 
 .welcome .subtitle {
   font-size: 15px;
-  color: var(--text-soft);
-  margin-bottom: 30px;
+  color: var(--ink-soft);
+  margin-bottom: 24px;
   line-height: 1.8;
-  max-width: 500px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
-.welcome .subtitle strong {
-  color: var(--accent-2);
-  font-weight: 700;
-}
-
-/* ═══ بطاقات الميزات ═══ */
-.feature-cards {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.feature-card {
-  padding: 16px 12px;
-  background: var(--surface);
+/* ═══ دليل الاستخدام ═══ */
+.guide-box {
+  background: var(--cream);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  text-align: center;
-  transition: all 0.3s;
-  cursor: default;
+  padding: 20px;
+  margin-bottom: 20px;
+  text-align: right;
 }
 
-.feature-card:hover {
-  background: var(--surface-hover);
-  border-color: var(--border-hover);
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-glow);
-}
-
-.feature-card .icon {
-  font-size: 26px;
-  margin-bottom: 8px;
-  display: block;
-}
-
-.feature-card .title {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--text);
-  margin-bottom: 2px;
-}
-
-.feature-card .desc {
-  font-size: 10.5px;
-  color: var(--text-muted);
-  line-height: 1.4;
-}
-
-/* ═══ Quick Actions ═══ */
-.quick-title {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--text-soft);
-  margin-bottom: 12px;
+.guide-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--gold-dark);
+  margin-bottom: 14px;
   display: flex;
   align-items: center;
-  gap: 6px;
-  justify-content: center;
+  gap: 8px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
 }
 
-.quick-title::before,
-.quick-title::after {
-  content: '';
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--border), transparent);
-  flex: 1;
-  max-width: 60px;
+.guide-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 0;
+  font-size: 14px;
+  color: var(--ink-soft);
+  line-height: 1.7;
 }
 
-.quick-actions {
+.guide-item .bullet {
+  color: var(--gold);
+  font-weight: 900;
+  flex-shrink: 0;
+  font-size: 16px;
+}
+
+.guide-item strong {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+/* ═══ الأمثلة السريعة ═══ */
+.examples-section {
+  margin-top: 20px;
+}
+
+.examples-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink-soft);
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.examples {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
   justify-content: center;
 }
 
-.quick-btn {
-  padding: 10px 18px;
-  background: var(--surface);
-  border: 1px solid var(--border);
+.examples button {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  color: var(--ink);
+  padding: 9px 18px;
   border-radius: 50px;
-  color: var(--text);
   font-family: var(--font);
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  backdrop-filter: blur(20px);
+  transition: all 0.2s;
   display: flex;
   align-items: center;
   gap: 6px;
 }
 
-.quick-btn:hover {
-  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-  border-color: var(--primary);
+.examples button:hover {
+  background: var(--gold);
   color: var(--white);
-  transform: translateY(-3px) scale(1.03);
-  box-shadow: 0 10px 30px rgba(108, 99, 255, 0.4);
-}
-
-.quick-btn:active {
-  transform: translateY(-1px) scale(0.98);
+  border-color: var(--gold);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }
 
 /* ═══════════════════════════════════════════════════
    💌 الرسائل
    ═══════════════════════════════════════════════════ */
 .message {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
+  padding: 16px 20px;
+  border-radius: var(--radius-md);
   max-width: 85%;
-  animation: msgIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-@keyframes msgIn {
-  from { opacity: 0; transform: translateY(15px) scale(0.95); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-.message.user {
-  align-self: flex-end;
-  flex-direction: row-reverse;
-}
-
-.message .avatar {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  flex-shrink: 0;
-  box-shadow: var(--shadow-sm);
-}
-
-.message.user .avatar {
-  background: linear-gradient(135deg, var(--primary), var(--accent));
-  color: var(--white);
-}
-
-.message.ai .avatar {
-  background: linear-gradient(135deg, var(--accent-2), #FF8A65);
-  color: #1a1a2e;
-}
-
-.message .bubble {
-  padding: 14px 18px;
-  border-radius: var(--radius-lg);
   line-height: 1.9;
   font-size: 15px;
   word-wrap: break-word;
   overflow-wrap: anywhere;
-  position: relative;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  box-shadow: var(--shadow-sm);
+  animation: fadeIn 0.3s ease;
 }
 
-.message.user .bubble {
-  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-  color: var(--white);
-  border-bottom-right-radius: 6px;
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-.message.ai .bubble {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  color: var(--text);
-  border-bottom-left-radius: 6px;
-}
-
-.message .bubble pre {
+.message pre {
   white-space: pre-wrap;
   font-family: var(--font);
   margin: 0;
   padding: 0;
 }
 
-.message .meta {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+.message .time {
   font-size: 11px;
-  opacity: 0.6;
+  opacity: 0.5;
+  display: block;
   margin-top: 8px;
-  justify-content: flex-end;
 }
 
-.message.ai .meta {
-  justify-content: flex-start;
+.message.user {
+  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+  color: var(--white);
+  align-self: flex-end;
+  border-bottom-left-radius: 6px;
+  box-shadow: var(--shadow-sm);
 }
 
-.message .copy-btn {
-  background: transparent;
-  border: 0;
-  color: inherit;
-  cursor: pointer;
-  font-size: 12px;
-  padding: 2px 6px;
-  border-radius: 6px;
-  opacity: 0;
-  transition: opacity 0.2s;
+.message.user .time {
+  color: rgba(255, 255, 255, 0.7);
 }
 
-.message:hover .copy-btn {
-  opacity: 1;
+.message.ai {
+  background: var(--cream);
+  color: var(--ink);
+  align-self: flex-start;
+  border-bottom-right-radius: 6px;
+  border: 1px solid var(--border);
 }
 
-.message .copy-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-/* ═══════════════════════════════════════════════════
-   ✍️ مؤشر الكتابة
-   ═══════════════════════════════════════════════════ */
+/* ═══ مؤشر الكتابة ═══ */
 .typing {
   display: none;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 0 20px;
-  align-self: flex-start;
-  max-width: 85%;
-}
-
-.typing.active { display: flex; }
-
-.typing .avatar {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent-2), #FF8A65);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  flex-shrink: 0;
-}
-
-.typing .bubble {
   padding: 14px 20px;
-  background: var(--surface);
+  background: var(--cream);
   border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  border-bottom-left-radius: 6px;
-  display: flex;
+  border-radius: var(--radius-md);
+  border-bottom-right-radius: 6px;
+  align-self: flex-start;
+  gap: 6px;
   align-items: center;
-  gap: 8px;
-  backdrop-filter: blur(20px);
 }
 
-.typing .bubble span {
+.typing.active {
+  display: flex;
+}
+
+.typing span {
   font-size: 13px;
-  color: var(--text-soft);
+  color: var(--ink-soft);
   font-weight: 600;
 }
 
 .typing .dot {
   width: 7px;
   height: 7px;
-  background: var(--primary-light);
+  background: var(--gold);
   border-radius: 50%;
   animation: bounce 1.4s infinite;
 }
@@ -628,85 +421,76 @@ body {
 .typing .dot:nth-child(3) { animation-delay: 0.4s; }
 
 @keyframes bounce {
-  0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
-  30% { transform: translateY(-8px); opacity: 1; }
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.6; }
+  30% { transform: translateY(-6px); opacity: 1; }
 }
 
 /* ═══════════════════════════════════════════════════
-   📝 مربع الكتابة
+   ✍️ مربع الكتابة
    ═══════════════════════════════════════════════════ */
 .input-area {
   display: flex;
   gap: 10px;
-  padding: 16px 20px 20px;
-  align-items: flex-end;
+  padding: 16px 20px;
+  background: var(--white);
+  border-top: 1px solid var(--border);
   flex-shrink: 0;
-}
-
-.input-wrapper {
-  flex: 1;
-  position: relative;
-  display: flex;
-  align-items: flex-end;
-  background: rgba(18, 18, 46, 0.8);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 4px;
-  transition: all 0.3s;
-}
-
-.input-wrapper:focus-within {
-  border-color: var(--primary);
-  box-shadow: 
-    0 0 0 4px rgba(108, 99, 255, 0.15),
-    0 8px 32px rgba(108, 99, 255, 0.2);
+  align-items: center;
 }
 
 .input-area textarea {
   flex: 1;
-  padding: 14px 16px;
-  border: 0;
-  background: transparent;
+  padding: 14px 18px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-md);
   font-family: var(--font);
   font-size: 16px;
   resize: none;
-  min-height: 48px;
-  max-height: 140px;
-  color: var(--text);
+  min-height: 52px;
+  max-height: 120px;
+  background: var(--cream);
+  color: var(--ink);
   line-height: 1.6;
+  transition: all 0.2s;
   outline: none;
 }
 
 .input-area textarea::placeholder {
-  color: var(--text-muted);
+  color: var(--ink-muted);
+}
+
+.input-area textarea:focus {
+  border-color: var(--gold);
+  background: var(--white);
+  box-shadow: 0 0 0 4px rgba(184, 147, 90, 0.15);
 }
 
 .input-area .send-btn {
-  width: 52px;
+  padding: 0 28px;
   height: 52px;
-  border-radius: 50%;
   border: none;
-  background: linear-gradient(135deg, var(--primary), var(--accent));
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
   color: var(--white);
-  font-size: 20px;
+  font-family: var(--font);
+  font-size: 16px;
+  font-weight: 700;
   cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 8px;
   flex-shrink: 0;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  box-shadow: 0 6px 24px rgba(108, 99, 255, 0.4);
+  transition: all 0.2s;
+  box-shadow: var(--shadow-sm);
 }
 
 .input-area .send-btn:hover {
-  transform: scale(1.08) rotate(15deg);
-  box-shadow: 0 10px 40px rgba(108, 99, 255, 0.6);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }
 
 .input-area .send-btn:active {
-  transform: scale(0.95);
+  transform: scale(0.97);
 }
 
 .input-area .send-btn:disabled {
@@ -719,52 +503,139 @@ body {
    📱 Responsive
    ═══════════════════════════════════════════════════ */
 @media (max-width: 768px) {
-  .header { padding: 12px 16px; }
-  .header .brand .info h2 { font-size: 15px; }
-  .messages { padding: 18px 14px; gap: 14px; }
-  .welcome { padding: 20px 6px; }
-  .welcome .hero { width: 80px; height: 80px; font-size: 38px; }
-  .welcome h2 { font-size: 22px; }
-  .feature-cards { grid-template-columns: repeat(3, 1fr); }
-  .message { max-width: 92%; }
-  .message .bubble { padding: 12px 15px; font-size: 14.5px; }
-  .message .avatar { width: 34px; height: 34px; font-size: 16px; }
-  .input-area { padding: 12px 14px 16px; }
-  .input-area .send-btn { width: 48px; height: 48px; }
+  .chat-wrapper {
+    height: calc(100vh - 66px);
+  }
+  
+  .header {
+    padding: 10px 14px;
+  }
+  
+  .header .brand .info h2 {
+    font-size: 16px;
+  }
+  
+  .header .brand .info span {
+    font-size: 11px;
+  }
+  
+  .messages {
+    padding: 18px 14px;
+    gap: 12px;
+  }
+  
+  .welcome {
+    padding: 20px 6px;
+  }
+  
+  .welcome .main-icon {
+    font-size: 50px;
+  }
+  
+  .welcome h2 {
+    font-size: 20px;
+  }
+  
+  .guide-box {
+    padding: 16px;
+  }
+  
+  .message {
+    max-width: 92%;
+    padding: 13px 16px;
+    font-size: 15px;
+  }
+  
+  .input-area {
+    padding: 12px 14px;
+    gap: 8px;
+  }
+  
+  .input-area textarea {
+    padding: 12px 16px;
+    font-size: 16px;
+    min-height: 48px;
+  }
+  
+  .input-area .send-btn {
+    padding: 0 18px;
+    height: 48px;
+    font-size: 15px;
+  }
 }
 
 @media (max-width: 480px) {
-  .header .brand .info h2 { font-size: 14px; }
-  .header .brand .icon-wrapper { width: 40px; height: 40px; font-size: 18px; }
-  .header .brand .back-btn { width: 38px; height: 38px; }
-  .header-actions button { width: 38px; height: 38px; }
+  .header .brand .back-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+  }
   
-  .feature-cards { grid-template-columns: repeat(3, 1fr); gap: 6px; }
-  .feature-card { padding: 12px 8px; }
-  .feature-card .icon { font-size: 22px; }
-  .feature-card .title { font-size: 11px; }
-  .feature-card .desc { display: none; }
+  .header .brand .icon-wrapper {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+  }
   
-  .quick-btn { padding: 8px 14px; font-size: 12px; }
-  .message .bubble { font-size: 14px; }
+  .header-actions button {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .examples button {
+    padding: 8px 14px;
+    font-size: 12px;
+  }
+  
+  .message {
+    font-size: 14.5px;
+  }
 }
 
-/* ═══ توفير الأداء */
-@media (max-width: 1024px), (prefers-reduced-motion: reduce) {
-  .bg-orb { animation: none; }
-  .welcome .hero { animation: none; }
-  .welcome .hero::before { display: none; }
+/* ═══════════════════════════════════════════════════
+   🌙 الوضع الليلي
+   ═══════════════════════════════════════════════════ */
+body.dark-mode {
+  --cream: #1A1614;
+  --cream-dark: #221E1A;
+  --cream-deep: #2A2520;
+  --gold: #C9A66B;
+  --gold-dark: #B8935A;
+  --gold-light: #5C4A2E;
+  --ink: #F5EDE0;
+  --ink-soft: #D4C5AC;
+  --ink-muted: #8B7E6A;
+  --white: #2D2416;
+  --border: #3D3527;
+  --border-dark: #4A4030;
+}
+
+body.dark-mode .welcome .subtitle {
+  color: var(--ink-soft);
+}
+
+body.dark-mode .guide-box {
+  background: var(--cream-dark);
+}
+
+body.dark-mode .message.ai {
+  background: var(--cream-dark);
+}
+
+body.dark-mode .input-area textarea {
+  background: var(--cream-dark);
 }
 </style>
 
 <style>
+/* نوافذ منبثقة */
 .overlay {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(10, 10, 26, 0.85);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    background: rgba(45, 36, 22, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     z-index: 1000;
     justify-content: center;
     align-items: center;
@@ -774,29 +645,21 @@ body {
 
 .overlay.active { display: flex; }
 
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
 .tafsir-popup {
-    background: rgba(18, 18, 46, 0.95);
-    backdrop-filter: blur(40px);
-    -webkit-backdrop-filter: blur(40px);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-xl);
+    background: var(--white);
+    border-radius: var(--radius-lg);
     max-width: 640px;
     width: 100%;
     max-height: 85vh;
-    padding: 26px;
-    box-shadow: 0 30px 90px rgba(0, 0, 0, 0.6);
+    padding: 24px;
+    box-shadow: var(--shadow-lg);
     overflow-y: auto;
     animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 @keyframes slideUp {
-    from { transform: translateY(40px) scale(0.95); opacity: 0; }
-    to { transform: translateY(0) scale(1); opacity: 1; }
+    from { transform: translateY(40px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
 }
 
 .popup-header {
@@ -805,13 +668,13 @@ body {
     align-items: center;
     padding-bottom: 16px;
     margin-bottom: 20px;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 2px solid var(--border);
 }
 
 .popup-header h3 {
-    font-size: 19px;
+    font-size: 20px;
     font-weight: 800;
-    color: var(--text);
+    color: var(--ink);
     display: flex;
     align-items: center;
     gap: 10px;
@@ -822,40 +685,40 @@ body {
     height: 38px;
     border-radius: 50%;
     border: 1px solid var(--border);
-    background: var(--surface);
-    color: var(--text);
-    font-size: 16px;
+    background: var(--cream);
+    color: var(--ink-soft);
+    font-size: 18px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s;
+    transition: all 0.2s;
 }
 
 .popup-close:hover {
-    background: #FF4757;
-    border-color: #FF4757;
+    background: var(--accent-red);
     color: var(--white);
+    border-color: var(--accent-red);
     transform: rotate(90deg);
 }
 
 .popup-verse {
-    background: linear-gradient(135deg, rgba(108, 99, 255, 0.1), rgba(255, 107, 157, 0.05));
-    border: 1px solid rgba(108, 99, 255, 0.2);
-    border-right: 4px solid var(--primary);
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-right: 4px solid var(--gold);
     border-radius: var(--radius-md);
-    padding: 18px 22px;
-    margin-bottom: 20px;
+    padding: 18px 20px;
+    margin-bottom: 18px;
     text-align: center;
     font-size: 18px;
-    line-height: 2;
-    color: var(--text);
+    line-height: 1.9;
+    color: var(--ink);
 }
 
 .popup-verse .surah-name {
     display: block;
     font-size: 13px;
-    color: var(--primary-light);
+    color: var(--gold-dark);
     font-weight: 700;
     margin-bottom: 8px;
 }
@@ -869,53 +732,50 @@ body {
     align-items: center;
     gap: 10px;
     font-size: 14px;
-    color: var(--text-soft);
+    color: var(--ink-soft);
     margin-bottom: 14px;
     font-weight: 600;
 }
 
 .popup-subtitle .count {
-    background: linear-gradient(135deg, var(--primary), var(--accent));
+    background: var(--gold);
     color: var(--white);
     border-radius: 20px;
-    padding: 3px 14px;
+    padding: 2px 12px;
     font-size: 12px;
     font-weight: 800;
-    margin-right: auto;
 }
 
 .tafsir-list {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
     margin-bottom: 20px;
 }
 
 .tafsir-option {
     display: flex;
     align-items: center;
-    gap: 14px;
-    padding: 14px 18px;
-    border: 1.5px solid var(--border);
+    gap: 12px;
+    padding: 14px 16px;
+    border: 2px solid var(--border);
     border-radius: var(--radius-md);
-    background: var(--surface);
+    background: var(--cream);
     cursor: pointer;
     position: relative;
-    transition: all 0.3s;
-    backdrop-filter: blur(20px);
+    transition: all 0.2s;
 }
 
 .tafsir-option:hover {
-    border-color: var(--primary);
-    background: var(--surface-hover);
+    border-color: var(--gold);
     transform: translateX(-4px);
-    box-shadow: var(--shadow-glow);
+    box-shadow: var(--shadow-sm);
 }
 
 .tafsir-option.selected {
-    border-color: var(--primary);
-    background: var(--surface-active);
-    box-shadow: 0 0 30px rgba(108, 99, 255, 0.3);
+    border-color: var(--gold);
+    background: var(--white);
+    box-shadow: var(--shadow-md);
 }
 
 .tafsir-option .icon {
@@ -923,40 +783,40 @@ body {
     flex-shrink: 0;
 }
 
-.tafsir-option .info { flex: 1; }
+.tafsir-option .info {
+    flex: 1;
+}
 
 .tafsir-option .info .name {
     font-size: 15px;
     font-weight: 700;
-    color: var(--text);
+    color: var(--ink);
 }
 
 .tafsir-option .info .desc {
     font-size: 12px;
-    color: var(--text-muted);
-    margin-top: 3px;
+    color: var(--ink-muted);
+    margin-top: 2px;
 }
 
 .tafsir-option .check {
-    width: 26px;
-    height: 26px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
     border: 2px solid var(--border);
     display: flex;
     align-items: center;
     justify-content: center;
     color: transparent;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 900;
-    transition: all 0.3s;
-    flex-shrink: 0;
+    transition: all 0.2s;
 }
 
 .tafsir-option.selected .check {
-    background: linear-gradient(135deg, var(--primary), var(--accent));
-    border-color: transparent;
+    background: var(--gold);
+    border-color: var(--gold);
     color: var(--white);
-    transform: scale(1.1);
 }
 
 .tafsir-option .color-bar {
@@ -971,46 +831,41 @@ body {
 .popup-actions {
     display: flex;
     gap: 10px;
-    flex-wrap: wrap;
 }
 
 .popup-actions button {
     flex: 1;
-    min-width: 120px;
-    padding: 14px 18px;
+    padding: 14px;
     border-radius: var(--radius-md);
     font-family: var(--font);
     font-size: 15px;
     font-weight: 700;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all 0.2s;
 }
 
 .btn-all {
-    background: var(--surface);
-    border: 1.5px solid var(--border);
-    color: var(--text);
-    backdrop-filter: blur(20px);
+    background: var(--white);
+    border: 2px solid var(--gold);
+    color: var(--gold-dark);
 }
 
 .btn-all:hover,
 .btn-all.active {
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    border-color: var(--primary);
+    background: var(--gold);
     color: var(--white);
-    box-shadow: var(--shadow-glow);
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, var(--primary), var(--accent));
+    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
     border: none;
     color: var(--white);
-    box-shadow: 0 8px 30px rgba(108, 99, 255, 0.4);
+    box-shadow: var(--shadow-sm);
 }
 
 .btn-primary:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 40px rgba(108, 99, 255, 0.6);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
 }
 
 .btn-primary:disabled {
@@ -1020,11 +875,11 @@ body {
 }
 
 @media (max-width: 480px) {
-    .tafsir-popup { padding: 20px 16px; border-radius: var(--radius-lg); }
+    .tafsir-popup { padding: 18px; border-radius: var(--radius-md); }
     .popup-header h3 { font-size: 17px; }
-    .popup-verse { font-size: 16px; padding: 14px 16px; }
+    .popup-verse { font-size: 16px; padding: 14px; }
     .popup-actions { flex-direction: column; }
-    .popup-actions button { width: 100%; }
+    .tafsir-option { padding: 12px 14px; }
 }
 </style>
 
@@ -1032,83 +887,93 @@ body {
 <body>
 
 
-<div class="bg-scene">
-    <div class="bg-orb"></div>
-    <div class="bg-orb"></div>
-</div>
-
 <div class="header">
     <div class="brand">
         <button class="back-btn" onclick="window.location.href='index.html'" title="رجوع">➤</button>
         <div class="icon-wrapper">📖</div>
         <div class="info">
             <h2>نور المعرفة</h2>
-            <span class="status">متصل · 6 تفاسير جاهزة</span>
+            <span>القرآن الكريم · 6 كتب تفسير</span>
         </div>
     </div>
     <div class="header-actions">
-        <button class="theme-toggle" onclick="toggleTheme()" title="تبديل الوضع">☀️</button>
+        <button class="theme-toggle" onclick="toggleTheme()" title="تبديل الوضع">🌙</button>
     </div>
 </div>
 
 <div class="chat-wrapper">
     <div class="messages" id="messages">
         <div class="welcome" id="welcome">
-            <div class="hero">📖</div>
-            <h2>السلام عليكم ورحمة الله</h2>
+            <span class="main-icon">📖</span>
+            <h2>أهلاً بك في نور المعرفة</h2>
             <p class="subtitle">
-                اسأل عن أي <strong>سورة</strong> أو <strong>آية</strong> من القرآن الكريم<br>
-                وسأعرض لك <strong>6 كتب تفسير</strong> معتمدة
+                اسأل عن أي سورة أو آية من القرآن الكريم<br>
+                وسأعرض لك التفسير من <strong>6 كتب معتمدة</strong>
             </p>
             
-            <div class="feature-cards">
-                <div class="feature-card">
-                    <span class="icon">📖</span>
-                    <div class="title">114 سورة</div>
-                    <div class="desc">قرآن كامل</div>
+            <div class="guide-box">
+                <div class="guide-title">
+                    <span>💡</span>
+                    <span>كيف تستخدم التطبيق؟</span>
                 </div>
-                <div class="feature-card">
-                    <span class="icon">📚</span>
-                    <div class="title">6 تفاسير</div>
-                    <div class="desc">معتمدة</div>
+                
+                <div class="guide-item">
+                    <span class="bullet">●</span>
+                    <span><strong>لسورة كاملة:</strong> اكتب "البقرة" أو "سورة يس"</span>
                 </div>
-                <div class="feature-card">
-                    <span class="icon">⚡</span>
-                    <div class="title">فوري</div>
-                    <div class="desc">بدون إنترنت</div>
+                
+                <div class="guide-item">
+                    <span class="bullet">●</span>
+                    <span><strong>لآية محددة:</strong> اكتب "2:255" أو "البقرة آية 6"</span>
+                </div>
+                
+                <div class="guide-item">
+                    <span class="bullet">●</span>
+                    <span><strong>لنطاق آيات:</strong> اكتب "البقرة 1-5"</span>
+                </div>
+                
+                <div class="guide-item">
+                    <span class="bullet">●</span>
+                    <span><strong>للبحث:</strong> اكتب "آية الكرسي" أو "الرحمن"</span>
+                </div>
+                
+                <div class="guide-item">
+                    <span class="bullet">●</span>
+                    <span><strong>الأرقام:</strong> يقبل العربية (٦) والإنجليزية (6)</span>
                 </div>
             </div>
             
-            <div class="quick-title">جرّب هذه الأمثلة</div>
-            <div class="quick-actions">
-                <button class="quick-btn" onclick="sendExample('البقرة')">📖 سورة البقرة</button>
-                <button class="quick-btn" onclick="sendExample('آية الكرسي')">📖 آية الكرسي</button>
-                <button class="quick-btn" onclick="sendExample('الإخلاص')">📖 الإخلاص</button>
-                <button class="quick-btn" onclick="sendExample('يس')">📖 سورة يس</button>
-                <button class="quick-btn" onclick="sendExample('البقرة ١-٥')">📖 البقرة ١-٥</button>
-                <button class="quick-btn" onclick="sendExample('2:255')">🔍 2:255</button>
+            <div class="examples-section">
+                <div class="examples-title">✨ جرّب أحد الأمثلة:</div>
+                <div class="examples">
+                    <button onclick="sendExample('البقرة')">📖 سورة البقرة</button>
+                    <button onclick="sendExample('آية الكرسي')">📖 آية الكرسي</button>
+                    <button onclick="sendExample('الإخلاص')">📖 سورة الإخلاص</button>
+                    <button onclick="sendExample('البقرة ١-٥')">📖 البقرة ١-٥</button>
+                    <button onclick="sendExample('يس')">📖 سورة يس</button>
+                    <button onclick="sendExample('الرحمن')">🔍 سورة الرحمن</button>
+                </div>
             </div>
         </div>
     </div>
 
     <div class="typing" id="typing">
-        <div class="avatar">🤖</div>
-        <div class="bubble">
-            <span>نور يفكر</span>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-        </div>
+        <span>✍️ نور يكتب</span>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
     </div>
 
     <div class="input-area">
-        <div class="input-wrapper">
-            <textarea id="input" rows="1" placeholder="اكتب اسم سورة، أو آية (مثل: 2:255)، أو كلمة..."></textarea>
-        </div>
-        <button class="send-btn" id="sendBtn" title="إرسال">➤</button>
+        <textarea id="input" rows="1" placeholder="اكتب اسم سورة، أو آية (مثل: 2:255)، أو كلمة للبحث..."></textarea>
+        <button class="send-btn" id="sendBtn">
+            <span>إرسال</span>
+            <span>➤</span>
+        </button>
     </div>
 </div>
 
+<!-- نافذة التفسير -->
 <div class="overlay" id="tafsirOverlay">
     <div class="tafsir-popup">
         <div class="popup-header">
@@ -1132,6 +997,7 @@ body {
 </div>
 
 
+<!-- السكربتات المحفوظة -->
 <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
 <script src="./db-offline.js"></script>
 <script src="./search_engine.js"></script>
