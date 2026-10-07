@@ -1752,6 +1752,7 @@ async function sendMessage() {
     showTyping(true);
 
     try {
+        // ✅ البحث المحلي مباشرة (بدون fetch)
         if (!window.QuranSearchEngine) {
             throw new Error('محرك البحث غير جاهز');
         }
@@ -1760,29 +1761,10 @@ async function sendMessage() {
         
         showTyping(false);
         
-        if (!result) {
-            addMessage('❌ لم أجد نتيجة', 'ai');
-            return;
-        }
-        
-        // ═══ آية محددة ═══
         if (result.success && result.type === 'verse') {
             try { localStorage.setItem('lastRead', JSON.stringify(result.data)); } catch(e){}
-            
-            // ✅ أضف رسالة في الشات دائمًا
-            var verseMsg = '📖 سورة ' + (result.data.surah_name || '') + ' — الآية ' + result.data.verse_number + '\n\n﴿ ' + (result.data.verse_text || '') + ' ﴾\n\n📚 اختر التفسير من النافذة';
-            addMessage(verseMsg, 'ai');
-            
-            // ثم افتح النافذة
-            try {
-                await openPopup(result.data, result.data.tafsir_books || []);
-            } catch(popupErr) {
-                console.warn('openPopup error:', popupErr);
-                addMessage('⚠️ تعذر فتح نافذة التفسير: ' + popupErr.message, 'ai');
-            }
-        }
-        // ═══ سورة كاملة ═══
-        else if (result.success && result.type === 'surah') {
+            openPopup(result.data, result.data.tafsir_books);
+        } else if (result.success && result.type === 'surah') {
             var verses = result.data.verses || [];
             var msg = '📖 سورة ' + result.data.surah_name + ' (' + result.data.verse_count + ' آية)\n\n';
             verses.slice(0, 20).forEach(function(v) {
@@ -1790,44 +1772,27 @@ async function sendMessage() {
             });
             if (verses.length > 20) msg += '\n... و ' + (verses.length - 20) + ' آية أخرى';
             addMessage(msg, 'ai');
-            
-            if (verses.length > 0) {
-                try {
-                    await openPopup(result.data, result.data.tafsir_books || []);
-                } catch(e) {
-                    console.warn('popup error:', e);
-                }
+            if (verses.length > 0 && result.data.tafsir_books && result.data.tafsir_books.length > 0) {
+                openPopup(result.data, result.data.tafsir_books);
             }
-        }
-        // ═══ نطاق آيات ═══
-        else if (result.success && result.type === 'range') {
+        } else if (result.success && result.type === 'range') {
             var verses2 = result.data.verses || [];
             var msg2 = '📖 سورة ' + result.data.surah_name + ' (' + result.data.start_verse + '-' + result.data.end_verse + ')\n\n';
             verses2.forEach(function(v){ msg2 += v.verse_number + '. ﴿ ' + v.verse_text + ' ﴾\n\n'; });
             addMessage(msg2, 'ai');
-            
-            if (verses2.length > 0) {
-                try {
-                    await openPopup(result.data, result.data.tafsir_books || []);
-                } catch(e) {
-                    console.warn('popup error:', e);
-                }
+            if (verses2.length > 0 && result.data.tafsir_books) {
+                openPopup(result.data, result.data.tafsir_books);
             }
-        }
-        // ═══ بحث ═══
-        else if (result.success && result.type === 'search') {
-            var results = result.data && result.data.results ? result.data.results : [];
+        } else if (result.success && result.type === 'search') {
+            var results = result.data.results || [];
             var msg3 = '🔍 نتائج البحث (' + results.length + '):\n\n';
             results.slice(0, 10).forEach(function(r, i) {
-                msg3 += (i+1) + '. ' + (r.surah_name || '') + ' ' + (r.verse_number || '') + ': ﴿ ' + (r.verse_text || '').substring(0, 100) + '... ﴾\n\n';
+                msg3 += (i+1) + '. ' + r.surah_name + ' ' + r.verse_number + ': ﴿ ' + r.verse_text.substring(0, 100) + '... ﴾\n\n';
             });
             addMessage(msg3, 'ai');
-        }
-        // ═══ رد عام ═══
-        else {
+        } else {
             addMessage(result.reply || '❌ لم أجد نتيجة', 'ai');
         }
-        
     } catch(err) {
         showTyping(false);
         console.error('[Chat] خطأ:', err);
