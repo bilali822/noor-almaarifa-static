@@ -1690,45 +1690,25 @@ async function showSelectedTafsirs() {
             : [currentVerseInfo];
         
         // ═══════════════════════════════════════════
-        // 🚀 1. عرض رسالة فورية
+        // 🎨 بناء رسالة واحدة واضحة
         // ═══════════════════════════════════════════
+        var parts = [];
+        
+        // ═══ 1. العنوان الرئيسي ═══
         var surahName = currentVerseInfo.surah_name || '';
         var startVerse = verses[0].verse_number;
         var endVerse = verses[verses.length - 1].verse_number;
         
-        var headerText;
         if (verses.length === 1) {
-            headerText = '📖 سورة ' + surahName + ' — الآية ' + startVerse;
+            parts.push('📖 سورة ' + surahName + ' — الآية ' + startVerse);
         } else {
-            headerText = '📖 سورة ' + surahName + ' — الآيات ' + startVerse + '-' + endVerse;
+            parts.push('📖 سورة ' + surahName + ' — الآيات ' + startVerse + '-' + endVerse);
         }
-        
-        // احذف النافذة فورًا
-        closePopup();
-        
-        // اعرض رسالة مؤقتة
-        var tempId = 'temp_' + Date.now();
-        var tempText = headerText + '\n\n⏳ جاري تحميل التفاسير... (' + selected.length + ' تفسير)';
-        addMessageWithId(tempText, 'ai', tempId);
-        
-        // ═══════════════════════════════════════════
-        // 🚀 2. جلب كل التفاسير بالتوازي
-        // ═══════════════════════════════════════════
-        
-        // ابدأ بتحميل الكتب المختارة (في الخلفية)
-        var booksToLoad = await Promise.all(selected.map(function(key) {
-            return window.fetchTafsirBook(key);
-        }));
-        
-        // ═══════════════════════════════════════════
-        // 🚀 3. بناء الرسالة النهائية
-        // ═══════════════════════════════════════════
-        var parts = [];
-        parts.push(headerText);
         parts.push('');
         parts.push('═══════════════════════════════');
         parts.push('');
         
+        // ═══ 2. كل آية + تفاسيرها ═══
         for (var i = 0; i < verses.length; i++) {
             var v = verses[i];
             var sid = v.surah_id || currentVerseInfo.surah_id;
@@ -1736,6 +1716,7 @@ async function showSelectedTafsirs() {
             var sn = v.surah_name || currentVerseInfo.surah_name;
             var vt = v.verse_text || '';
             
+            // 🕌 نص الآية في إطار
             if (verses.length > 1) {
                 parts.push('🔸 الآية ' + vn + ':');
             }
@@ -1743,28 +1724,25 @@ async function showSelectedTafsirs() {
             parts.push('﴿ ' + vt + ' ﴾');
             parts.push('');
             
-            // التفاسير — استخدم الكتب المحمّلة
+            // 📚 التفاسير المختارة
             for (var j = 0; j < selected.length; j++) {
                 var key = selected[j];
-                var book = await window.NoorDB.getTafsirBook(key);
-                var bookName = book && book.name ? book.name : (book && book.short_name ? book.short_name : key);
-                var bookIcon = book && book.icon ? book.icon : '📖';
-                
-                // ابحث عن النص في الكتب المحمّلة
-                var tafsirText = '⚠️ غير متوفر';
                 try {
-                    var content = await window.fetchTafsirBook(key);
-                    if (content && content[String(sid)] && content[String(sid)][String(vn)]) {
-                        tafsirText = content[String(sid)][String(vn)];
+                    var tafsirText = await window.getTafsirText(key, sid, vn);
+                    var book = await window.NoorDB.getTafsirBook(key);
+                    
+                    if (tafsirText && !tafsirText.startsWith('⚠️')) {
+                        var bookName = book && book.name ? book.name : (book && book.short_name ? book.short_name : key);
+                        var bookIcon = book && book.icon ? book.icon : '📖';
+                        
+                        parts.push('─────────────────');
+                        parts.push(bookIcon + ' ' + bookName + ':');
+                        parts.push('');
+                        parts.push(tafsirText);
+                        parts.push('');
                     }
-                } catch(e) {}
-                
-                if (tafsirText && !tafsirText.startsWith('⚠️')) {
-                    parts.push('─────────────────');
-                    parts.push(bookIcon + ' ' + bookName + ':');
-                    parts.push('');
-                    parts.push(tafsirText);
-                    parts.push('');
+                } catch (e) {
+                    console.warn('فشل تفسير ' + key, e);
                 }
             }
             
@@ -1775,62 +1753,21 @@ async function showSelectedTafsirs() {
             }
         }
         
+        // ═══ 3. ذيل ═══
         parts.push('');
         parts.push('─────────────────────────────');
         parts.push('📚 المصدر: كتب التفسير المعتمدة عند أهل السنة والجماعة');
         
         var finalMessage = parts.join('\n');
         
-        // ═══════════════════════════════════════════
-        // 🚀 4. استبدل الرسالة المؤقتة
-        // ═══════════════════════════════════════════
-        replaceMessage(tempId, finalMessage);
-        
+        addMessage(finalMessage, 'ai');
+        closePopup();
     } catch(err) {
         console.error('showSelectedTafsirs error:', err);
         alert('❌ خطأ: ' + err.message);
     } finally {
         if (btn) { btn.disabled = false; btn.textContent = '✅ عرض التفسير'; }
     }
-}
-
-// ✅ إضافة رسالة مع ID (للاستبدال)
-function addMessageWithId(text, type, id) {
-    var container = document.getElementById('messages');
-    var welcome = document.getElementById('welcome');
-    if (welcome) welcome.style.display = 'none';
-    if (!container) return;
-    
-    var div = document.createElement('div');
-    div.className = 'message ' + type;
-    div.id = id;
-    
-    var time = new Date().toLocaleTimeString('ar-SA', {hour: '2-digit', minute: '2-digit'});
-    var pre = document.createElement('pre');
-    pre.textContent = String(text || '');
-    var timeEl = document.createElement('span');
-    timeEl.className = 'time';
-    timeEl.textContent = time;
-    div.appendChild(pre);
-    div.appendChild(timeEl);
-    container.appendChild(div);
-    container.scrollTop = container.scrollHeight;
-}
-
-// ✅ استبدال رسالة موجودة
-function replaceMessage(id, newText) {
-    var existing = document.getElementById(id);
-    if (!existing) {
-        // إذا لم توجد، أضف رسالة جديدة
-        addMessage(newText, 'ai');
-        return;
-    }
-    var pre = existing.querySelector('pre');
-    if (pre) pre.textContent = newText;
-    
-    // تمرير لأسفل
-    var container = document.getElementById('messages');
-    if (container) container.scrollTop = container.scrollHeight;
 }// ---------- إرسال الرسائل ----------
 async function sendMessage() {
     var input = document.getElementById('input');
