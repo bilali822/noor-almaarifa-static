@@ -17,3 +17,5 @@ Thumbs.db
 
 # فقط استبعد android/ من داخل www
 www/android/
+*.bak_*
+*.backup_*
