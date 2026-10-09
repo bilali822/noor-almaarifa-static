@@ -1,7 +1,18 @@
 // نور المعرفة — Service Worker v5.0 (Clean)
-const CACHE_VERSION = 'noor-v5.0.0-CLEAN';
+const CACHE_VERSION = 'noor-v5.3.0-ICONS';
 const STATIC_CACHE = CACHE_VERSION + '-static';
 const DATA_CACHE = CACHE_VERSION + '-data';
+
+const PRECACHE_ICONS = [
+  './icons/icon-192.png','./icons/icon-512.png',
+  './icons/icon-maskable-192.png','./icons/icon-maskable-512.png',
+  './icons/apple-touch-icon.png','./icons/favicon-32.png',
+  './icons/favicon.ico','./manifest.json'
+];
+self.addEventListener('install', (e) => {
+  e.waitUntil(caches.open(STATIC_CACHE).then(c => c.addAll(PRECACHE_ICONS).catch(()=>{})));
+});
+
 
 // ═══ تثبيت فوري ═══
 self.addEventListener('install', (e) => {

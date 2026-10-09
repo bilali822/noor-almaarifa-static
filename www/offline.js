@@ -31,14 +31,7 @@
         this.status('📴 وضع عدم الاتصال');
       });
 
-      // تسجيل hook مع تحسين
-      const origFetch = window.fetch;
-      let fetchCount = 0;
-      window.fetch = async function(...args) {
-        fetchCount++;
-        // استخدام Cache للطلبات المتكررة
-        return origFetch.apply(this, args);
-      };
+      // fetch wrapper الزائد محذوف — للأداء
       console.log('[Offline] جاهز. الإنترنت:', this.isOnline);
     },
 
