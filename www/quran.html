@@ -2372,61 +2372,40 @@ window.getTafsirArabicIcon = function(key, fallbackIcon) {
 // ═══════════════════════════════════════════════════
 window.__tafsirCache = window.__tafsirCache || {};
 
-// اجلب تفسير كامل من الخادم (أو من الكاش)
-window.fetchTafsirBook = async function(bookKey) {
-    // 1. من الذاكرة
-    if (window.__tafsirCache[bookKey]) {
-        return window.__tafsirCache[bookKey];
-    }
-    // 2. من IndexedDB
-    try {
-        var cached = await window.NoorDB.get('tafsirs', bookKey);
-        if (cached && cached.content) {
-            window.__tafsirCache[bookKey] = cached.content;
-            return cached.content;
-        }
-    } catch(e) {}
-    // 3. من الخادم
-    try {
-        var res = await fetch('./data/tafsirs/' + bookKey + '.json');
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        var content = await res.json();
-        window.__tafsirCache[bookKey] = content;
-        // خزّن في IndexedDB للاستخدام offline
+    // اجلب تفسير سورة كاملة من الخادم (الملفات المقسمة)
+    window.fetchTafsirBook = async function(bookKey, surahId) {
+        if (!surahId) return null;
+        var cacheKey = bookKey + '_' + surahId;
+        
+        if (window.__tafsirCache[cacheKey]) return window.__tafsirCache[cacheKey];
+        
         try {
-            var db = await window.NoorDB.open();
-            var tx = db.transaction('tafsirs', 'readwrite');
-            tx.objectStore('tafsirs').put({ key: bookKey, content: content });
-            await new Promise(function(r) { tx.oncomplete = r; });
-        } catch(e) {}
-        return content;
-    } catch(e) {
-        console.warn('[Tafsir] فشل تحميل', bookKey, ':', e.message);
-        return null;
-    }
-};
-
-// اجلب نص تفسير لآية معينة (مع Fallback)
-window.getTafsirText = async function(bookKey, surahId, verseNumber) {
-    try {
-        // 1. من IndexedDB أولاً
-        var cached = await window.NoorDB.getTafsir(bookKey, surahId, verseNumber);
-        if (cached && !cached.startsWith('⚠️')) {
-            return cached;
+            var res = await fetch('./data/tafsirs/' + bookKey + '/' + surahId + '.json');
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            
+            var content = await res.json();
+            window.__tafsirCache[cacheKey] = content;
+            return content;
+        } catch(e) {
+            console.warn('[Tafsir] فشل تحميل', bookKey, 'سورة', surahId, ':', e.message);
+            return null;
         }
-        // 2. Fallback: من الخادم
-        var content = await window.fetchTafsirBook(bookKey);
-        if (!content) return '⚠️ غير متوفر';
-        var surah = content[String(surahId)];
-        if (!surah) return '⚠️ غير متوفر';
-        var text = surah[String(verseNumber)];
-        return text || '⚠️ غير متوفر';
-    } catch(e) {
-        return '⚠️ غير متوفر';
-    }
-};
+    };
 
-// احصل على كل التفاسير لآية (مع Fallback)
+    // اجلب نص تفسير لآية معينة
+    window.getTafsirText = async function(bookKey, surahId, verseNumber) {
+        try {
+            var content = await window.fetchTafsirBook(bookKey, surahId);
+            if (!content) return '⚠️ غير متوفر';
+            
+            var text = content[String(verseNumber)];
+            return text || '⚠️ غير متوفر';
+        } catch(e) {
+            return '⚠️ غير متوفر';
+        }
+    };
+
+    // احصل على كل التفاسير لآية (مع Fallback)
 window.getAllTafsirsWithFallback = async function(surahId, verseNumber) {
     // احصل على الفهرس
     var books = [];
