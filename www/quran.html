@@ -1939,6 +1939,20 @@ html, body { overscroll-behavior: none; }
 <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
 <link rel="mask-icon" href="icons/icon-192.png" color="#6C63FF">
 <link rel="manifest" href="manifest.json">
+
+<style id="fast-tafsir-fix">
+/* تحديد أقصى ارتفاع لصندوق التفسير لمنع تعليق المتصفح */
+.tafsir-option .info .desc, 
+.tafsir-text-container {
+    max-height: 250px;
+    overflow-y: auto;
+    text-align: justify;
+    line-height: 1.8;
+    padding-right: 8px;
+}
+.tafsir-text-container::-webkit-scrollbar { width: 4px; }
+.tafsir-text-container::-webkit-scrollbar-thumb { background: rgba(108, 99, 255, 0.5); border-radius: 10px; }
+</style>
 </head>
 <body>
 
