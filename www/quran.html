@@ -1953,6 +1953,87 @@ html, body { overscroll-behavior: none; }
 .tafsir-text-container::-webkit-scrollbar { width: 4px; }
 .tafsir-text-container::-webkit-scrollbar-thumb { background: rgba(108, 99, 255, 0.5); border-radius: 10px; }
 </style>
+
+<style id="pro-team-design">
+/* ═══════════════════════════════════════════════════
+   🏛️ تصميم احترافي (Enterprise Grade) - فريق برمجة
+   ═══════════════════════════════════════════════════ */
+:root {
+  --primary: #C5A880; /* ذهبي نحاسي هادئ */
+  --primary-dark: #A68A61;
+  --bg-deep: #0B101E; /* كحلي ليلي غامق جداً */
+  --bg-surface: #151B2B; /* لون البطاقات */
+  --text: #F8F9FA; 
+  --text-muted: #94A3B8;
+  --border: rgba(255, 255, 255, 0.08);
+}
+
+body { background: var(--bg-deep); font-family: 'Cairo', system-ui, sans-serif; }
+
+/* إلغاء التدرجات الصاخبة */
+.bg-scene, .bg-orb, .header .brand .icon-wrapper::after, .welcome .hero::before {
+  display: none !important; 
+}
+
+/* الهيدر */
+.header {
+  background: var(--bg-surface) !important;
+  border-bottom: 1px solid var(--border) !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+
+/* الأيقونات في الهيدر */
+.header .brand .icon-wrapper {
+  background: var(--primary) !important;
+  box-shadow: none !important;
+  border-radius: 12px !important;
+}
+
+/* بطاقات الميزات (Welcome Screen) */
+.feature-card, .quick-btn {
+  background: var(--bg-surface) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2) !important;
+  transition: border-color 0.2s, transform 0.2s !important;
+}
+.feature-card:hover, .quick-btn:hover {
+  border-color: var(--primary) !important;
+  transform: translateY(-2px) !important;
+}
+
+/* فقاعات الشات */
+.message.user .bubble {
+  background: var(--primary) !important; /* ذهبي */
+  color: #000 !important;
+  border-radius: 16px 16px 4px 16px !important;
+  font-weight: 600;
+}
+.message.ai .bubble {
+  background: var(--bg-surface) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 16px 16px 16px 4px !important;
+}
+
+/* نافذة التفسير */
+.tafsir-popup {
+  background: var(--bg-deep) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5) !important;
+}
+.tafsir-option {
+  background: var(--bg-surface) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 12px !important;
+}
+.tafsir-option.selected {
+  border-color: var(--primary) !important;
+  background: rgba(197, 168, 128, 0.1) !important;
+}
+.btn-primary { background: var(--primary) !important; color: #000 !important; font-weight: bold; }
+</style>
 </head>
 <body>
 
